@@ -1,0 +1,10 @@
+# useful_loop.rb
+
+i = 0
+loop do
+  i += 1
+  puts i
+  break                     # this will cause execution to exit the loop
+end
+
+puts "break still executes the program after exiting the loop"
