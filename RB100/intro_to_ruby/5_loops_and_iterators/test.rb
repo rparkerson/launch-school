@@ -47,10 +47,10 @@ require "pry"
 # example 3 3 2 1 0
 
 def countdown(number)
-  puts number
+  puts number unless number < 0
   if number > 0
     countdown(number - 1)
   end
 end
 
-countdown(3)
+countdown(-3)

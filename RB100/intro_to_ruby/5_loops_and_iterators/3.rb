@@ -23,7 +23,7 @@ countdown(-4)
 
 
 # def countdown(number)
-#   puts number
+#   puts number unless number < 0
 #   if number > 0
 #     countdown(number - 1)
 #   end
