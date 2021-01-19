@@ -4,10 +4,19 @@
 
 # takes input from user output performed action takes more user input 
 # input performs action until user input is "STOP"
-answer = ""
 
+answer = ""
 while answer != "STOP"
   puts "How are you today? (tell me when to STOP)"
   answer = gets.chomp
   puts "#{answer}, you say?"
 end
+
+# do/while loop
+# loop do
+#   puts "Tell me when to stop!"
+#   answer = gets.chomp
+#   if answer == "STOP"
+#     break
+#   end
+# end
