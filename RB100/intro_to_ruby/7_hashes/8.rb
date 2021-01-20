@@ -12,25 +12,41 @@ words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
 # permanently take out words from array
 # go through hash compare word values make array
 
-words_hash = {}
-words_sorted = []
+# words_hash = {}
+# words_sorted = []
 
-combined_arr = []
+# combined_arr = []
 
-words_sorted = words.map { |word| word.split('').sort.join }
+# words_sorted = words.map { |word| word.split('').sort.join }
 
-words.each_with_index do |word, index|
-  words_hash[word] = words_sorted[index]
-end
+# words.each_with_index do |word, index|
+#   words_hash[word] = words_sorted[index]
+# end
 
-words_hash.each do |word, value|
-  p combined_arr.push word
-  if value
+# words_hash.each do |word, value|
+#   p combined_arr.push word
+#   if value
+#   end
+# end
+# p words_sorted
+# p words_hash
+
+words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
+          'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
+          'flow', 'neon']
+
+hash = {}
+
+words.each do |value|
+  sorted_word = value.split('').sort.join 
+  if hash.keys.include? sorted_word
+    hash[sorted_word] = hash[sorted_word] << value 
+  else
+    hash[sorted_word] = [value]
   end
 end
-p words_sorted
-p words_hash
 
+hash.each {|k, v| p v}
 
 #book solution
 result = {}
