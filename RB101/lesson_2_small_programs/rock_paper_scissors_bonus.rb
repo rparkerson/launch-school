@@ -18,6 +18,20 @@ def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
+def get_choice
+  loop do
+    prompt("Choose one: #{VALID_CHOICES.join(', ')} (r, p, s, l, k)")
+    choice = Kernel.gets().chomp().downcase()
+    choice = choice_converter(choice)
+
+    if VALID_CHOICES.include?(choice)
+      break choice
+    else
+      prompt("That's not a valid choice.")
+    end
+  end
+end
+
 def choice_converter(player_choice)
   if ABBREVIATED_CHOICE.include?(player_choice)
     player_choice = ABBREVIATED_CHOICE[player_choice]
@@ -49,8 +63,8 @@ def tally_score(player, computer, score)
 end
 
 def display_score(score)
-  prompt("Current Score: Player: #{score[:player]}\
- Computer: #{score[:computer]}")
+  prompt("Current Score: Player: #{score[:player]} " \
+  "Computer: #{score[:computer]}")
 end
 
 def check_match_winner(score)
@@ -58,37 +72,27 @@ def check_match_winner(score)
     'player'
   elsif score[:computer] == 5
     'computer'
+  else
+    false
   end
 end
 
-def display_match_winner(score)
-  result = check_match_winner(score)
+def display_match_winner(result)
   if result == 'player'
     prompt("Congratulations you reached five wins first and are the
-     grand winner!")
+     grand champion!")
   elsif result == 'computer'
-    prompt("The computer reached five wins first and is the grand winner!")
+    prompt("The computer reached five wins first and is the grand champion!")
   end
 end
 
 prompt("Welcome to rock, paper, scissors, lizard, spock!")
 prompt("First to reach five wins is the match winner!")
 
+result = nil
 score = { player: 0, computer: 0 }
 loop do
-  choice = ''
-  loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')} (r, p, s, l, k)")
-    choice = Kernel.gets().chomp()
-    choice = choice_converter(choice)
-
-    if VALID_CHOICES.include?(choice)
-      break
-    else
-      prompt("That's not a valid choice.")
-    end
-  end
-
+  choice = get_choice
   computer_choice = VALID_CHOICES.sample
 
   prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
@@ -96,13 +100,14 @@ loop do
 
   score = tally_score(choice, computer_choice, score)
   display_score(score)
+  result = check_match_winner(score)
 
-  break if check_match_winner(score)
+  break if result
 
   prompt("Press enter when you're prepared for the next round! (q to quit)")
   answer = Kernel.gets().chomp().downcase()
   break if answer == 'q' || answer == 'quit'
 end
 
-display_match_winner(score)
+display_match_winner(result)
 prompt("Thank you for playing. Goodbye!")
