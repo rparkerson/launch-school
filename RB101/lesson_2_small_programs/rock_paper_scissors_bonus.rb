@@ -1,21 +1,24 @@
 VALID_CHOICES = %w(rock paper scissors lizard spock)
-ABBREVIATED_CHOICE = {
-  'r' => 'rock',
-  'p' => 'paper',
-  's' => 'scissors',
-  'l' => 'lizard',
-  'k' => 'spock'
-}
-WINNING_CHOICES = {
-  'rock' => ['scissors', 'lizard'],
-  'paper' => ['rock', 'spock'],
-  'scissors' => ['paper', 'lizard'],
-  'lizard' => ['paper', 'spock'],
-  'spock' => ['rock', 'scissors']
-}
+
+ABBREVIATED_CHOICE = { 'r' => 'rock',
+                       'p' => 'paper',
+                       's' => 'scissors',
+                       'l' => 'lizard',
+                       'k' => 'spock' }
+
+WINNING_CHOICES = { 'rock' => ['scissors', 'lizard'],
+                    'paper' => ['rock', 'spock'],
+                    'scissors' => ['paper', 'lizard'],
+                    'lizard' => ['paper', 'spock'],
+                    'spock' => ['rock', 'scissors'] }
 
 def prompt(message)
   Kernel.puts("=> #{message}")
+end
+
+def hello
+  prompt("Welcome to rock, paper, scissors, lizard, spock!")
+  prompt("First to reach five wins is the match winner!")
 end
 
 def get_choice
@@ -41,6 +44,10 @@ end
 
 def win?(first, second)
   WINNING_CHOICES[first].include?(second)
+end
+
+def display_choices(choice, computer_choice)
+  prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
 end
 
 def display_results(player, computer)
@@ -77,37 +84,46 @@ def check_match_winner(score)
   end
 end
 
+def quit?
+  prompt("Press enter when you're prepared for the next round! (q to quit)")
+  answer = Kernel.gets().chomp().downcase()
+  answer == 'q' || answer == 'quit' ? true : false
+end
+
 def display_match_winner(result)
   if result == 'player'
-    prompt("Congratulations you reached five wins first and are the
-     grand champion!")
+    prompt("Congratulations! You reached five wins first and are the " \
+    "grand champion!")
   elsif result == 'computer'
     prompt("The computer reached five wins first and is the grand champion!")
   end
 end
 
-prompt("Welcome to rock, paper, scissors, lizard, spock!")
-prompt("First to reach five wins is the match winner!")
+def goodbye
+  prompt("Thank you for playing. Goodbye!")
+end
+
+hello()
 
 result = nil
 score = { player: 0, computer: 0 }
 loop do
-  choice = get_choice
+  choice = get_choice()
   computer_choice = VALID_CHOICES.sample
 
-  prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+  display_choices(choice, computer_choice)
   display_results(choice, computer_choice)
 
   score = tally_score(choice, computer_choice, score)
   display_score(score)
+
   result = check_match_winner(score)
 
   break if result
+  break if quit?()
 
-  prompt("Press enter when you're prepared for the next round! (q to quit)")
-  answer = Kernel.gets().chomp().downcase()
-  break if answer == 'q' || answer == 'quit'
+  system('clear')
 end
 
 display_match_winner(result)
-prompt("Thank you for playing. Goodbye!")
+goodbye()
