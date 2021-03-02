@@ -12,11 +12,13 @@ WINNING_CHOICES = { 'rock' => ['scissors', 'lizard'],
                     'lizard' => ['paper', 'spock'],
                     'spock' => ['rock', 'scissors'] }
 
+WIN_SCORE = 5
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
-def hello
+def display_greeting
   prompt("Welcome to rock, paper, scissors, lizard, spock!")
   prompt("First to reach five wins is the match winner!")
 end
@@ -75,9 +77,9 @@ def display_score(score)
 end
 
 def check_match_winner(score)
-  if score[:player] == 5
+  if score[:player] == WIN_SCORE
     'player'
-  elsif score[:computer] == 5
+  elsif score[:computer] == WIN_SCORE
     'computer'
   else
     false
@@ -99,11 +101,11 @@ def display_match_winner(result)
   end
 end
 
-def goodbye
+def display_farewell
   prompt("Thank you for playing. Goodbye!")
 end
 
-hello()
+display_greeting()
 
 result = nil
 score = { player: 0, computer: 0 }
@@ -126,4 +128,4 @@ loop do
 end
 
 display_match_winner(result)
-goodbye()
+display_farewell()
