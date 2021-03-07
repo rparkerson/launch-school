@@ -76,4 +76,50 @@ p multisum(5) == 8
 p multisum(10) == 33
 p multisum(1000) == 234168
 
-#  Further Exploration
+#  Further Exploration (use reduce method(array method))
+def multisum(number)
+  total = 0
+  (0..number).reduce { |_, num| (num % 3 == 0 || num % 5 == 0) ? total += num : _ }
+  total
+end
+
+p multisum(3) == 3
+p multisum(5) == 8
+p multisum(10) == 33
+p multisum(1000) == 234168
+
+#  Further Exploration (use reduce method(array method))
+def multisum(int)
+  total = 0
+  (0..int).reduce { |sum, num| (total += num) if (num % 3 == 0 || num % 5 == 0) }
+  total
+end
+
+p multisum(3) == 3
+p multisum(5) == 8
+p multisum(10) == 33
+#p multisum(1000) == 234168
+
+#  Further Exploration (use reduce method(array method))
+def multiple_3_or_5?(number)
+  number % 3 == 0 || number % 5 == 0
+end
+
+def multisum(number)
+  (0..number).reduce { |sum, num| multiple_3_or_5?(num) ? sum + num : sum }
+end
+
+p multisum(3) == 3
+p multisum(5) == 8
+p multisum(10) == 33
+p multisum(1000) == 234168
+
+#  Further Exploration (use reduce method(array method))
+def multisum(num)
+  (0..num).reduce { |sum, n| (n % 3 == 0 || n % 5 == 0) ? sum + n : sum }
+end
+
+p multisum(3) == 3
+p multisum(5) == 8
+p multisum(10) == 33
+p multisum(1000) == 234168
