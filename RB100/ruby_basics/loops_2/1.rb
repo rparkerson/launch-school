@@ -9,7 +9,6 @@
   end
 end
 
-
 count = 1
 
 loop do
@@ -22,7 +21,6 @@ loop do
   break if count == 5
   count += 1
 end
-
 
 count = 1
 
@@ -37,7 +35,6 @@ loop do
   count += 1
 end
 
-
 count = 1
 
 loop do
@@ -46,7 +43,6 @@ loop do
   count += 1
   break if count > 5
 end
-
 
 count = 1
 
@@ -64,4 +60,11 @@ loop do
   
   count += 1
   break if count > 5
+end
+
+count = 0
+
+loop do
+  puts (count += 1).odd? ? "#{count} is odd!" : "#{count} is even!"
+  break if count == 5
 end
