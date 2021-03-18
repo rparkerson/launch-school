@@ -104,7 +104,7 @@ print_in_box('To boldly go where no one has gone before.')
 print_in_box('')
 
 #  Further Exploration(a) - truncate text if it won't fit in 80 columns
-MAX_SIZE = 76
+# MAX_SIZE = 76
 
 def print_in_box(text)
   text = text[0, MAX_SIZE]
@@ -124,3 +124,28 @@ print_in_box('')
 
 #  Further Exploration(b) - For a real challenge, try word wrapping very
 #  long messages so they appear on multiple lines, but still within a box.
+MAX_SIZE = 76
+
+def middle_box_printer(text)
+  text = text[0, MAX_SIZE]
+  puts "| #{text} |"
+end
+
+def print_in_box(text)
+  
+  size = text.size
+  pad1 = ''.center(size, '-')
+  pad2 = ''.center(size, ' ')
+
+  puts "+-#{pad1}-+"
+  puts "| #{pad2} |"
+
+  middle_box_printer(text)
+  
+  puts "| #{pad2} |"
+  puts "+-#{pad1}-+"
+end
+
+print_in_box('To boldly go where no one has gone before.' +
+'To boldly go where no one has gone before.')
+print_in_box('')
