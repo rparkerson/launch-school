@@ -142,7 +142,8 @@ triangle(9)
 def triangle(n, upside_down, left_or_right)
   n.times do |num|
     count = upside_down ? (n - num) : (num + 1)
-    side = left_or_right == 'left' ? 0 : n  # this will return n for everything but 'left'
+    side = left_or_right == 'left' ? 0 : n  
+    # this will return n for everything but 'left'
     puts "#{'*' * count}".rjust(side)
   end
 end
@@ -151,3 +152,17 @@ triangle(5, true, 'left')
 triangle(5, true, 'right')
 triangle(5, false, 'left')
 triangle(5, false, 'right')
+
+# Refactored Further exporation, takes 2 more arguments - booleans
+def triangle(n, upside_down, right_just)
+  n.times do |num|
+    pattern = upside_down ? (n - num) : (num + 1)
+    side = right_just ? n : 0 
+    puts "#{'*' * pattern}".rjust(side)
+  end
+end
+
+triangle(5, true, false)
+triangle(5, true, true)
+triangle(5, false, false)
+triangle(5, false, true)
