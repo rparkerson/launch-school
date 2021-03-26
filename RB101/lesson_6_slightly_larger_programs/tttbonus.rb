@@ -1,21 +1,13 @@
-require 'pry'
-
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 MATCHES_TO_WIN = 5
-WINNING_LINES = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-  [1, 4, 7],
-  [2, 5, 8],
-  [3, 6, 9],
-  [1, 5, 9],
-  [3, 5, 7]
-]
-MIDDLE_SQUARE = 5
+WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7],
+                 [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+PLAYER = 'Player'
+COMPUTER = 'Computer'
 FIRST_MOVE = ['choose']
+MIDDLE_SQUARE = 5
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -36,9 +28,9 @@ def choose_first_move!
   loop do
     choice = gets.chomp.downcase
     if choice == 'p' || choice == 'player'
-      break choice = 'player'
+      break choice = PLAYER
     elsif choice == 'computer' || choice == 'c'
-      break choice = 'computer'
+      break choice = COMPUTER
     else
       prompt "Please choose either 'player' or 'computer' (p or c)."
     end
@@ -46,10 +38,11 @@ def choose_first_move!
   FIRST_MOVE[0] = choice
 end
 
-# rubocop:disable Metrics/AbcSize
-def display_board(brd)
+# rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+def display_board(brd, score)
   system 'clear'
   puts "You are #{PLAYER_MARKER}'s. Computer is #{COMPUTER_MARKER}'s."
+  puts display_score(score)
   puts ""
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -64,7 +57,7 @@ def display_board(brd)
   puts "     |     |"
   puts ""
 end
-# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
 def initialize_board
   new_board = {}
@@ -72,14 +65,14 @@ def initialize_board
   new_board
 end
 
-def display_board_options
+def display_board_options(score)
   board_options = initialize_board
   (1..9).each { |num| board_options[num] = num }
-  display_board(board_options)
+  display_board(board_options, score)
 end
 
 def initialize_score
-  { 'Player' => 0, 'Computer' => 0 }
+  { PLAYER => 0, COMPUTER => 0 }
 end
 
 def empty_squares(brd)
@@ -117,23 +110,32 @@ end
 
 def computer_places_piece!(brd)
   square = nil
-
-  WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
-    break if square
-  end
+  square = computer_offense(brd, square)
 
   if !square
-    WINNING_LINES.each do |line|
-      square = find_at_risk_square(line, brd, PLAYER_MARKER)
-      break if square
-    end
+    square = computer_defense(brd, square)
   end
 
   square = MIDDLE_SQUARE if !square && brd[MIDDLE_SQUARE] == INITIAL_MARKER
   square = empty_squares(brd).sample if !square
 
   brd[square] = COMPUTER_MARKER
+end
+
+def computer_offense(brd, square)
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+    break if square
+  end
+  square
+end
+
+def computer_defense(brd, square)
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, PLAYER_MARKER)
+    break if square
+  end
+  square
 end
 
 def find_at_risk_square(line, brd, marker)
@@ -146,10 +148,26 @@ def find_at_risk_square(line, brd, marker)
   nil
 end
 
-def computer_first_move(brd)
-  display_board(brd)
-  if FIRST_MOVE.first == 'computer'
-    computer_places_piece!(brd)
+def place_piece!(board, current_player)
+  if current_player == PLAYER
+    player_places_piece!(board)
+  else
+    computer_places_piece!(board)
+  end
+end
+
+def alternate_player(current_player)
+  current_player == PLAYER ? COMPUTER : PLAYER
+end
+
+def play_single_match(board, score, current_player)
+  loop do
+    display_board(board, score)
+
+    place_piece!(board, current_player)
+    current_player = alternate_player(current_player)
+
+    break if someone_won?(board) || board_full(board)
   end
 end
 
@@ -164,17 +182,17 @@ end
 def detect_match_winner(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 3
-      return 'Player'
+      return PLAYER
     elsif brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 3
-      return 'Computer'
+      return COMPUTER
     end
   end
   nil
 end
 
-def display_match_winner(board)
-  if someone_won?(board)
-    prompt "#{detect_match_winner(board)} won!"
+def display_match_winner(brd)
+  if someone_won?(brd)
+    prompt "#{detect_match_winner(brd)} won the match!"
   else
     prompt "It's a tie!"
   end
@@ -185,8 +203,8 @@ def tally_score(score, winner)
 end
 
 def display_score(score)
-  prompt "Current Score: Player: #{score['Player']} Computer: \
-#{score['Computer']}"
+  "Current Score: #{PLAYER}: #{score[PLAYER]} #{COMPUTER}: \
+#{score[COMPUTER]}"
 end
 
 def replay?
@@ -196,7 +214,7 @@ def replay?
 end
 
 def game_winner?(score)
-  score['Player'] == MATCHES_TO_WIN || score['Computer'] == MATCHES_TO_WIN
+  score[PLAYER] == MATCHES_TO_WIN || score[COMPUTER] == MATCHES_TO_WIN
 end
 
 def game_winner_prompt(score)
@@ -208,32 +226,21 @@ def display_farewell
   prompt "Thanks for playing! Goodbye!"
 end
 
-
 score = initialize_score
-display_board_options
+display_board_options(score)
 display_greeting
 first_move_prompt
 
 loop do
   board = initialize_board
-  computer_first_move(board)
+  current_player = FIRST_MOVE.first
 
-  loop do
-    display_board(board)
-    
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full(board)
-    
-
-    computer_places_piece!(board)
-    break if someone_won?(board) || board_full(board)
-  end
-
-  display_board(board)
-  display_match_winner(board)
+  play_single_match(board, score, current_player)
 
   tally_score(score, detect_match_winner(board))
-  display_score(score)
+  display_board(board, score)
+  display_match_winner(board)
+  prompt display_score(score)
 
   break game_winner_prompt(score) if game_winner?(score)
   break unless replay?
