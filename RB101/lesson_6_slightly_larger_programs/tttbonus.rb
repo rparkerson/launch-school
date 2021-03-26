@@ -39,21 +39,21 @@ def choose_first_move!
 end
 
 # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-def display_board(brd, score)
+def display_board(board, score)
   system 'clear'
   puts "You are #{PLAYER_MARKER}'s. Computer is #{COMPUTER_MARKER}'s."
   puts display_score(score)
   puts ""
   puts "     |     |"
-  puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
+  puts "  #{board[1]}  |  #{board[2]}  |  #{board[3]}"
   puts "     |     |"
   puts "-----+-----+-----"
   puts "     |     |"
-  puts "  #{brd[4]}  |  #{brd[5]}  |  #{brd[6]}"
+  puts "  #{board[4]}  |  #{board[5]}  |  #{board[6]}"
   puts "     |     |"
   puts "-----+-----+-----"
   puts "     |     |"
-  puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
+  puts "  #{board[7]}  |  #{board[8]}  |  #{board[9]}"
   puts "     |     |"
   puts ""
 end
@@ -75,8 +75,8 @@ def initialize_score
   { PLAYER => 0, COMPUTER => 0 }
 end
 
-def empty_squares(brd)
-  brd.keys.select { |num| brd[num] == INITIAL_MARKER }
+def empty_squares(board)
+  board.keys.select { |num| board[num] == INITIAL_MARKER }
 end
 
 def joinor(arr, delimiter = ', ', word = 'or')
@@ -90,56 +90,56 @@ def joinor(arr, delimiter = ', ', word = 'or')
   end
 end
 
-def player_places_piece!(brd)
+def player_places_piece!(board)
   square = ''
   loop do
-    prompt "Choose a square (#{joinor(empty_squares(brd))}):"
+    prompt "Choose a square (#{joinor(empty_squares(board))}):"
     square = gets.chomp
     if square_valid?(square)
       square = square.to_i
-      break if empty_squares(brd).include?(square)
+      break if empty_squares(board).include?(square)
     end
     prompt "Sorry, that's not a valid choice."
   end
-  brd[square] = PLAYER_MARKER
+  board[square] = PLAYER_MARKER
 end
 
 def square_valid?(square)
   square.to_i.to_s == square
 end
 
-def computer_places_piece!(brd)
+def computer_places_piece!(board)
   square = nil
-  square = computer_offense(brd, square)
+  square = computer_offense(board, square)
 
   if !square
-    square = computer_defense(brd, square)
+    square = computer_defense(board, square)
   end
 
-  square = MIDDLE_SQUARE if !square && brd[MIDDLE_SQUARE] == INITIAL_MARKER
-  square = empty_squares(brd).sample if !square
+  square = MIDDLE_SQUARE if !square && board[MIDDLE_SQUARE] == INITIAL_MARKER
+  square = empty_squares(board).sample if !square
 
-  brd[square] = COMPUTER_MARKER
+  board[square] = COMPUTER_MARKER
 end
 
-def computer_offense(brd, square)
+def computer_offense(board, square)
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+    square = find_at_risk_square(line, board, COMPUTER_MARKER)
     break if square
   end
   square
 end
 
-def computer_defense(brd, square)
+def computer_defense(board, square)
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd, PLAYER_MARKER)
+    square = find_at_risk_square(line, board, PLAYER_MARKER)
     break if square
   end
   square
 end
 
-def find_at_risk_square(line, brd, marker)
-  board_values_line = brd.values_at(line[0], line[1], line[2])
+def find_at_risk_square(line, board, marker)
+  board_values_line = board.values_at(line[0], line[1], line[2])
   if board_values_line.count(marker) == 2 &&
      board_values_line.count(INITIAL_MARKER) == 1
 
@@ -171,28 +171,28 @@ def play_single_match(board, score, current_player)
   end
 end
 
-def board_full(brd)
-  empty_squares(brd).empty?
+def board_full(board)
+  empty_squares(board).empty?
 end
 
-def someone_won?(brd)
-  !!detect_match_winner(brd)
+def someone_won?(board)
+  !!detect_match_winner(board)
 end
 
-def detect_match_winner(brd)
+def detect_match_winner(board)
   WINNING_LINES.each do |line|
-    if brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 3
+    if board.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 3
       return PLAYER
-    elsif brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 3
+    elsif board.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 3
       return COMPUTER
     end
   end
   nil
 end
 
-def display_match_winner(brd)
-  if someone_won?(brd)
-    prompt "#{detect_match_winner(brd)} won the match!"
+def display_match_winner(board)
+  if someone_won?(board)
+    prompt "#{detect_match_winner(board)} won the match!"
   else
     prompt "It's a tie!"
   end
