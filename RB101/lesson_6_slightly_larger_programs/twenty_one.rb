@@ -1,120 +1,153 @@
 require 'pry'
 
-SUITS = ['C', 'D', 'H', 'S']
 VALUES = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+SUITS = ['C', 'D', 'H', 'S']
 NUMBER_VALUES = {
   'A' => 11, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,
   '8' => 8, '9' => 9, '10' => 10, 'J' => 10, 'Q' => 10, 'K' => 10
 }
 PLAYER = 'Player'
-COMPUTER = 'Computer'
-FACE_DOWN_CARD = [true]
+DEALER = 'Dealer'
+SCORE_LIMIT = 21
+HIT_LIMIT = SCORE_LIMIT - 4
+ROUNDS_TO_WIN = 5
 
 def prompt(message)
   puts "=> #{message}"
 end
 
+def display_greeting
+  prompt "Welcome to Twenty-One!"
+  prompt "Compete against the dealer, and try to get to 21 without going over."
+  prompt "If you go over 21, you \"bust\" and lose."
+  prompt "The first to win #{ROUNDS_TO_WIN} rounds is the champion!"
+  prompt "Press Enter to start playing..."
+  gets
+end
+
 def initialize_deck
-  SUITS.reduce([]) { |deck, suit| deck + VALUES.zip([suit] * VALUES.size) }
+  VALUES.product(SUITS).shuffle
 end
 
 def initialize_cards
-  { PLAYER => [], COMPUTER => [] }
+  { PLAYER => [], DEALER => [] }
 end
 
-def deal!(deck)
-  deal = deck.sample(1)
-  deck.delete(deal.first)
-  deal
+def initialize_scoreboard
+  { PLAYER => 0, DEALER => 0 }
 end
 
 def deal_starting_cards(deck, cards)
   loop do
-    cards[COMPUTER] += deal!(deck)
-    cards[PLAYER] += deal!(deck)
+    cards[DEALER] << deck.pop
+    cards[PLAYER] << deck.pop
     break if cards[PLAYER].count == 2
   end
 end
 
 def total(cards)
   total =
-  cards.reduce(0) do |sum, card|
-    sum + NUMBER_VALUES[card[0]]
-  end
-  
+    cards.reduce(0) do |sum, card|
+      sum + NUMBER_VALUES[card[0]]
+    end
+
   cards.select { |card| card[0] == 'A' }.count.times do
-    total -= 10 if total > 21
+    total -= 10 if total > SCORE_LIMIT
   end
-  
+
   total
 end
 
-def display_table(deck, cards)
-  # system 'clear'
-  unless FACE_DOWN_CARD[0]
-    puts "Computer's Cards (Score: #{total(cards[COMPUTER])})"
-    cards[COMPUTER].each { |card| print card.to_s + ' ' }
-  else 
-    puts "Computer's Cards"
-    print cards[COMPUTER][0].to_s + " [        ]"
+def display_table(cards, face_down_card = false)
+  system 'clear'
+  puts "====================="
+  display_dealer_cards(cards, face_down_card)
+  puts
+  puts
+  puts
+  puts
+  display_player_cards(cards)
+  puts "====================="
+  puts
+end
+
+def display_dealer_cards(cards, face_down_card)
+  if !face_down_card
+    puts "Dealer's Cards (Score: #{total(cards[DEALER])})"
+    cards[DEALER].each { |card| print card.to_s + ' ' }
+  else
+    puts "Dealer's Cards (Visible Score: #{visible_score(cards)})"
+    print cards[DEALER][0].to_s + " [        ]"
   end
-  
-  puts 
-  puts
-  puts
+end
+
+def visible_score(cards)
+  visible_card_value = cards[DEALER][0][0]
+  if visible_card_value == 'A'
+    "1 or 11"
+  else
+    NUMBER_VALUES[visible_card_value]
+  end
+end
+
+def display_player_cards(cards)
+  cards[PLAYER].each { |card| print card.to_s + ' ' }
   puts
   puts "Player's Cards (Score: #{total(cards[PLAYER])})"
-  cards[PLAYER].each { |card| print card.to_s + ' ' }
-  puts 
 end
 
 def player_turn(deck, cards)
+  display_table(cards, true)
   display_player_total(cards)
 
   player_hit_or_stay(deck, cards)
 
-  if busted?(cards)
-    bust_prompt(cards)
-  else
+  if !busted?(cards)
     prompt "You chose to stay!"
+    prompt "Dealer's turn next..."
   end
 end
 
 def player_hit_or_stay(deck, cards)
   loop do
-    prompt "Do you want to hit or stay? (h s)"
+    prompt "Do you want to hit or stay? ('h' 's')"
     answer = gets.chomp.downcase
 
     next prompt "Invalid answer." unless valid_answer?(answer)
 
     break if answer == 'stay' || answer == 's'
+
     hit!(deck, cards, PLAYER)
-    prompt cards[PLAYER].to_s
-    break if busted?(cards)
+    face_down_card = true unless busted?(cards)
+    display_table(cards, face_down_card)
+    prompt "You hit!"
     display_player_total(cards)
-  end
-end
 
-def computer_turn(deck, cards)
-  FACE_DOWN_CARD[0] = false
-  return if busted?(cards)
-  display_computer_total(cards)
-
-  computer_hit_or_stay(deck, cards)
-
-  if busted?(cards)
-    computer_bust_prompt(cards)
-  else
-    prompt "Computer stays."
-  end
-end
-
-def computer_hit_or_stay(deck, cards)
-  while total(cards[COMPUTER]) < 17
-    prompt "Computer hits."
-    hit!(deck, cards, COMPUTER)
     break if busted?(cards)
-    display_computer_total(cards)
+  end
+end
+
+def dealer_turn(deck, cards)
+  return if busted?(cards)
+  sleep(2)
+
+  display_table(cards)
+  display_dealer_total(cards)
+  sleep(2)
+
+  dealer_hit_or_stay(deck, cards)
+
+  prompt "Dealer stays." if !busted?(cards)
+end
+
+def dealer_hit_or_stay(deck, cards)
+  while total(cards[DEALER]) < HIT_LIMIT
+    prompt "Dealer hits."
+    sleep(2)
+    hit!(deck, cards, DEALER)
+    display_table(cards)
+    display_dealer_total(cards)
+    break if busted?(cards)
   end
 end
 
@@ -122,12 +155,12 @@ def display_player_total(cards)
   prompt "Your total is #{total(cards[PLAYER])}."
 end
 
-def display_computer_total(cards)
-  prompt "The Computer's total is #{total(cards[COMPUTER])}."
+def display_dealer_total(cards)
+  prompt "The Dealer's total is #{total(cards[DEALER])}."
 end
 
 def hit!(deck, cards, card_owner)
-  cards[card_owner] += deal!(deck)
+  cards[card_owner] << deck.pop
 end
 
 def valid_answer?(answer)
@@ -135,46 +168,101 @@ def valid_answer?(answer)
 end
 
 def busted?(cards)
-  total(cards[PLAYER]) > 21 || total(cards[COMPUTER]) > 21
+  total(cards[PLAYER]) > SCORE_LIMIT || total(cards[DEALER]) > SCORE_LIMIT
 end
 
-def bust_prompt(cards)
-  prompt "Your total is #{total(cards[PLAYER])}, you busted!"
-end
-
-def computer_bust_prompt(cards)
-  prompt "The Computer's total is #{total(cards[COMPUTER])} and they busted!"
-end
-
-def calculate_results(deck, cards)
+def calculate_results(cards)
   player_score = total(cards[PLAYER])
-  computer_score = total(cards[COMPUTER])
+  dealer_score = total(cards[DEALER])
 
-  return (player_score > 21 ? COMPUTER : PLAYER) if busted?(cards)
-  return player_score < computer_score ? COMPUTER : PLAYER
-  return 'Tie' if player_score == computer_score
-  nil
+  if busted?(cards)
+    return player_score > SCORE_LIMIT ? :player_busts : :dealer_busts
+  end
+  return :tie if player_score == dealer_score
+
+  player_score < dealer_score ? DEALER : PLAYER
 end
 
-def display_results(winner)
-  case winner
-  when COMPUTER
-    prompt "The Computer is the winner!"
+def display_results(cards, scoreboard)
+  result = calculate_results(cards)
+
+  case result
+  when :player_busts
+    prompt "You bust! Dealer wins the round!"
+  when :dealer_busts
+    prompt "Dealer busts! You win the round!"
+  when :tie
+    prompt "The round ends in a draw!"
+  when DEALER
+    prompt "The Dealer wins the round!"
   when PLAYER
-    prompt "Congratulations, you have won!"
-  when 'tie'
-    prompt "The game ends in a draw!"
+    prompt "You have won the round!"
+  end
+
+  update_scoreboard(scoreboard, result)
+  display_scoreboard(scoreboard)
+end
+
+def update_scoreboard(scoreboard, result)
+  case result
+  when :player_busts
+    scoreboard[DEALER] += 1
+  when DEALER
+    scoreboard[DEALER] += 1
+  when :dealer_busts
+    scoreboard[PLAYER] += 1
+  when PLAYER
+    scoreboard[PLAYER] += 1
   end
 end
 
-deck = initialize_deck
-cards = initialize_cards
-deal_starting_cards(deck, cards)
-display_table(deck, cards)
+def display_scoreboard(scoreboard)
+  puts
+  prompt "Current wins: Player: #{scoreboard[PLAYER]} Dealer: \
+#{scoreboard[DEALER]}"
+end
 
-player_turn(deck, cards)
-computer_turn(deck, cards)
+def five_wins?(scoreboard)
+  scoreboard[PLAYER] == ROUNDS_TO_WIN || scoreboard[DEALER] == ROUNDS_TO_WIN
+end
 
-winner = calculate_results(deck, cards)
-display_table(deck, cards)
-display_results(winner) if winner
+def display_champion(scoreboard)
+  puts
+  if scoreboard[PLAYER] == ROUNDS_TO_WIN
+    prompt "Congratulations! You are the first to #{ROUNDS_TO_WIN} wins and\
+    are the champion!"
+  else
+    prompt "The Dealer won #{ROUNDS_TO_WIN} rounds first and is the champion!"
+  end
+end
+
+def play_again?
+  puts
+  prompt "Would you like to play again? (y or n)"
+  choice = gets.chomp
+  !(choice == 'n' || choice == 'no')
+end
+
+def display_farwell
+  prompt "Thanks for playing Twenty-One! Goodbye!"
+end
+
+display_greeting
+scoreboard = initialize_scoreboard
+
+loop do
+  deck = initialize_deck
+  cards = initialize_cards
+
+  deal_starting_cards(deck, cards)
+
+  player_turn(deck, cards)
+  dealer_turn(deck, cards)
+
+  display_results(cards, scoreboard)
+
+  break display_champion(scoreboard) if five_wins?(scoreboard)
+  break unless play_again?
+end
+
+display_farwell
