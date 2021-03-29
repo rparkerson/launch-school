@@ -16,8 +16,9 @@ end
 
 def display_greeting
   prompt "Welcome to Twenty-One!"
-  prompt "Compete against the dealer, and try to get to 21 without going over."
-  prompt "If you go over 21, you \"bust\" and lose."
+  prompt "Compete against the dealer, and try to get to #{SCORE_LIMIT} \
+without going over."
+  prompt "If you go over #{SCORE_LIMIT}, you \"bust\" and lose."
   prompt "The first to win #{ROUNDS_TO_WIN} rounds is the champion!"
   prompt "Press Enter to start playing..."
   gets
@@ -190,7 +191,7 @@ def display_results(cards, scoreboard)
   when :dealer_busts
     prompt "Dealer busts! You win the round!"
   when :tie
-    prompt "The round ends in a draw!"
+    prompt "The round ends in a tie!"
   when DEALER
     prompt "The Dealer wins the round!"
   when PLAYER
