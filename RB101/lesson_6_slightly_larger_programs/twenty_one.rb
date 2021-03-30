@@ -15,6 +15,7 @@ def prompt(message)
 end
 
 def display_greeting
+  system 'clear'
   prompt "Welcome to Twenty-One!"
   prompt "Compete against the dealer, and try to get to #{SCORE_LIMIT} \
 without going over."
@@ -50,6 +51,10 @@ def total(cards)
       sum + NUMBER_VALUES[card[0]]
     end
 
+  adjust_for_aces(cards, total)
+end
+
+def adjust_for_aces(cards, total)
   cards.select { |card| card[0] == 'A' }.count.times do
     total -= 10 if total > SCORE_LIMIT
   end
@@ -228,40 +233,49 @@ end
 def display_champion(scoreboard)
   puts
   if scoreboard[PLAYER] == ROUNDS_TO_WIN
-    prompt "Congratulations! You are the first to #{ROUNDS_TO_WIN} wins and\
-    are the champion!"
+    prompt "Congratulations! You are the first to #{ROUNDS_TO_WIN} wins and "\
+      "are the champion!"
   else
     prompt "The Dealer won #{ROUNDS_TO_WIN} rounds first and is the champion!"
   end
 end
 
-def play_again?
-  puts
-  prompt "Would you like to play again? (y or n)"
-  choice = gets.chomp
-  !(choice == 'n' || choice == 'no')
+def quit_early?
+  prompt "Press Enter to continue to the next round! (q to quit)"
+  choice = gets.chomp.downcase
+  choice == 'q' || choice == 'quit'
 end
 
-def display_farwell
+def play_again?
+  prompt "Would you like to start a new game? (y or n)"
+  choice = gets.chomp
+  choice == 'y' || choice == 'yes'
+end
+
+def display_farewell
   prompt "Thanks for playing Twenty-One! Goodbye!"
 end
 
-display_greeting
-scoreboard = initialize_scoreboard
-
 loop do
-  deck = initialize_deck
-  cards = initialize_cards
+  display_greeting
+  scoreboard = initialize_scoreboard
 
-  deal_starting_cards(deck, cards)
+  loop do
+    deck = initialize_deck
+    cards = initialize_cards
 
-  player_turn(deck, cards)
-  dealer_turn(deck, cards)
+    deal_starting_cards(deck, cards)
 
-  display_results(cards, scoreboard)
+    player_turn(deck, cards)
+    dealer_turn(deck, cards)
 
-  break display_champion(scoreboard) if five_wins?(scoreboard)
+    display_results(cards, scoreboard)
+
+    break display_champion(scoreboard) if five_wins?(scoreboard)
+    break if quit_early?
+  end
+
   break unless play_again?
 end
 
-display_farwell
+display_farewell
