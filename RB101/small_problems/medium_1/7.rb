@@ -88,14 +88,23 @@ the result to account for phone numbers? For our purposes, assume that
 any 10 digit number is a phone number, and that the proper format should
 be "(123) 456-7890".
 =end
-def remove_space
+# WIP
+def existing_digits(str)
+  arr = []
+  str.each_char.with_index do |char, index|
+    arr << index if DIGIT_HASH.values.include?(char)
+  end
+  arr
+end
+
+def remove_spaces(str)
 
 end
 
+# accounts for the first further exploration only
 def word_to_digit(str)
   DIGIT_HASH.each do |word, digit|
     previous = str.gsub!(/\b#{word}\b/i, digit)
-    p previous
   end
   str
 end
