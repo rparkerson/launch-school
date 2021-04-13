@@ -89,6 +89,18 @@ end
 
 p alphabetic_number_sort((0..19).to_a)
 
+# Refactored based on feedback, did not work with other ranges (2..17) etc.
+ZERO_TO_NINETEEN = %w(zero one two three four five six seven eight nine ten
+                      eleven twelve thirteen fourteen fifteen sixteen
+                      seventeen eighteen nineteen)
+
+def alphabetic_number_sort(array)
+  sorting_hash = ZERO_TO_NINETEEN.zip((0..19).to_a).to_h
+  array.sort_by { |num| sorting_hash.key(num) }
+end
+
+p alphabetic_number_sort((2..17).to_a)
+
 #  Further exploration
 #  I think the Array#sort_by! method was not used because it mutates the
 #  array.  You may want to use the original array again.
