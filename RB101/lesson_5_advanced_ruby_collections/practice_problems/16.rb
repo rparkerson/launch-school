@@ -102,3 +102,15 @@ def generate_UUID
   SecureRandom.uuid
 end
 p generate_UUID
+
+def rand_hex(n)
+  string = ''
+  n.times { string += rand(16).to_s(16) }
+  string
+end
+
+def generate_uuid
+  "#{rand_hex(8)}-#{rand_hex(4)}-#{rand_hex(4)}-#{rand_hex(4)}-#{rand_hex(12)}"
+end
+
+p generate_uuid
