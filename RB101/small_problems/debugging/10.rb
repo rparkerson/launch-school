@@ -100,6 +100,8 @@ def idf(term, documents)
   number_of_documents = documents.length
   number_of_documents_with_term = documents.count { |d| tf(term, d) > 0 }
 
+  return 0 if number_of_documents_with_term == 0 # avoids dividing by 0
+
   Math.log(number_of_documents.fdiv(number_of_documents_with_term))
 end
 
