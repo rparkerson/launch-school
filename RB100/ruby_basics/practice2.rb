@@ -895,3 +895,573 @@ self contained with respect to local variables.
 #     puts ">> Please start over."
 #   end
 # end
+
+# def print_me
+#   puts "I'm printing within the method!"
+# end
+
+# print_me
+
+# def print_me
+#   "I'm printing the return value!"
+# end
+
+# puts print_me
+
+# def hello
+#   "Hello"
+# end
+
+# def world
+#   "World"
+# end
+
+# puts hello + ' ' + world
+# puts "#{hello} #{world}"
+# puts hello, world
+
+# def hello
+#   'Hello'
+# end
+
+# def world
+#   'World'
+# end
+
+# def greet(str1, str2)
+#   "#{hello} #{world}"
+# end
+
+# puts greet(hello, world)
+
+# def greet            # methods can access other methods within them
+#   "#{hello} #{world}"
+# end
+
+# puts greet
+
+# def car(make, model)
+#   puts "#{make} #{model}" # returns nil
+# end
+
+# car('Toyota', 'Corolla')
+
+# def car(make, model)
+#   "#{make} #{model}" # returns string
+# end
+
+# puts car('Toyota', 'Corolla')
+
+# def time_of_day(daylight)
+#   daylight ? puts("It's daytime!") : puts("It's nighttime!")
+# end
+
+# daylight = [true, false].sample
+
+# time_of_day(daylight)
+
+# def time_of_day(daylight)
+#   result = daylight ? "It's daytime!" : "It's nighttime!"
+#   puts result
+# end
+
+# daylight = [true, false].sample
+
+# time_of_day(daylight)
+
+# def dog(name)
+#   return name
+# end
+
+# def cat(name)
+#   return name
+# end
+
+# puts "The dog's name is #{dog('Spot')}."
+# puts "The cat's name is #{cat('Ginger')}."
+
+# def assign_name(name = 'Bob')
+#   name
+# end
+
+# puts assign_name('Kevin') == 'Kevin'
+# puts assign_name == 'Bob'
+
+# def add(num1, num2)
+#   num1 + num2
+# end
+
+# def multiply(num1, num2)
+#   num1 * num2
+# end
+
+# puts add(2, 2) == 4
+# puts add(5, 4) == 9
+# puts multiply(add(2, 2), add(5, 4)) == 36
+
+# def add(*args)
+#   args.sum
+# end
+
+# def multiply(*args)
+#   args.reduce(:*)
+# end
+
+# puts add(2, 2) == 4
+# puts add(5, 4) == 9
+# puts multiply(add(2, 2), add(5, 4)) == 36
+
+# def name(names_arr)
+#   names_arr.sample
+# end
+
+# def activity(activities_arr)
+#   activities_arr.sample
+# end
+
+# def sentence(name, activity)
+#   "#{name} went #{activity} today!"
+# end
+
+# names = ['Dave', 'Sally', 'George', 'Jessica']
+# activities = ['walking', 'running', 'cycling']
+
+# puts sentence(name(names), activity(activities))
+
+# def meal
+#   return 'Breakfast'
+# end
+
+# puts meal
+
+=begin
+This will print `Breakfast` because the return value of the `meal` method
+call is passed as an argument to the `puts` method call. The return value
+of a method is the evaluated result of the last line executed in the method.
+An implicit return returns the value and exits out of the method definition.
+=end
+
+# def meal
+#   'Evening'
+# end
+
+# puts meal
+
+=begin
+This prints `Evening`, the return value of the `meal` method call which
+is passed to the `puts` method call as an argument. `Evening` is the implicit
+return value within the `meal` method definition since the return value
+of a method is the evaluated result of the last line executed.
+=end
+
+# def meal
+#   return 'Breakfast'
+#   'Dinner'
+# end
+
+# puts meal
+
+=begin
+This prints `Breakfast`, since that is what the `meal` method call returns
+and what is passed to the `puts` method call as an argument. The explicit
+return within the `meal` method definition will exit the method definition
+and return the object next to it, the string `Breakfast`. The last line
+`Dinner` in the method definition is never executed for this reason.
+=end
+
+# def meal
+#   puts 'Dinner'
+#   return 'Breakfast'
+# end
+
+# puts meal
+
+=begin
+This will print `Dinner` then `Breakfast`. The method `meal` is called which
+outputs `Dinner` and then returns `Breakfast` which is passed to the `puts`
+method call, on the last line, as an argument and outputs `Breakfast`.
+=end
+
+# def meal
+#   'Dinner'
+#   puts 'Dinner'
+# end
+
+# p meal
+
+=begin
+This will print `Dinner` and then `nil`. The `meal` method call on the last
+line prints `Dinner` within the method definition and returns nil, the return
+value of the last line executed, with a `puts` method call. This nil is
+passed in as an argument to the `p` method call on the last line and is
+output.
+=end
+
+# def meal
+#   return 'Breakfast'
+#   'Dinner'
+#   puts 'Dinner'
+# end
+
+# puts meal
+
+=begin
+This prints `Breakfast`. Since the `meal` method call returns `Breakfast` this
+is passed in as an argument to the `puts` method call and output. Within the
+`meal` method definition the first line uses an explicit return to exit from
+the method defintion and returns the provided string `Breakfast` so the other
+lines in the method definition are never executed.
+=end
+
+# def count_sheep
+#   5.times do |sheep|
+#     puts sheep
+#   end
+# end
+
+# puts count_sheep
+
+=begin
+This code will print 0 1 2 3 4 5. The return value of the `count_sheep` method
+call is `5` and that is output last, as it is passed to the `puts` method call
+on the last line as an argument. Before this, within the `count_sheep` method
+definition the `times` method is called on the integer `5` which passes 0
+through 4 to the block as an arguments.
+
+Within the block these values are output for each block iteration with the
+`puts` method call. The times method call returns the calling object `5` and
+is the last evaluated code in the method defintion so it is the implicit
+return value of the `count_sheep` method call.
+=end
+
+# def count_sheep
+#   5.times do |sheep|
+#     puts sheep
+#   end
+#   10
+# end
+
+# puts count_sheep
+
+=begin
+This code prints 0 1 2 3 4 10. The `count_sheep` method is called and it's
+return value is passed as an argument to the `puts` method on the last line,
+which outputs 10. Before that within the `count_sheep` method definition the
+`times` method is called with a block which iterates through 0 - 4 and passes
+those values to the block as arguments and the block outputs those with the
+`puts` method call. The return value of the method definition is 10, the
+evaluated result of the last line executed within the method definition.
+=end
+
+# def count_sheep
+#   5.times do |sheep|
+#     puts sheep
+#     if sheep >= 2
+#       return
+#     end
+#   end
+# end
+
+# p count_sheep
+
+=begin
+This will print 0 1 2 nil. The `count_sheep` method is called and within
+the method definition the times method is called with the block which
+uses the `puts` method call to output 0 1 2 and then the if statement
+condition evaluates to true, in the block. This explicit return stops
+the iteration and has a return value of `nil` which passed in to the `p`
+method call on the last line as an argument and `nil` is output last. 
+=end
+
+# def tricky_number
+#   if true
+#     number = 1
+#   else
+#     2
+#   end
+# end
+
+# puts tricky_number
+
+=begin
+This will print 1. The `tricky_number` method call returns `1` and that is
+what is passed to the `puts` method call as an argument and output. Within
+the `tricky_number` method definition is an if/else statement and the if
+branch is executed. `number` = 1 is variable assignment which returns the
+object the variable was assigned to `1`. Since this is the evaluated result
+of the last line executed within the method definition, this is the return
+value of the method call on the last line.
+=end
+
+# sun = ['visible', 'hidden'].sample
+
+# if sun == 'visible'
+#   puts "The sun is so bright!"
+# end
+
+# sun = ['visible', 'hidden'].sample
+
+# puts sun
+
+# unless sun == 'visible'
+#   puts "The clouds are blocking the sun!"
+# end
+
+# puts "The clouds are blocking the sun!" unless sun == 'visible'
+
+# sun = ['visible', 'hidden'].sample
+
+# puts sun
+
+# puts "The sun is so bright!" if sun == 'visible'
+# puts "The clouds are blocking the sun!" unless sun == 'visible'
+
+# puts sun == 'visible' ? "The sun is so bright!" : "The clouds are blocking the sun!" 
+
+# boolean = [true, false].sample
+
+# puts boolean
+
+# puts boolean ? "I'm true!" : "I'm false!" 
+
+# number = 7
+
+# if number
+#   puts "My favorite number is #{number}."
+# else
+#   puts "I don't have a favorite number."
+# end
+
+=begin
+This will output: `My favorite number 7.` because the integer `7`, which is
+referenced by the local variable `number`, is used as the conditional and
+every object is Ruby except `nil` and `false` evaluate to true, so the
+if branch is executed and `line 4` is executed and the else branch is not.
+=end
+
+# stoplight = ['green', 'yellow', 'red'].sample
+# puts stoplight
+
+# case stoplight
+# when 'green'  then puts 'Go!'
+# when 'yellow' then puts 'Slow down!'
+# else               puts 'Stop!'
+# end
+
+# stoplight = ['green', 'yellow', 'red'].sample
+# puts stoplight
+
+# if stoplight == 'green'
+#   puts 'Go!'
+# elsif stoplight == 'yellow'
+#   puts 'Slow down!'
+# else
+#   puts 'Stop!'
+# end
+
+# stoplight = ['green', 'yellow', 'red'].sample
+# puts stoplight
+
+# if stoplight == 'green' then puts 'Go!'
+# elsif stoplight == 'yellow' then puts 'Slow down!'
+# else puts 'Stop!'
+# end
+
+# status = ['awake', 'tired'].sample
+
+# puts status
+
+# result = if status == 'awake'  # indentation all alligned to if
+#            "Be productive!"
+#          else
+#            "Go to sleep!"
+#          end
+
+# puts result
+
+# status = ['awake', 'tired'].sample
+
+# puts status
+
+# result = if status == 'awake'
+#            "Be productive!"
+#          else
+#            "Go to sleep!"
+#          end
+
+# puts result
+
+# status = ['awake', 'tired'].sample
+
+# puts status
+
+# alert =
+#   if status == 'awake'  # 2 space indent also preferred in style guide(for array)
+#     "Be productive!"
+#   else
+#     "Go to sleep!"
+#   end
+
+# puts alert
+
+# number = rand(10)
+# puts number
+# if number == 5
+#   puts '5 is a cool number!'
+# else
+#   puts 'Other numbers are cool too!'
+# end
+
+# stoplight = ['green', 'yellow', 'red'].sample
+
+# case stoplight
+# when 'green'  then puts 'Go!'
+# when 'yellow' then puts 'Slow down!'
+# else               puts 'Stop!'
+# end
+
+# str1 = String.new('This is a string')
+# p str1
+
+# str2 = 'Also a string, using string literal'
+# p str2
+
+# str3 = %q(string again)
+# p str3
+
+# str4 = %()
+# p str4
+
+# puts "It\'s now 12 o\'clock."
+# puts "It's now 12 o'clock."
+
+# name = 'Roger'
+# puts name.downcase == 'RoGeR'.downcase
+# puts name.downcase == 'DAVE'.downcase
+
+
+# name = 'Roger'
+# puts name.casecmp('RoGeR') == 0
+# puts name.casecmp('DAVE') == 0
+
+# name = 'Elizabeth'
+
+# puts "Hello, #{name}!"
+
+# name = 'Elizabeth'
+
+# puts "Hello, " + name + "!"
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = "#{first_name} #{last_name}"
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = first_name + ' ' + last_name
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = first_name << ' ' << last_name
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = [first_name, last_name].join(' ')
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = first_name.concat(' ', last_name) # mutating
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = last_name.prepend(first_name, ' ') # mutating
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# first_name[4] = ' ' + last_name 
+# full_name = first_name
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = first_name.insert(-1, ' ').insert(-1, last_name) # mutating
+# puts full_name
+
+# first_name = 'John'
+# last_name = 'Doe'
+
+# full_name = format('%s %s', first_name, last_name)
+# puts full_name
+
+# state = 'tExAs'
+# state.capitalize!
+# puts state
+
+# state = 'tExAs'
+# state.downcase![0] = 'T'
+# puts state
+
+# state = 'tExAs'
+# p state.object_id
+# state.downcase![0] = 'T'
+# puts state
+# p state.object_id
+
+# greeting = 'Hello!'
+# greeting.sub!('Hello!', 'Goodbye!')
+# puts greeting
+
+# greeting = 'Hello!'
+# greeting.clear.concat('Goodbye!')
+# puts greeting
+
+# greeting = 'Hello!'
+# greeting.gsub!('Hello!', 'Goodbye!')
+# puts greeting
+
+# greeting = 'Hello!'
+# greeting[0..] = 'Goodbye!'
+# puts greeting
+
+# alphabet = 'abcdefghijklmnopqrstuvwxyz'
+# puts alphabet.split('')
+
+# alphabet = 'abcdefghijklmnopqrstuvwxyz'
+# alphabet.each_char { |char| puts char}
+
+# alphabet = 'abcdefghijklmnopqrstuvwxyz'
+# puts alphabet.chars
+
+# alphabet = 'abcdefghijklmnopqrstuvwxyz'
+# alphabet.split('') { |char| puts char}
+
+# words = 'car human elephant airplane'
+# words.split.each { |word| puts word + 's' }
+
+# colors = 'blue pink yellow orange'
+# p colors.include?('yellow')
+# p colors.include?('purple')
+
+# colors = 'blue boredom yellow'
+# puts colors.include?('red')
+# # This outputs true since `include?` searches if those 3 consecutive characters
+# # `red` are anywhere in the string, even if they are within another word.
+
+# # we can alter the code to search only words in the string:
+# colors = 'blue boredom yellow'.split
+# p colors.include?('red')
+# p colors
