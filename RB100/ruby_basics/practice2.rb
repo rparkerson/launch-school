@@ -1465,3 +1465,657 @@ if branch is executed and `line 4` is executed and the else branch is not.
 # colors = 'blue boredom yellow'.split
 # p colors.include?('red')
 # p colors
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pet = pets[2] # pets[-2] OR pets.slice(2) OR pets.at(2) OR pets.fetch(2)
+# puts "I have a pet #{my_pet}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets.slice(2, 2)
+# puts "I have a pet #{my_pets[0]} and a pet #{my_pets[1]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2, 2]
+# p my_pets
+# puts "I have a pet #{my_pets[0]} and a pet #{my_pets[1]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# p my_pets
+# puts "I have a pet #{my_pets[0]} and a pet #{my_pets[1]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2], pets[3]
+# p my_pets
+# puts "I have a pet #{my_pets[0]} and a pet #{my_pets[1]}!"
+
+# # Student solution:
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets.last(2)
+# puts format('I have a pet %s and a pet %s!', *my_pets)
+
+# # Student solution:
+# # Alternate solution:
+# pets = %w[cat dog fish lizard]
+# my_pets = pets.select { |pet| pet[/fish|lizard/] }.map { |pet| "a pet #{pet}"}
+# puts "I have #{my_pets.join(' and ')}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.pop
+# puts "I have a pet #{my_pets[0]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.delete(my_pets.last)
+# p my_pets
+# puts "I have a pet #{my_pets[0]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets = [my_pets.first]
+# p my_pets
+# puts "I have a pet #{my_pets.first}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.delete_at(1)
+# p my_pets
+# puts "I have a pet #{my_pets[0]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+
+# my_pets = pets[2..3].unshift
+# p my_pets
+# puts "I have a pet #{my_pets[0]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.pop
+# my_pets << pets[1]
+# puts "I have a pet #{my_pets[0]} and a pet #{my_pets[1]}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.pop
+# my_pets << pets[1]
+# puts format("I have a pet %s and a pet %s!", *my_pets)
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.pop
+# my_pets << pets[1]
+# my_pets.map! { |pet| "a pet #{pet}"}
+# puts "I have #{my_pets.join(" and ")}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.pop
+# my_pets.push(pets[1])
+# puts "I have a pet #{my_pets.first} and a pet #{my_pets.last}!"
+
+# pets = ['cat', 'dog', 'fish', 'lizard']
+# my_pets = pets[2..3]
+# my_pets.pop
+# my_pets[1] = pets[1]
+# puts "I have a pet #{my_pets[0]} and a pet #{my_pets[1]}!"
+
+# colors = ['red', 'yellow', 'purple', 'green']
+
+# colors.each { |color| puts "I'm the color #{color}!" }
+
+# numbers = [1, 2, 3, 4, 5]
+# doubled_numbers = numbers.map { |number| number * 2 }
+# p doubled_numbers
+
+# numbers = [5, 9, 21, 26, 39]
+# p divisible_by_three = numbers.select { |num| num % 3 == 0 }
+
+# pairs = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# nested_arr = [pairs[0..1], pairs[2..3], pairs[4..5]]
+# p nested_arr
+
+# [["Dave", 7], ["Miranda", 3], ["Jason", 11]]
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# nested_arr = []
+# arr.each do |ele|
+#   if ele.class == String
+#     nested_arr << arr[arr.index(ele)..arr.index(arr.last)].take(2) 
+#   end
+# end
+# p nested_arr
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# nested_arr = []
+# arr.each_with_index do |ele, index|
+#   nested_arr << arr[index, 2] if ele.class == String
+# end
+# p nested_arr
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# nested_arr = []
+# until arr.empty? 
+#   nested_arr << arr.shift(2)
+# end
+# p nested_arr
+
+# # student solution
+# all = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# 3.times do |array|
+#     array = Array.new
+#     array.push(all.pop)
+#     array.unshift(all.pop)
+#     all.unshift(array)
+#   end
+# p all
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+
+# 3.times do
+#     sub_arr = Array.new
+#     sub_arr << arr.shift
+#     sub_arr << arr.shift
+#     arr << sub_arr
+#   end
+# p arr
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# 3.times { arr << Array.new([arr.shift, arr.shift]) }
+# p arr
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# 3.times { arr << arr.shift(2) }
+# p arr
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# nested_arr = [0, 2, 4].group_by { |index| arr[index, 2] }.keys
+# p nested_arr
+
+# arr = ['Dave', 7, 'Miranda', 3, 'Jason', 11]
+# nested_arr = []
+# arr.each_cons(2).to_a.each_with_index { |sub_arr, index| nested_arr << sub_arr if index.even? }
+# p nested_arr
+
+# favorites = [['Dave', 7], ['Miranda', 3], ['Jason', 11]]
+# p favorites.flatten
+
+# favorites = [['Dave', 7], ['Miranda', 3], ['Jason', 11]]
+
+# def my_flatten(array, flat_array=[])
+#   return flat_array if array.empty?
+#   if array[0].class != Array
+#     flat_array << array.shift
+#   else
+#     if array[0].empty?
+#       array.shift
+#     else
+#       flat_array << array[0].shift
+#     end
+#   end
+#   my_flatten(array, flat_array)
+# end
+
+# p my_flatten(favorites)
+
+# array1 = [1, 5, 9]
+# array2 = [1, 9, 5]
+# puts array1 == array2
+# puts array1 === array2
+# puts (array1 <=> array2) == 0
+# puts array1.eql?(array2)
+
+# car = {type: 'sedan', color: 'blue', mileage: 80_000}
+# p car
+
+# car = Hash[type: 'sedan', color: 'blue', mileage: 80_000]
+# p car
+
+# car = {
+#   type:    'sedan',
+#   color:   'blue',
+#   mileage: 80_000,
+#   year:    2003
+# }
+
+# car = {
+#   type:    'sedan',
+#   color:   'blue',
+#   mileage: 80_000
+# }
+# car[:year] = 2003  # element assignment
+# p car
+
+# car = {
+#   type:    'sedan',
+#   color:   'blue',
+#   mileage: 80_000,
+#   year:    2003
+# }
+# car.delete(:mileage)
+# p car
+
+# car = {
+#   type:    'sedan',
+#   color:   'blue',
+#   mileage: 80_000,
+#   year:    2003
+# }
+# car.delete_if { |k, v| v == 80_000 }
+# p car
+
+# car = {
+#   type:    'sedan',
+#   color:   'blue',
+#   year:    2003
+# }
+
+# puts car[:color]
+
+# numbers = {
+#   high:   100,
+#   medium: 50,
+#   low:    10
+# }
+
+# numbers.each { |measure, num| puts "A #{measure} number is #{num}." }
+# numbers.each { |pair| puts "A #{pair[0]} number is #{pair[1]}." }
+
+# numbers = {
+#   high:   100,
+#   medium: 50,
+#   low:    10
+# }
+
+# numbers.each { |pair| puts "A #{pair[0]} number is #{pair[1]}."}
+
+# numbers = {
+#   high:   100,
+#   medium: 50,
+#   low:    10
+# }
+
+# p half_numbers = numbers.values.map { |num| num / 2 }
+
+# numbers = {
+#   high:   100,
+#   medium: 50,
+#   low:    10
+# }
+
+# p half_numbers = numbers.map { |_, num| num / 2 }
+
+# numbers = {
+#   high:   100,
+#   medium: 50,
+#   low:    10
+# }
+
+# p low_numbers = numbers.select { |_, num| num < 25 }
+
+# numbers = {
+#   high:   100,
+#   medium: 50,
+#   low:    10
+# }
+
+# low_numbers = numbers.select! do |key, value|
+#                  value < 25
+#                end
+
+# p low_numbers
+# p numbers
+
+# numbers = {
+#   high:   100,
+#   medium: 50,
+#   low:    10
+# }
+
+# # no assignment needed since #select! is mutating
+# numbers.select! do |key, value|
+#   value < 25
+# end
+
+# p numbers
+
+# vehicle = 
+#   {car:   {type: 'sedan', color: 'blue', year: 2003},
+#    truck: {type: 'pickup', color: 'red', year: 1998}}
+
+# vehicle = {
+#   car:   {type: 'sedan', color: 'blue', year: 2003},
+#   truck: {type: 'pickup', color: 'red', year: 1998}
+# }
+
+# vehicle = { car:   {type: 'sedan', color: 'blue', year: 2003},
+#             truck: {type: 'pickup', color: 'red', year: 1998} }
+
+# vehicle = 
+#   { car:  { type: 'sedan', color: 'blue', year: 2003 },
+#    truck: { type: 'pickup', color: 'red', year: 1998 } }
+
+# car = {
+#   type:  'sedan',
+#   color: 'blue',
+#   year:  2003
+# }
+
+# p car.to_a
+
+# car = [[:type, 'sedan'], [:color, 'blue'], [:year, 2003]]
+# p car
+
+# def find_first_nonzero_among(numbers) # can add * for multiple arguments
+#   numbers.each do |n|
+#     return n if n.nonzero?
+#   end
+# end
+
+# # Examples
+
+# p find_first_nonzero_among(0, 0, 1, 0, 2, 0)
+# p find_first_nonzero_among(1)
+
+# This raises an ArgumentError since more than 1 argument was passed in
+# the second method call with 1 argument raises NoMethodError since
+# an integer does not have the #each method defined.
+
+# def predict_weather
+#   sunshine = ['true', 'false'].sample
+
+#   if sunshine
+#     puts "Today's weather will be sunny!"
+#   else
+#     puts "Today's weather will be cloudy!"
+#   end
+# end
+
+# predict_weather
+
+=begin
+The elements in the array referenced by the `sunshine` variable should
+be booleans instead of strings. Only `false` or `nil` evaluate to `false`
+in ruby so the string `'false'` will always evaluate to `true`.
+=end
+
+# def predict_weather
+#   sunshine = [true, false].sample
+
+#   if sunshine
+#     puts "Today's weather will be sunny!"
+#   else
+#     puts "Today's weather will be cloudy!"
+#   end
+# end
+
+# predict_weather
+
+# def multiply_by_five(n)
+#   n * 5
+# end
+
+# puts "Hello! Which number would you like to multiply by 5?"
+# number = gets.chomp
+
+# puts "The result is #{multiply_by_five(number)}!"
+
+# def multiply_by_five(n)
+#   n * 5
+# end
+
+# puts "Hello! Which number would you like to multiply by 5?"
+# number = gets.to_i
+
+# puts "The result is #{multiply_by_five(number)}!"
+
+# def multiply_by_five(n)
+#   n.to_i * 5
+# end
+
+# puts "Hello! Which number would you like to multiply by 5?"
+# number = gets.to_i 
+# # replaced .chomp (above) with .to_i(which also removes the newline, incedentally)
+
+# puts "The result is #{multiply_by_five(number)}!"
+
+# We can call .to_i to make sure to use the integer #* method, not String#*.
+
+# # debug:
+# pets = { cat: 'fluffy', dog: ['sparky', 'fido'], fish: 'oscar' }
+# pets[:dog] = 'bowser' # element assignment is not appropriate here
+                        # 'bowser' overides the other dogs like the Mario villian
+# p pets #=> {:cat=>"fluffy", :dog=>"bowser", :fish=>"oscar"}
+
+# pets = { cat: 'fluffy', dog: ['sparky', 'fido'], fish: 'oscar' }
+# pets[:dog] << 'bowser' # append 'bowser' to the array, accessed with index reference
+# p pets #=> {:cat=>"fluffy", :dog=>["sparky", "fido", "bowser"], :fish=>"oscar"}
+
+# pets = { cat: 'fluffy', dog: ['sparky', 'fido'], fish: 'oscar' }
+# pets[:dog][2] = 'bowser'
+# p pets 
+
+# numbers = [5, 2, 9, 6, 3, 1, 8]
+# even_numbers = numbers.map do |n|
+#   n if n.even?
+# end
+# p even_numbers # expected output: [2, 6, 8]
+
+# numbers = [5, 2, 9, 6, 3, 1, 8]
+# even_numbers = numbers.select { |n| n.even? }
+# p even_numbers # expected output: [2, 6, 8]
+
+# numbers = [5, 2, 9, 6, 3, 1, 8]
+# even_numbers = numbers.map { |n| n if n.even? }.compact!
+# p even_numbers # expected output: [2, 6, 8]
+
+# def get_quote(person)
+#   if person == 'Yoda'
+#     'Do. Or do not. There is no try.'
+#   end
+
+#   if person == 'Confucius'
+#     'I hear and I forget. I see and I remember. I do and I understand.'
+#   end
+
+#   if person == 'Einstein'
+#     'Do not worry about your difficulties in Mathematics. I can assure you mine are still greater.'
+#   end
+# end
+
+# puts 'Confucius says:'
+# puts '"' + get_quote('Confucius') + '"'
+# The last if statement returns nil and that is the return value. `#+`` is not a
+# method for the nil class.
+
+# def get_quote(person)
+#   if person == 'Yoda'
+#     'Do. Or do not. There is no try.'
+#   elsif person == 'Confucius'
+#     'I hear and I forget. I see and I remember. I do and I understand.'
+#   elsif person == 'Einstein'
+#     'Do not worry about your difficulties in Mathematics. I can assure you mine are still greater.'
+#   end
+# end
+
+# puts 'Confucius says:'
+# puts '"' + get_quote('Confucius') + '"'
+
+# # Financially, you started the year with a clean slate.
+
+# balance = 0
+
+# # Here's what you earned and spent during the first three months.
+
+# january = {
+#   income: [ 1200, 75 ],
+#   expenses: [ 650, 140, 33.2, 100, 26.9, 78 ]
+# }
+
+# february = {
+#   income: [ 1200 ],
+#   expenses: [ 650, 140, 320, 46.7, 122.5 ]
+# }
+
+# march = {
+#   income: [ 1200, 10, 75 ],
+#   expenses: [ 650, 140, 350, 12, 59.9, 2.5 ]
+# }
+
+# # Let's see how much you've got now...
+
+# def calculate_balance(month)
+#   plus  = month[:income].sum
+#   minus = month[:expenses].sum
+
+#   plus - minus
+# end
+
+# [january, february, march].each do |month|
+#   balance += calculate_balance(month)
+# end
+
+# puts format('$%.2f', balance)
+
+# =begin
+# Only the march balance is saved since balance is reassigned to a different
+# month on each iteration. We can change this to combine the balance with the
+# old one with +=
+# =end
+
+# # Student solution
+# p [january, february, march].sum 0, &method(:calculate_balance)
+
+# colors = ['red', 'yellow', 'purple', 'green', 'dark blue', 'turquoise', 'silver', 'black']
+# things = ['pen', 'mouse pad', 'coffee mug', 'sofa', 'surf board', 'training mat', 'notebook']
+
+# colors.shuffle!
+# things.shuffle!
+
+# i = 0
+# loop do
+#   break if i > colors.length
+
+#   if i == 0
+#     puts 'I have a ' + colors[i] + ' ' + things[i] + '.'
+#   else
+#     puts 'And a ' + colors[i] + ' ' + things[i] + '.'
+#   end
+
+#   i += 1
+# end
+
+=begin
+This is iterating over 2 different size arrays and is not account for that
+with the index reference `i`. #+ is not a method for the `nil` class.
+=end
+
+# colors = ['red', 'yellow', 'purple', 'green', 'dark blue', 'turquoise', 'silver', 'black']
+# things = ['pen', 'mouse pad', 'coffee mug', 'sofa', 'surf board', 'training mat', 'notebook']
+
+# colors.shuffle!
+# things.shuffle!
+
+# i = 0
+# loop do
+#   break if i > [colors.size, things.size].min - 1
+
+#   if i == 0
+#     puts 'I have a ' + colors[i] + ' ' + things[i] + '.'
+#   else
+#     puts 'And a ' + colors[i] + ' ' + things[i] + '.'
+#   end
+
+#   i += 1
+# end
+
+# colors = ['red', 'yellow', 'purple', 'green', 'dark blue', 'turquoise', 'silver', 'black']
+# things = ['pen', 'mouse pad', 'coffee mug', 'sofa', 'surf board', 'training mat', 'notebook']
+
+# colors.shuffle!
+# things.shuffle!
+
+# i = 0
+# loop do
+#   break if i > [colors, things
+
+#   if i == 0
+#     puts 'I have a ' + colors[i] + ' ' + things[i] + '.'
+#   else
+#     puts 'And a ' + colors[i] + ' ' + things[i] + '.'
+#   end
+
+#   i += 1
+# end
+
+# Student solution:
+# colors = ['red', 'yellow', 'purple', 'green', 'dark blue', 'turquoise', 'silver', 'black']
+# things = ['pen', 'mouse pad', 'coffee mug', 'sofa', 'surf board', 'training mat', 'notebook']
+
+# colors.shuffle!
+# things.shuffle!
+
+# colors.zip(things).each_with_index do |(color, thing), idx| 
+#   puts "#{idx.zero? ? 'I have' : 'And'} a #{color} #{thing || 'thing'}."
+# end
+
+# def digit_product(str_num)
+#   digits = str_num.chars.map { |n| n.to_i }
+#   product = 1 # changed from 0 to 1 so the product wasn't 0
+
+#   digits.each do |digit|
+#     product *= digit
+#   end
+
+#   product
+# end
+
+# p digit_product('12345')
+# # expected return value: 120
+# # actual return value: 0
+
+# def digit_product(str_num)
+#   digits = str_num.chars.map(&:to_i)
+
+#   digits.each_with_object([1]) { |n, obj| obj[0] *= n }.first
+# end
+
+# p digit_product('12345') # expected return value: 120
+
+# # Each player starts with the same basic stats.
+# player = { strength: 10, dexterity: 10, charisma: 10, stamina: 10 }
+
+# # Then the player picks a character class and gets an upgrade accordingly.
+# character_classes = {
+#   warrior: { strength:  20 },
+#   thief:   { dexterity: 20 },
+#   scout:   { stamina:   20 },
+#   mage:    { charisma:  20 }
+# }
+
+# puts 'Please type your class (warrior, thief, scout, mage):'
+# input = gets.chomp.downcase.to_sym
+
+# player.merge!(character_classes[input])
+
+# puts 'Your character stats:'
+# puts player
+
+# player = { strength: 10, dexterity: 10, charisma: 10, stamina: 10 }
+
+# # Then the player picks a character class and gets an upgrade accordingly.
+
+# character_classes = {
+#   warrior: { strength:  20 },
+#   thief:   { dexterity: 20 },
+#   scout:   { stamina:   20 },
+#   mage:    { charisma:  20 }
+# }
+
+# puts 'Please type your class (warrior, thief, scout, mage):'
+# input = gets.chomp.downcase
+
+# player.merge!(character_classes[input.to_sym])
+
+# puts 'Your character stats:'
+# puts player
