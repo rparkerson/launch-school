@@ -45,3 +45,24 @@ p reverse_sentence('Test String')
 puts reverse_sentence('') == ''
 puts reverse_sentence('Hello World') == 'World Hello'
 puts reverse_sentence('Reverse these words') == 'words these Reverse'
+
+def reverse_sentence(str)
+  reversed = []
+  words = str.split
+  reversed << words.pop until words.empty?
+  reversed.join(' ')
+end
+
+puts reverse_sentence('') == ''
+puts reverse_sentence('Hello World') == 'World Hello'
+puts reverse_sentence('Reverse these words') == 'words these Reverse'
+
+def reverse_sentence(str)
+  reversed = []
+  str.split { |sub_str| reversed.unshift(sub_str) }
+  reversed.join(' ')
+end
+
+puts reverse_sentence('') == ''
+p reverse_sentence('Hello World') == 'World Hello'
+puts reverse_sentence('Reverse these words') == 'words these Reverse'

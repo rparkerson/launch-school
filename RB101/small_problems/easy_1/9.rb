@@ -45,3 +45,40 @@ end
 puts sum(23) == 5
 puts sum(496) == 19
 puts sum(123_456_789) == 45
+
+=begin
+input: integer(positive)
+output: integer(sum)
+rules:
+return the sum of the digits
+
+A
+- isolate each digit into an array
+- return the sum the digits
+
+=end
+
+def sum(num)
+  num.digits.sum
+end
+
+puts sum(23) == 5
+puts sum(496) == 19
+puts sum(123_456_789) == 45
+
+def sum(num)
+  num.to_s.chars.map(&:to_i).sum
+end
+
+puts sum(23) == 5
+puts sum(496) == 19
+puts sum(123_456_789) == 45
+
+# Unnecessary conversion to a hash for practice
+def sum(num)
+  p num.to_s.chars.tally.keys.map(&:to_i).reduce(:+)
+end
+
+puts sum(23) == 5
+puts sum(496) == 19
+puts sum(123_456_789) == 45

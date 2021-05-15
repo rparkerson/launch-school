@@ -83,3 +83,47 @@ puts stringy(6, 0) == '010101'
 puts stringy(9, 0) == '010101010'
 puts stringy(4, 0) == '0101'
 puts stringy(7, 0) == '0101010'
+
+=begin
+input: integer(positive)
+output: string (1s and 0s - starting with 1)
+rules:
+- create a method
+- takes an integer
+- returns a string
+  - string is 1's and 0's starting with 1
+- string length = integer argument
+
+D
+strings, integers
+
+A
+- initialize a new `str`
+- iterate integer number of times
+  - if even append 1
+  - if odd append 0
+
+=end
+
+def stringy(num)
+  str = ''
+  num.times { |n| str << (n.even? ? '1' : '0') }
+  str
+end
+
+puts stringy(6) == '101010'
+puts stringy(9) == '101010101'
+puts stringy(4) == '1010'
+puts stringy(7) == '1010101'
+
+# Further exporation (optional 0 starting argument)
+def stringy(num, start = 1)
+  numbers = []
+  num.times { |n| numbers << (n.even? ? start : (start - 1).abs) }
+  numbers.join
+end
+
+puts stringy(6) == '101010'
+puts stringy(9) == '101010101'
+puts stringy(4) == '1010'
+puts stringy(7, 0) == '0101010'

@@ -36,3 +36,26 @@ end
 puts average([1, 6]) == 3 # integer division: (1 + 6) / 2 -> 3
 puts average([1, 5, 87, 45, 8, 8]) == 25
 puts average([9, 47, 23, 95, 16, 52]) == 40
+
+=begin
+input: array (of integers)
+output: integer (average)
+rules:
+create a method
+takes 1 argument
+returns an integer
+- the array will never be empty
+- the numbers in the array will always be positive
+- formula for the average is adding the array and dividing by number in the
+arry
+question:
+what is the definition here for average?
+=end
+
+def average(arr)
+  arr.sum / arr.size
+end
+
+puts average([1, 6]) == 3 # integer division: (1 + 6) / 2 -> 3
+puts average([1, 5, 87, 45, 8, 8]) #== 25
+puts average([9, 47, 23, 95, 16, 52]) #== 40

@@ -56,3 +56,72 @@ puts reverse_words('Professional')          # => lanoisseforP
 puts reverse_words('Walk around the block') # => Walk dnuora the kcolb
 puts reverse_words('Launch School')         # => hcnuaL loohcS
 puts reverse_words('seventy ytneves seventy ytneves') # => ytneves seventy ytneves seventy
+
+=begin
+input: string (at least 1 word)
+output: given string (words reversed if 5 or more characters)
+rules:
+- create a method
+- return given string(same object) ?
+- 5 or more characters then reverse word
+- strings will be only letters and spaces
+- spaces only included with more than 1 word present
+- words are separated delimited by spaces
+
+arrays, strings
+
+A
+- split each word into an array
+- iterate through the array
+  - if element (string) is >= 5 characters reverse it *mutating
+- join the elements and return string
+
+=end
+
+def reverse_words(str)
+  words = str.split
+  words.each { |word| word.reverse! if word.size >= 5 }
+  words.join(' ')
+end
+
+puts reverse_words('Professional')          # => lanoisseforP
+puts reverse_words('Walk around the block') # => Walk dnuora the kcolb
+puts reverse_words('Launch School')         # => hcnuaL loohcS
+
+def reverse_words(str)
+  str.split { |word| str.sub!(word, word.reverse) if word.size >= 5 }
+end
+
+puts reverse_words('Professional')          # => lanoisseforP
+puts reverse_words('Walk around the block') # => Walk dnuora the kcolb
+puts reverse_words('Launch School')         # => hcnuaL loohcS
+puts reverse_words('two double double elbuod elbuod') # fails this edge case
+
+def reverse_words(str)
+  reversed = []
+  str.split { |word| word.size >= 5 ? reversed << word.reverse : reversed << word }
+  reversed.join(' ')
+end
+
+puts reverse_words('Professional')          # => lanoisseforP
+puts reverse_words('Walk around the block') # => Walk dnuora the kcolb
+puts reverse_words('Launch School')         # => hcnuaL loohcS
+puts reverse_words('two two double double elbuod elbuod') # fails this edge case
+
+def reverse_words(str)
+  str.split.each { |word| word.reverse! if word.size >= 5 }.join(' ')
+end
+
+puts reverse_words('Professional')          # => lanoisseforP
+puts reverse_words('Walk around the block') # => Walk dnuora the kcolb
+puts reverse_words('Launch School')         # => hcnuaL loohcS
+
+def reverse_words(words)
+  words.split.reduce('') do |reversed, word|
+    reversed << "#{word.length >= 5 ? word.reverse : word} "
+  end.strip
+end
+
+puts reverse_words('Professional')          # => lanoisseforP
+puts reverse_words('Walk around the block') # => Walk dnuora the kcolb
+puts reverse_words('Launch School')         # => hcnuaL loohcS
