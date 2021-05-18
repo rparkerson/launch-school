@@ -1037,3 +1037,614 @@ A
 # p palindromic_number?(22) == true
 # p palindromic_number?(5) == true
 # p palindromic_number?(00500) == true
+
+=begin
+input: 2 strings
+output: string
+rules:
+- create a method
+- takes 2 arguments
+- returns shorter argument + longer + shorter
+- can assume strings are different lengths
+D
+strings, arrays
+
+A
+- determine the longest string
+- combine shortest + longest + shortest
+=end
+
+# def short_long_short(str1, str2)
+#   short, long = [str1, str2].sort_by { |str| str.size }
+#   short + long + short
+# end
+
+# p short_long_short('abc', 'defgh') == "abcdefghabc"
+# p short_long_short('abcde', 'fgh') == "fghabcdefgh"
+# p short_long_short('', 'xyz') == "xyz"
+
+# def short_long_short(str1, str2)
+#   str1.size > str2.size ? str2.concat(str1, str2) : str1.concat(str2, str1)
+# end
+
+# p short_long_short('abc', 'defgh') == "abcdefghabc"
+# p short_long_short('abcde', 'fgh') == "fghabcdefgh"
+# p short_long_short('', 'xyz') == "xyz"
+
+=begin
+input: integer (year)
+output: string (century)
+rules:
+- create a method
+- return value should be a string ending with the proper suffix
+- years begin with 01 - 1901-2000 - 20th
+questions:
+are we dealing only with positive years? yes - based on test cases
+
+D
+integers, strings, arrays
+
+A
+- convert the integer into the century
+- add the suffix based on the last digit
+
+- initialize a hash of suffixes for each digit `suffix`
+- divide argument integer by 100 with remainder
+  - if remainder is greater than 0 add 1 more century
+=end
+
+# SUFFIX = {
+#   0 => "th", 1 => "st", 2 => "nd", 3 => "rd", 4 => "th",
+#   5 => "th", 6 => "th", 7 => "th", 8 => "th", 9 => "th"
+# }
+
+# def century(year)
+#   century, remainder = year.divmod(100)
+#   century += 1 if remainder > 0
+#   century = century.to_s
+#   century + get_suffix(century)
+# end
+
+# def get_suffix(str)
+#   return "th" if %w(11 12 13).include?(str[-2..-1])
+#   SUFFIX[str[-1].to_i]
+# end
+
+# p century(2000) == '20th'
+# p century(2001) == '21st'
+# p century(1965) == '20th'
+# p century(256) == '3rd'
+# p century(5) == '1st'
+# p century(10103) == '102nd'
+# p century(1052) == '11th'
+# p century(1127) == '12th'
+# p century(11201) == '113th'
+
+=begin
+input: integer(years) positive
+output: boolean
+rules:
+- create a method
+- returns true if it is a leap year
+- returns false if not a leap year
+- leap year is evenly divisible by 4
+  - unless it is divisble by 100
+    - unless it is divisible by 400
+
+D
+- integers, booleans
+
+A
+- if it is divisible by 400 - return true
+- if it divisible by 4 and NOT divible by 100 return true
+- else return false
+=end
+
+# def leap_year?(year)
+#   if year % 400 == 0
+#     true
+#   elsif year % 4 == 0 && year % 100 != 0
+#     true
+#   else
+#     false
+#   end
+# end
+
+# p leap_year?(2016) == true
+# p leap_year?(2015) == false
+# p leap_year?(2100) == false
+# p leap_year?(2400) == true
+# p leap_year?(240000) == true
+# p leap_year?(240001) == false
+# p leap_year?(2000) == true
+# p leap_year?(1900) == false
+# p leap_year?(1752) == true
+# p leap_year?(1700) == false
+# p leap_year?(1) == false
+# p leap_year?(100) == false
+# p leap_year?(400) == true
+
+# def leap_year?(year)
+#   (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)
+# end
+
+# p leap_year?(2016) == true
+# p leap_year?(2015) == false
+# p leap_year?(2100) == false
+# p leap_year?(2400) == true
+# p leap_year?(240000) == true
+# p leap_year?(240001) == false
+# p leap_year?(2000) == true
+# p leap_year?(1900) == false
+# p leap_year?(1752) == true
+# p leap_year?(1700) == false
+# p leap_year?(1) == false
+# p leap_year?(100) == false
+# p leap_year?(400) == true
+
+# def leap_year?(year)
+#   if year % 4 == 0
+
+#     if year % 100 == 0
+
+#       if year % 400 == 0
+#         return true
+#       else
+#         return false
+#       end
+
+#     end
+
+#     true
+#   else
+#     false
+#   end
+# end
+
+# p leap_year?(2016) == true
+# p leap_year?(2015) == false
+# p leap_year?(2100) == false
+# p leap_year?(2400) == true
+# p leap_year?(240000) == true
+# p leap_year?(240001) == false
+# p leap_year?(2000) == true
+# p leap_year?(1900) == false
+# p leap_year?(1752) == true
+# p leap_year?(1700) == false
+# p leap_year?(1) == false
+# p leap_year?(100) == false
+# p leap_year?(400) == true
+
+# def leap_year?(year)
+#   if year < 1752
+#     year % 4 == 0
+#   else
+#     (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)
+#   end
+# end
+
+# p leap_year?(2016) == true
+# p leap_year?(2015) == false
+# p leap_year?(2100) == false
+# p leap_year?(2400) == true
+# p leap_year?(240000) == true
+# p leap_year?(240001) == false
+# p leap_year?(2000) == true
+# p leap_year?(1900) == false
+# p leap_year?(1752) == true
+# p leap_year?(1700) == true
+# p leap_year?(1) == false
+# p leap_year?(100) == true
+# p leap_year?(400) == true
+
+=begin
+input: integer
+output: integer 
+rules:
+- write a method
+- find all multiples of 3 and 5 between 1 and argument (inclusively)
+- calculate the sum of those multiples
+- assume number argument is a positive integer
+- number can be included as a multiple
+- only count unique multipes (15 is not counted twice)
+questions:
+
+D
+integers, arrays
+
+A
+- initialize an empty array `multiples`
+- find all the multiples of 3 between 1 and given `num`
+  - append them to `multiples` array
+- find all the multiples of 5 between 1 and given `num`
+  - append multiples to `multiples` array
+- filter for just unique mutliples in array
+- find the sum and return that number
+=end
+
+# def multisum(num)
+#   multiples = []
+#   (1..num).each { |n| multiples << n if n % 3 == 0 || n % 5 == 0 }
+#   multiples.sum
+# end
+
+# p multisum(3) == 3
+# p multisum(5) == 8
+# p multisum(10) == 33
+# p multisum(1000) == 234168
+
+# def multisum(num)
+#   (1..num).select { |n| n % 3 == 0 || n % 5 == 0 }.sum
+# end
+
+# p multisum(3) == 3
+# p multisum(5) == 8
+# p multisum(10) == 33
+# p multisum(1000) == 234168
+
+# def multisum(num)
+#   sum = 0
+#   1.upto(num) { |n| sum += n if n % 3 == 0 || n % 5 == 0 }
+#   sum
+# end
+
+# p multisum(3) == 3
+# p multisum(5) == 8
+# p multisum(10) == 33
+# p multisum(1000) == 234168
+
+=begin
+input: array (of numbers)
+output: array( running total of numbers elements)
+rules:
+- create a method
+- given an array of numbers(integers?)
+- return an array with each element a running total from original
+
+questions:
+do we need to return a new array or the same array? - either -not specified
+are all numbers integers? - from examples yes
+
+D
+arrays, integers
+
+A
+- initilie an empty array `totals`
+- initialize a variable `sum` to 0
+- iterate through the argument array
+  - add the current element to sum
+  - append sum to a new array
+- return totals array
+=end
+
+# def running_total(arr)
+#   sum = 0
+#   totals = []
+
+#   arr.each do |num|
+#     sum += num
+#     totals << sum
+#   end
+
+#   totals
+# end
+
+# p running_total([2, 5, 13]) == [2, 7, 20]
+# p running_total([14, 11, 7, 15, 20]) == [14, 25, 32, 47, 67]
+# p running_total([3]) == [3]
+# p running_total([]) == []
+
+# def running_total(arr)
+#   totals = []
+
+#   arr.reduce(0) do |sum, n|
+#     sum += n
+#     totals << sum
+#     sum
+#   end
+
+#   totals
+# end
+
+# p running_total([2, 5, 13]) == [2, 7, 20]
+# p running_total([14, 11, 7, 15, 20]) == [14, 25, 32, 47, 67]
+# p running_total([3]) == [3]
+# p running_total([]) == []
+
+=begin
+input: string (number)
+output: integer
+rules:
+- convert the string to an integer
+- do not use any of the standard coversion methods (to_i, integer)
+- don't worry about - + OR invalid characters for now
+
+D
+strings, integers, arrays?
+
+A
+- create a DIGITS hash of the strings with corresponding digit number value
+- convert the string the an array of single characters
+
+=end
+# DIGITS = {
+#   '0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4,
+#   '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9
+# }
+
+# def string_to_integer(str)
+#   integer = 0
+#   digits = str.chars.map { |char| DIGITS[char] }
+#   digits.each do |num|
+#     integer = 10 * integer + num
+#   end
+#   integer
+# end
+
+# p string_to_integer('4321') #== 4321
+# p string_to_integer('570') #== 570
+
+# def hexadecimal_to_integer(str)
+#   Integer(str, 16)
+# end
+
+# p hexadecimal_to_integer('4D9f') == 19871
+
+=begin
+input: string (number with a - or + or no sign -positive in front)
+output: integer - number version of string with - sign if negative
+rules:
+- do not use to_i or #Integer
+- may use the method from the previous exercise
+
+A
+- use previous method to convert string to a number
+- remove the leading sign if present
+  - multiply by -1 if removed a - sign
+=end
+
+# DIGITS = {
+#   '0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4,
+#   '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9
+# }
+
+# def string_to_integer(str)
+#   integer = 0
+#   digits = str.chars.map { |char| DIGITS[char] }
+#   digits.each do |num|
+#     integer = 10 * integer + num
+#   end
+#   integer
+# end
+
+# def string_to_signed_integer(str)
+#   sign = 1
+
+#   if str[0] == '-'
+#     sign = -1
+#     str[0] = ''
+#   elsif str[0] == '+'
+#     str[0] = ''
+#   end
+
+#   sign * string_to_integer(str)
+# end
+
+# p string_to_signed_integer('4321') == 4321
+# p string_to_signed_integer('-570') == -570
+# p string_to_signed_integer('+100') == 100
+
+=begin
+input: integer
+output: string version of integer
+rules:
+- do not use to_s String() or Kernel#format methods
+- convert the integer to a string
+- create a method
+
+D
+integers, strings, arrays, hash
+
+A
+- create an array and join the array together
+
+- create a hash with numbers as keys and string version as values
+- split the digits into an array
+  - initialize an empty array
+  - take each digit and append to an empty array
+    - use modulus operator
+- convert each digit to the value in the conversion hash * #join skips this
+- return joined array
+=end
+
+# def integer_to_string(num)
+#   num.digits.reverse.join
+# end
+
+# p integer_to_string(4321) == '4321'
+# p integer_to_string(0) == '0'
+# p integer_to_string(5000) == '5000'
+
+# def integer_to_string(num)
+#   arr = []
+
+#   loop do
+#     num, digit = num.divmod(10)
+#     arr.unshift(digit)
+#     break if num == 0
+#   end
+
+#   arr.join
+# end
+
+# p integer_to_string(4321) == '4321'
+# p integer_to_string(0) == '0'
+# p integer_to_string(5000) == '5000'
+
+=begin
+input: integer (with sign)
+output: string with + - sign or no sign for zero
+rules:
+- convert the integer to a string
+- add the sign as a prefix to the string
+- 0 has no sign
+- can use the previous method, same rules apply
+
+D
+integers, strings
+
+A
+- explicitly return 0 for the 0 case
+- if integer is negative prepend a `-`
+  - otherwise prepend a +
+
+=end
+
+# def integer_to_string(num)
+#   arr = []
+#   loop do
+#     num, digit = num.divmod(10)
+#     arr.unshift(digit)
+#     break if num == 0
+#   end
+#   arr.join
+# end
+
+# def signed_integer_to_string(num)
+#   return '0' if num == 0
+#   sign = num.positive? ? '+' : '-'
+#   sign + integer_to_string(num.abs)
+# end
+
+# p signed_integer_to_string(4321) == '+4321'
+# p signed_integer_to_string(-123) == '-123'
+# p signed_integer_to_string(0) == '0'
+
+# Further exploration - refactor so not as redundant
+# def signed_integer_to_string(number)
+#   sign =
+#     case number <=> 0
+#     when -1 then '-'
+#     when +1 then '+'
+#     else         return '0'
+#     end
+
+#   sign + integer_to_string(number.abs)
+# end
+
+# p signed_integer_to_string(4321) == '+4321'
+# p signed_integer_to_string(-123) == '-123'
+# p signed_integer_to_string(0) == '0'
+
+=begin
+input: string
+output: integer (ASCII total)
+rules:
+- check the ASCII value of each character
+- find the sum
+- may use #ord
+
+A
+- iterate over every character
+- find the current value of each character
+- add the sum
+=end
+
+# def ascii_value(str)
+#   str.chars.reduce(0) { |sum, char| sum + char.ord }
+# end
+
+# p ascii_value('Four score') == 984
+# p ascii_value('Launch School') == 1251
+# p ascii_value('a') == 97
+# p ascii_value('') == 0
+
+# def ascii_value(str)
+#   str.chars.map(&:ord).sum
+# end
+
+# p ascii_value('Four score') == 984
+# p ascii_value('Launch School') == 1251
+# p ascii_value('a') == 97
+# p ascii_value('') == 0
+
+=begin
+input: integer
+output: string (hh:mm)
+rules:
+- negative integer are before midnight
+- positive integers are after midnight
+- can not use Date and Time classes
+- integer is given in minutes (1440 minutes in 24 hours)
+
+D
+integers, strings
+
+A
+- start with the time minutes
+  - create a positve number
+- find hours
+- find the minutes
+- convert to a string
+- return the string
+=end
+
+# def time_of_day(num)
+#   minutes = num % 1440
+#   hours, minutes = minutes.divmod(60)
+#   format('%02d:%02d', hours, minutes)
+# end
+
+# p time_of_day(0) == "00:00"
+# p time_of_day(-3) == "23:57"
+# p time_of_day(35) == "00:35"
+# p time_of_day(-1437) == "00:03"
+# p time_of_day(3000) == "02:00"
+# p time_of_day(800) == "13:20"
+# p time_of_day(-4231) == "01:29"
+
+=begin
+input: string (hh:00 - time of day)
+output: integer (minutes 0..1439)
+rules:
+- create 2 methods
+- one calculates before midnight
+- one after midnight
+- can be given '24:00' is an example
+
+D
+strings, integers
+
+A
+after_midnight
+- split the string at the `:` and form an array
+- multiply the hours by 60
+- add the minutes
+- if time is 24:00 return 0
+- return the sum
+
+before midnight
+- split the string at the : 
+- convert to integers and multiply hours by 60
+- add the minutes
+- subtract from 1440
+- return number
+=end
+
+# def after_midnight(time)
+#   hours, minutes = time.split(':').map(&:to_i)
+#   ((hours * 60) + minutes) % 1440
+# end
+
+# def before_midnight(time)
+#   return 0 if time == '24:00' || time == '00:00'
+#   hours, minutes = time.split(':').map(&:to_i)
+#   1440 - ((hours * 60) + minutes)
+# end
+
+# p after_midnight('00:00') #== 0
+# p before_midnight('00:00') #== 0
+# p after_midnight('12:34') #== 754
+# p before_midnight('12:34') #== 686
+# p after_midnight('24:00') #== 0
+# p before_midnight('24:00') #== 0
