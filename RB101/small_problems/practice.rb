@@ -1648,3 +1648,682 @@ before midnight
 # p before_midnight('12:34') #== 686
 # p after_midnight('24:00') #== 0
 # p before_midnight('24:00') #== 0
+
+=begin
+input: string of words separated by spaces
+output: string first and last letters of words swapped
+rules:
+- assume every word is at least 1 letter - strings at least 1 word
+- swap the first and last letter of the words
+- words are delimited by spaces
+- strings will contain only words and spaces
+questions:
+Do we need to return the same string? or a new string?
+
+D
+strings, arrays
+
+A
+- split string into an array at the spaces
+- iterate through the array
+  - swap the first and last letter of each word
+- return the string
+=end
+
+# def swap(str)
+#   str.split.map do |word|
+#     word[0], word[-1] = word[-1], word[0]
+#     word
+#   end.join(' ')
+# end
+
+# p swap('Oh what a wonderful day it is') #== 'hO thaw a londerfuw yad ti si'
+# p swap('Abcde') == 'ebcdA'
+# p swap('a') == 'a'
+
+=begin
+input: string (lowercase)
+output: string (non alphabetic characters replaced)
+rules:
+- mutate the string
+- non-alphbetic characters are replaced by spaces
+- no multiple spaces - just 1
+
+questions:
+do you need to return the same string object passed as an argument? yes-
+
+D
+strings, arrays
+
+A
+- replace the non-alphabetic characters
+- remove all extra spaces (only 1 consecutive)
+
+- initialize a variable `clearn` as an empty array
+- split the string by each character into an array save as variable
+- iterate through this array
+  - initialize a variable `previous` to first character string
+  - if character is not alphabetic (method)
+    - change current character to a space
+    - if previous character is also a space change current to ''
+  - prevous reassigned to current character
+
+- create a method to return true if character is alphabetic else false
+  - create an array of characters a-z
+  - if character argument is included? return true else false
+=end
+
+# def cleanup(str)
+#   clean = []
+#   chars = str.chars
+#   previous = chars.first
+
+#   chars.each do |char|
+#     if alphabetic?(char)
+#       clean << char
+#       previous = char
+#     elsif previous == ' '
+#       clean << ''
+#     else
+#       clean << ' '
+#       previous = ' '
+#     end
+#   end
+
+#   clean.join
+# end
+
+# def alphabetic?(char)
+#   alphabet = [*'a'..'z']
+#   alphabet.include?(char)
+# end
+
+# p cleanup("---what's my +*& line?") #== ' what s my line '
+
+# def cleanup(str)
+#   clean = []
+#   str.chars.each do |char|
+#     if alphabetic?(char)
+#       clean << char
+#     else
+#       clean << ' '
+#     end
+#   end
+#   clean.join.squeeze
+# end
+
+# def alphabetic?(char)
+#   alphabet = [*'a'..'z']
+#   alphabet.include?(char)
+# end
+
+# p cleanup("---what's my +*& line?") #== ' what s my line '
+
+# def cleanup(str)
+#   str.gsub(/[^a-z]/i, ' ').squeeze(' ')
+# end
+
+# p cleanup("---what's my +*& line?") #== ' what s my line '
+
+# def cleanup(str)
+#   clean = []
+
+#   str.chars.each do |char|
+#     if alphabetic?(char)
+#       clean << char
+#     else
+#       clean << ' ' unless clean.last == ' '
+#     end
+#   end
+
+#   clean.join
+# end
+
+# def alphabetic?(char)
+#   alphabet = [*'a'..'z']
+#   alphabet.include?(char)
+# end
+
+# p cleanup("---what's my +*& line?") #== ' what s my line '
+
+=begin
+input: string
+output: hash (keys: wordsize values: numbers of words of those size)
+rules:
+- given a string of at least 1 ore more space separated words
+- return a hash with with the word size and count of words
+- empty strings return an empty hash
+
+questions:
+do the hash need to be sorted in a certain order? - just pass the test cases
+
+D
+strings, hash, arrays
+
+A
+- split the string over the spaces into a array
+- iterate over this array
+  - count the number of letters of each word in the array
+  - save this as a new array `word_size`
+- initialize an empty hash `result`
+- iterate through `word_size`
+  - if the current element is a key in `result` hash
+    - increment hash value by 1
+  - else add element to hash with a value of 1
+- return `result` hash 
+=end
+
+# def word_sizes(str)
+#   str.split.map(&:size).tally
+# end
+
+# p word_sizes('Four score and seven.') #== { 3 => 1, 4 => 1, 5 => 1, 6 => 1 }
+# p word_sizes('Hey diddle diddle, the cat and the fiddle!') #== { 3 => 5, 6 => 1, 7 => 2 }
+# p word_sizes("What's up doc?") #== { 6 => 1, 2 => 1, 4 => 1 }
+# p word_sizes('') == {}
+
+# def word_sizes(str)
+#   result = {}
+#   word_size = str.split.map(&:size)
+
+#   word_size.each do |chars|
+#     if result.include?(chars)
+#       result[chars] += 1
+#     else
+#       result[chars] = 1
+#     end
+#   end
+
+#   result
+# end
+
+# p word_sizes('Four score and seven.') #== { 3 => 1, 4 => 1, 5 => 1, 6 => 1 }
+# p word_sizes('Hey diddle diddle, the cat and the fiddle!') #== { 3 => 5, 6 => 1, 7 => 2 }
+# p word_sizes("What's up doc?") #== { 6 => 1, 2 => 1, 4 => 1 }
+# p word_sizes('') == {}
+
+# def word_sizes(str)
+#   result = Hash.new(0)
+#   str.split { |word| result[word.size] += 1 }
+#   result
+# end
+
+# p word_sizes('Four score and seven.') == { 3 => 1, 4 => 1, 5 => 1, 6 => 1 }
+# p word_sizes('Hey diddle diddle, the cat and the fiddle!') == { 3 => 5, 6 => 1, 7 => 2 }
+# p word_sizes("What's up doc?") == { 6 => 1, 2 => 1, 4 => 1 }
+# p word_sizes('') == {}
+
+=begin
+letter_count helper method
+input: string
+output: integer - count of letter characters only
+rules:
+- exclude non-letters for word size
+questions:
+- do numbers count? - no
+
+D
+strings, integers 
+
+A
+- remove the non-letter characters
+- count the string
+=end
+
+# ALPHABET = ('a'..'z').to_a + ('A'..'Z').to_a
+
+# def word_sizes(str)
+#   result = Hash.new(0)
+#   str.split { |word| result[letter_count(word)] += 1 }
+#   result
+# end
+
+# def letter_count(str)
+#   str.delete('^a-zA-Z').size
+# end
+
+# def letter_count(str)
+#   count = 0
+#   str.chars.each { |char| count += 1 if ALPHABET.include?(char) }
+#   count
+# end
+
+# p word_sizes('Four score and seven.') == { 3 => 1, 4 => 1, 5 => 2 }
+# p word_sizes('Hey diddle diddle, the cat and the fiddle!') == { 3 => 5, 6 => 3 }
+# p word_sizes("What's up doc?") == { 5 => 1, 2 => 1, 3 => 1 }
+# p word_sizes('') == {}
+
+=begin
+input: array (of integers 0 - 19)
+output: array (sorted by english words for each number)
+rules:
+- array will be any length
+- sort based on the string value of the numbers
+
+questions:
+
+D
+array, integers
+
+A
+- create an array as the key, use index as the integer, element as string
+- sort each integer by the corresponding string element
+=end
+
+# NUMBER_STRINGS = %w(
+#   zero one two three four five six seven eight nine ten
+#   eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen
+# )
+
+# def alphabetic_number_sort(arr)
+#   arr.sort_by { |num| NUMBER_STRINGS[num] }
+# end
+
+# p alphabetic_number_sort((0..19).to_a) == [
+#   8, 18, 11, 15, 5, 4, 14, 9, 19, 1, 7, 17,
+#   6, 16, 10, 13, 3, 12, 2, 0
+# ]
+# p alphabetic_number_sort([3, 5, 7, 19, 11, 2, 1])
+
+# NUMBER_STRINGS = %w(
+#   zero one two three four five six seven eight nine ten
+#   eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen
+# )
+
+# # using #sort only instead of #sort_by
+# def alphabetic_number_sort(arr)
+#   arr.map { |n| NUMBER_STRINGS[n] }.sort.map { |str| NUMBER_STRINGS.index(str) }
+# end
+
+# p alphabetic_number_sort((0..19).to_a) == [
+#   8, 18, 11, 15, 5, 4, 14, 9, 19, 1, 7, 17,
+#   6, 16, 10, 13, 3, 12, 2, 0
+# ]
+# p alphabetic_number_sort([3, 5, 7, 19, 11, 2, 1])
+
+=begin
+input: string
+output: return new string
+- works with any characters
+- return a new string
+- all consecutive duplicate characters are removed/collapsed
+- can't use the #squeeze or #squeeze!
+
+D
+strings
+
+A
+- initialize an empty str `crunched`
+- iterate through each character in the string argument
+- append it to `crunched` string
+  - unless the last character of crunched is the same
+- return crunched
+=end
+
+# def crunch(str)
+#   crunched = ''
+#   str.each_char do |char|
+#     crunched << char unless crunched[-1] == char
+#   end
+#   crunched
+# end
+
+# p crunch('ddaaiillyy ddoouubbllee') == 'daily double'
+# p crunch('4444abcabccba') == '4abcabcba'
+# p crunch('ggggggggggggggg') == 'g'
+# p crunch('a') == 'a'
+# p crunch('') == ''
+
+=begin
+A
+using index value
+- initialize variable index to 0
+- initialize an empty string `crunched`
+- loop through the string
+  - if the current index character is not equal to the next index
+    - next index is index + 1
+  - append the character at string index
+  - increment index by 1
+  - break if index == string size
+- return `crunched`
+=end
+
+# def crunch(str)
+#   index = 0
+#   crunched = ''
+#   loop do
+#     crunched << str[index] unless str[index] == str[index + 1]
+#     index += 1
+#     break if index >= str.size
+#   end
+#   crunched
+# end
+
+# p crunch('ddaaiillyy ddoouubbllee') #== 'daily double'
+# p crunch('4444abcabccba') == '4abcabcba'
+# p crunch('ggggggggggggggg') == 'g'
+# p crunch('a') == 'a'
+# p crunch('') == ''
+
+=begin
+input: string
+output: strings with string formatted within the box
+rules:
+- print the string within the box
+- assume the string always fits in terminal window(don't worry about wrapping)
+
+D
+strings
+
+A
+- output 5 different lines
+- initialize a variable to the string size
+- use that size to pad the lines with space or -
+
+=end
+
+# def print_in_box(str)
+#   padding = str.size > 76 ? 76 : str.size
+#   str = str[0..73] + '..' if str.size > 76
+
+#   puts "+-#{'-' * padding}-+"
+#   puts "| #{' ' * padding} |"
+#   puts "| #{str} |"
+#   puts "| #{' ' * padding} |"
+#   puts "+-#{'-' * padding}-+"
+# end
+
+# print_in_box('To boldly go where no one has gone before.')
+# +--------------------------------------------+
+# |                                            |
+# | To boldly go where no one has gone before. |
+# |                                            |
+# +--------------------------------------------+
+# print_in_box('')
+# # +--+
+# # |  |
+# # |  |
+# # |  |
+# # +--+
+# print_in_box('To boldly go where no one has gone before and to boldly go where no one has gone before')
+
+=begin
+input: float or integer
+output: string (degrees°mm'ss")
+rules:
+- convert the number to degrees minutes seconds
+- 60 minutes in a degree, 60 seconds in a minute
+- format the answer as a string ddd°mm'ss"
+- use a placeholder 0 for single digits minutes and seconds
+
+D
+integer/float, strings
+
+A
+- isolate the decimal place * modulus 1
+- check how many 60ths in decimal
+- check how many 360ths in decimal
+- format to the specified string
+- return string
+
+=end
+
+# Further exploration included:
+# DEGREE = "\xC2\xB0"
+
+# def dms(num)
+#   num %= 360
+#   degrees, remainder = num.divmod(1)
+#   minutes, remainder = (remainder * (60)).round(9).divmod(1)
+#   seconds = (remainder * 60).round
+#   format("%d#{DEGREE}%02d'%02d\"", degrees, minutes, seconds)
+# end
+
+# p dms(30) == %(30°00'00")
+# p dms(76.73) == %(76°43'48")
+# p dms(254.6) == %(254°36'00")
+# p dms(93.034773) == %(93°02'05")
+# p dms(0) == %(0°00'00")
+# p dms(360) == %(360°00'00") || dms(360) == %(0°00'00")
+# p dms(400) == %(40°00'00")
+# p dms(-40) == %(320°00'00")
+# p dms(-420) == %(300°00'00")
+
+=begin
+input: array
+output: array
+rules:
+- given an array of strings
+- return an array with the vowels removed from the strings
+- delete vowels regardless of case - both a and A are deleted
+questions:
+Do we need to return the same string?
+
+D
+arrays, strings
+
+A
+- iterate through each word
+- remove the vowels in each word - destructively
+=end
+
+# def remove_vowels(arr)
+#   arr.each { |word| word.delete!('aeiouAEIOU') }
+# end
+
+# p remove_vowels(%w(abcdefghijklmnopqrstuvwxyz)) == %w(bcdfghjklmnpqrstvwxyz)
+# p remove_vowels(%w(green YELLOW black white)) == %w(grn YLLW blck wht)
+# p remove_vowels(%w(ABC AEIOU XYZ)) == ['BC', '', 'XYZ']
+
+# def remove_vowels(arr)
+#   arr.map { |word| word.delete('aeiouAEIOU') }
+# end
+
+# p remove_vowels(%w(abcdefghijklmnopqrstuvwxyz)) == %w(bcdfghjklmnpqrstvwxyz)
+# p remove_vowels(%w(green YELLOW black white)) == %w(grn YLLW blck wht)
+# p remove_vowels(%w(ABC AEIOU XYZ)) == ['BC', '', 'XYZ']
+
+=begin
+input: intger (representing the number of digits)
+output: integer (first fib number that has argument number of digits)
+rules:
+- fibonacci number is 1, 1, 2, 3, 5, 8 etc.
+- fibonacci number starts with an index of 1
+- assume that the argument is always greater equal to 2
+
+D
+integers
+
+A
+- find the fibonacci number in sequence
+- stop when fibonacci number is equal in length to the argument
+
+method to find fibonacci
+- num1 is 1
+- num2 is 1
+- add num1 and num2
+- num1 = num2 and num2 is equal to sum
+- 
+=end
+
+# def find_fibonacci_index_by_length(digits_size)
+#   num1 = 1
+#   num2 = 1
+#   index = 1
+#   while num1.digits.size != digits_size
+#     num1, num2 = num2, (num1 + num2)
+#     index += 1
+#   end
+#   index
+# end
+
+# p find_fibonacci_index_by_length(2) #== 7          # 1 1 2 3 5 8 13
+# p find_fibonacci_index_by_length(3) #== 12         # 1 1 2 3 5 8 13 21 34 55 89 144
+# p find_fibonacci_index_by_length(10) == 45
+# p find_fibonacci_index_by_length(100) == 476
+# p find_fibonacci_index_by_length(1000) == 4782
+# p find_fibonacci_index_by_length(10000) == 47847
+
+# def find_fibonacci_index_by_length(digits_size)
+#   num1 = 1
+#   num2 = 1
+#   index = 1
+
+#   loop do
+#     num1, num2 = num2, (num1 + num2)
+#     index += 1
+#     break if num1.to_s.size >= digits_size
+#   end
+
+#   index
+# end
+
+# p find_fibonacci_index_by_length(2) #== 7          # 1 1 2 3 5 8 13
+# p find_fibonacci_index_by_length(3) #== 12         # 1 1 2 3 5 8 13 21 34 55 89 144
+# p find_fibonacci_index_by_length(10) == 45
+# p find_fibonacci_index_by_length(100) == 476
+# p find_fibonacci_index_by_length(1000) == 4782
+# p find_fibonacci_index_by_length(10000) == 47847
+
+=begin
+input: array
+output: return the same array with elements reverse
+- reverse the elements of the array destructively
+- do not use the reverse or reverse! built in method
+
+D
+arrays
+
+A
+- array size times iterate through the array
+- swap the first element with the last
+- swap the element at index 2 with index -2
+- continue until in the middle of the array
+=end
+
+# def reverse!(arr)
+#   return arr if arr.empty?
+#   index_1 = 0
+#   index_2 = -1
+#   loop do
+#     arr[index_1], arr[index_2] = arr[index_2], arr[index_1]
+#     index_1 += 1
+#     index_2 -= 1
+#     break if index_1 >= arr.size / 2
+#   end
+#   arr
+# end
+
+# list = [1,2,3,4]
+# result = reverse!(list)
+# p result == [4, 3, 2, 1] # true
+# p list == [4, 3, 2, 1] # true
+# p list.object_id == result.object_id # true
+
+# p list = %w(a b e d c)
+# p reverse!(list) == ["c", "d", "e", "b", "a"] # true
+# p list == ["c", "d", "e", "b", "a"] # true
+
+# p list = ['abc']
+# p reverse!(list) == ["abc"] # true
+# p list == ["abc"] # true
+
+# p list = []
+# p reverse!(list) == [] # true
+# p list == [] # true
+
+# def reverse!(arr)
+#   (arr.size / 2).times do |index| 
+#     arr[index], arr[(-index - 1)] = arr[(-index - 1)], arr[index]
+#   end
+#   arr
+# end
+
+# list = [1,2,3,4]
+# result = reverse!(list)
+# p result #== [4, 3, 2, 1] # true
+# p list == [4, 3, 2, 1] # true
+# p list.object_id == result.object_id # true
+
+# p list = %w(a b e d c)
+# p reverse!(list) == ["c", "d", "e", "b", "a"] # true
+# p list == ["c", "d", "e", "b", "a"] # true
+
+# p list = ['abc']
+# p reverse!(list) == ["abc"] # true
+# p list == ["abc"] # true
+
+# p list = []
+# p reverse!(list) == [] # true
+# p list == [] # true
+
+=begin
+input: array
+output: return a new array (reversed)
+rules:
+- like the previous exercise but return a new array
+- do not mutate the original array
+- do not use reverse or reverse! or your previous created method
+
+D - arrays
+
+A
+- initialize a variable `reversed` to an empty array
+- iterate through argument array
+  - prepend each element to `reversed`
+
+=end
+
+# def reverse(arr)
+#   reversed = []
+#   arr.each { |ele| reversed.unshift(ele) }
+#   reversed
+# end
+
+# p reverse([1,2,3,4]) == [4,3,2,1]          # => true
+# p reverse(%w(a b e d c)) == %w(c d e b a)  # => true
+# p reverse(['abc']) == ['abc']              # => true
+# p reverse([]) == []                        # => true
+
+# p list = [1, 3, 2]                      # => [1, 3, 2]
+# p new_list = reverse(list)              # => [2, 3, 1]
+# p list.object_id != new_list.object_id  # => true
+# p list == [1, 3, 2]                     # => true
+# p new_list == [2, 3, 1]                 # => true
+
+# def reverse(arr)
+#   arr.each_with_object([]) { |ele, reversed_arr | reversed_arr.unshift(ele) }
+# end
+
+# p reverse([1,2,3,4]) == [4,3,2,1]          # => true
+# p reverse(%w(a b e d c)) == %w(c d e b a)  # => true
+# p reverse(['abc']) == ['abc']              # => true
+# p reverse([]) == []                        # => true
+
+# p list = [1, 3, 2]                      # => [1, 3, 2]
+# p new_list = reverse(list)              # => [2, 3, 1]
+# p list.object_id != new_list.object_id  # => true
+# p list == [1, 3, 2]                     # => true
+# p new_list == [2, 3, 1]                 # => true
+
+# def reverse(arr)
+#   arr.reduce([]) { |new_arr, ele| new_arr.unshift(ele) }
+# end
+
+# p reverse([1,2,3,4]) == [4,3,2,1]          # => true
+# p reverse(%w(a b e d c)) == %w(c d e b a)  # => true
+# p reverse(['abc']) == ['abc']              # => true
+# p reverse([]) == []                        # => true
+
+# p list = [1, 3, 2]                      # => [1, 3, 2]
+# p new_list = reverse(list)              # => [2, 3, 1]
+# p list.object_id != new_list.object_id  # => true
+# p list == [1, 3, 2]                     # => true
+# p new_list == [2, 3, 1]                 # => true
+
+# def merge(arr1, arr2)
+#   arr1.+(arr2).uniq
+# end
+
+# p merge([1, 3, 5], [3, 6, 9]) == [1, 3, 5, 6, 9]
+
