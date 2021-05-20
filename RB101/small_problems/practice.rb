@@ -2327,3 +2327,823 @@ A
 
 # p merge([1, 3, 5], [3, 6, 9]) == [1, 3, 5, 6, 9]
 
+=begin
+input: array
+output: array with 2 sub arrays
+rules:
+- first sub array contains the first half
+- second sub array contains the second half of array elements
+- if array argument is odd put the middle element in the first array
+- empty arrays returns an array of 2 sub-arrays
+questions:
+- can the argument array be mutated?
+D
+arrays
+
+A
+- initialize a variable to an array
+- reference the indices to place arrays in sub arrays
+
+- initialize a variable `sub_arr` to an empty array
+- initialize a variable `half` to half the array size e.g. 4 - 2 5 - 2 1 - 0
+- if arr size is 1 
+  - return [[arr], []]
+- if arr size is odd
+  - append first half
+  - append second half
+- if arr size is even
+  - append first half
+  - append second half
+- if arr size is 0
+  - return [[], []]
+=end
+
+# def halvsies(arr)
+#   sub_arr = []
+#   half = (arr.size / 2.0).ceil
+#   sub_arr << arr[0..(half - 1)]
+#   sub_arr << arr[half..-1]
+#   sub_arr
+# end
+
+# p halvsies([1, 2, 3, 4]) #== [[1, 2], [3, 4]]
+# p halvsies([1, 5, 2, 4, 3]) #== [[1, 5, 2], [4, 3]]
+# p halvsies([5]) #== [[5], []]
+# p halvsies([]) == [[], []]
+
+# def halvsies(arr)
+#   sub_arr = []
+#   half = arr.size / 2
+
+#   if arr.size == 1
+#     sub_arr = [arr, []]
+#   elsif arr.size.odd?
+#     sub_arr << arr[0..half]
+#     sub_arr << arr[-half..-1]
+#   else
+#     sub_arr << arr[0...half]
+#     sub_arr << arr[-half..-1]
+#   end
+
+#   sub_arr
+# end
+
+# p halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]]
+# p halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]]
+# p halvsies([5]) == [[5], []]
+# p halvsies([]) == [[], []]
+
+# def halvsies(arr)
+#   return [[], []] if arr.size == 0
+#   return [arr, []] if arr.size == 1
+#   arr.each_slice((arr.size / 2.0).ceil).to_a
+# end
+
+# p halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]]
+# p halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]]
+# p halvsies([5]) == [[5], []]
+# p halvsies([]) == [[], []]
+
+# def halvsies(arr)
+#   sub_arr = [[]]
+#   half = (arr.size / 2.0).round
+#   (half).times { sub_arr[0] << arr.shift }
+#   sub_arr << arr
+# end
+
+# p halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]]
+# p halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]]
+# p halvsies([5]) == [[5], []]
+# p halvsies([]) == [[], []]
+
+# def halvsies(arr)
+#   middle = (arr.size / 2.0).ceil
+#   first = arr.slice(0, middle)
+#   last = arr.slice(middle, (arr.size - middle))
+#   [first, last]
+# end
+
+# p halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]]
+# p halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]]
+# p halvsies([5]) == [[5], []]
+# p halvsies([]) == [[], []]
+
+# student solution
+# def halvsies(arr)
+#   mid = (arr.size / 2.0).ceil
+#   [arr[0...mid], arr[mid..-1]]
+# end
+
+# p halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]]
+# p halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]]
+# p halvsies([5]) == [[5], []]
+# p halvsies([]) == [[], []]
+
+# def halvsies(array)
+#   half = array.size.divmod(2)
+#   [] << array[0, half.sum] << array[half.sum, half[0]]
+# end
+
+# p halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]]
+# p halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]]
+# p halvsies([5]) == [[5], []]
+# p halvsies([]) == [[], []]
+
+=begin
+P
+input: array
+output: integer (duplicate number)
+rules
+explicit:
+- find the duplicate number in the array
+- every number occurs once except 1
+implicit:
+questions:
+will the values always be integers? - use test cases provided
+
+D
+arrays
+
+A
+- count every occurence of each array element
+- if element is counted twice return element
+
+- filter out non - unique elements * #uniq
+- compare the filtered array to the non-filtered by subtracting elements
+=end
+
+# def find_dup(arr)
+#   arr.tally.key(2)
+# end
+
+# p find_dup([1, 5, 3, 1]) #== 1
+# p find_dup([18,  9, 36, 96, 31, 19, 54, 75, 42, 15,
+#           38, 25, 97, 92, 46, 69, 91, 59, 53, 27,
+#           14, 61, 90, 81,  8, 63, 95, 99, 30, 65,
+#           78, 76, 48, 16, 93, 77, 52, 49, 37, 29,
+#           89, 10, 84,  1, 47, 68, 12, 33, 86, 60,
+#           41, 44, 83, 35, 94, 73, 98,  3, 64, 82,
+#           55, 79, 80, 21, 39, 72, 13, 50,  6, 70,
+#           85, 87, 51, 17, 66, 20, 28, 26,  2, 22,
+#           40, 23, 71, 62, 73, 32, 43, 24,  4, 56,
+#           7,  34, 57, 74, 45, 11, 88, 67,  5, 58]) #== 73
+
+# def find_dup(arr)
+#   no_dup = arr.uniq
+#   arr.each do |ele|
+#     if no_dup.include?(ele)
+#       no_dup.delete(ele)
+#     else
+#       return ele
+#     end
+#   end
+# end
+
+# p find_dup([1, 5, 3, 1]) #== 1
+# p find_dup([18,  9, 36, 96, 31, 19, 54, 75, 42, 15,
+#           38, 25, 97, 92, 46, 69, 91, 59, 53, 27,
+#           14, 61, 90, 81,  8, 63, 95, 99, 30, 65,
+#           78, 76, 48, 16, 93, 77, 52, 49, 37, 29,
+#           89, 10, 84,  1, 47, 68, 12, 33, 86, 60,
+#           41, 44, 83, 35, 94, 73, 98,  3, 64, 82,
+#           55, 79, 80, 21, 39, 72, 13, 50,  6, 70,
+#           85, 87, 51, 17, 66, 20, 28, 26,  2, 22,
+#           40, 23, 71, 62, 73, 32, 43, 24,  4, 56,
+#           7,  34, 57, 74, 45, 11, 88, 67,  5, 58]) #== 73
+
+# def find_dup(arr)
+#   arr.each { |ele| return ele if arr.count(ele) == 2 }
+# end
+
+# p find_dup([1, 5, 3, 1]) #== 1
+# p find_dup([18,  9, 36, 96, 31, 19, 54, 75, 42, 15,
+#           38, 25, 97, 92, 46, 69, 91, 59, 53, 27,
+#           14, 61, 90, 81,  8, 63, 95, 99, 30, 65,
+#           78, 76, 48, 16, 93, 77, 52, 49, 37, 29,
+#           89, 10, 84,  1, 47, 68, 12, 33, 86, 60,
+#           41, 44, 83, 35, 94, 73, 98,  3, 64, 82,
+#           55, 79, 80, 21, 39, 72, 13, 50,  6, 70,
+#           85, 87, 51, 17, 66, 20, 28, 26,  2, 22,
+#           40, 23, 71, 62, 73, 32, 43, 24,  4, 56,
+#           7,  34, 57, 74, 45, 11, 88, 67,  5, 58]) #== 73
+
+# # Student solution
+# def find_dup(arr)
+#   arr.sum - arr.uniq.sum
+# end
+
+# p find_dup([1, 5, 3, 1]) #== 1
+# p find_dup([18,  9, 36, 96, 31, 19, 54, 75, 42, 15,
+#           38, 25, 97, 92, 46, 69, 91, 59, 53, 27,
+#           14, 61, 90, 81,  8, 63, 95, 99, 30, 65,
+#           78, 76, 48, 16, 93, 77, 52, 49, 37, 29,
+#           89, 10, 84,  1, 47, 68, 12, 33, 86, 60,
+#           41, 44, 83, 35, 94, 73, 98,  3, 64, 82,
+#           55, 79, 80, 21, 39, 72, 13, 50,  6, 70,
+#           85, 87, 51, 17, 66, 20, 28, 26,  2, 22,
+#           40, 23, 71, 62, 73, 32, 43, 24,  4, 56,
+#           7,  34, 57, 74, 45, 11, 88, 67,  5, 58]) #== 73
+
+=begin
+P
+input: array, value(to search for)
+output: boolean
+rules
+explicit:
+- return true if value is in array
+- return false if it is not
+- may not use the Array#include? method
+implicit:
+- array can contain different data types
+
+D
+arrays, booleans
+
+A
+- iterate through the array
+  - if element == value
+  - return true
+  - else return false
+=end
+
+# def include?(arr, value)
+#   arr.each do |ele|
+#     return true if ele == value
+#   end
+#   false
+# end
+
+# p include?([1,2,3,4,5], 3) == true
+# p include?([1,2,3,4,5], 6) == false
+# p include?([], 3) == false
+# p include?([nil], nil) == true
+# p include?([], nil) == false
+
+# def include?(arr, value)
+#   arr.select { |ele| ele == value }.size > 0
+# end
+
+# p include?([1,2,3,4,5], 3) #== true
+# p include?([1,2,3,4,5], 6) #== false
+# p include?([], 3) #== false
+# p include?([nil], nil) #== true
+# p include?([], nil)# == false
+
+# def include?(arr, value)
+#   !!arr.index(value)
+# end
+
+# p include?([1,2,3,4,5], 3) #== true
+# p include?([1,2,3,4,5], 6) #== false
+# p include?([], 3) #== false
+# p include?([nil], nil) #== true
+# p include?([], nil)# == false
+
+# def include?(arr, value)
+#   arr.count(value) >= 1
+# end
+
+# p include?([1,2,3,4,5], 3) #== true
+# p include?([1,2,3,4,5], 6) #== false
+# p include?([], 3) #== false
+# p include?([nil], nil) #== true
+# p include?([], nil)# == false
+
+=begin
+P
+input: integer (positive)
+output: strings (forming a triangle)
+rules
+explicit:
+- create a right triangle to display
+- each side has n stars
+- the stars are alligned on the right side
+- hypotenuse is on the lower left and upper right
+implicit:
+- format with spaces
+
+D 
+integers, strings
+
+A
+- initialize a variable `star_count` as 1
+- create a loop
+  - print a line with spaces equal to n - star_count
+  - increment star_count by 1
+  - break if start_count == n
+=end
+
+# def triangle(n)
+#   star_count = 1
+#   loop do
+#     puts "#{' ' * (n - star_count)}#{'*' * star_count}"
+#     break if star_count == n
+#     star_count += 1
+#   end
+# end
+
+# def triangle(n)
+#   star_count = 1
+#   while star_count <= n
+#     puts "#{' ' * (n - star_count)}#{'*' * star_count}"
+#     star_count += 1
+#   end
+# end
+
+# triangle(5)
+
+# #     *
+# #    **
+# #   ***
+# #  ****
+# # *****
+
+# triangle(9)
+
+# #         *
+# #        **
+# #       ***
+# #      ****
+# #     *****
+# #    ******
+# #   *******
+# #  ********
+# # *********
+
+# Upside down for Further Exploration
+# def triangle(n)
+#   star_count = n
+#   while star_count > 0
+#     puts "#{' ' * (n - star_count)}#{'*' * star_count}"
+#     star_count -= 1
+#   end
+# end
+
+# triangle(5)
+# triangle(9)
+
+=begin
+P
+input: 2 arrays
+output: single array (values interleaved)
+rules
+explicit:
+- combine 2 arrays
+- alternate each element 
+- both arrays are non-empty
+- each array is the same size
+- create a method
+implicit:
+- starting with the element from the first array
+- arrays will contain different data types
+
+D
+arrays
+
+A
+- merge the arrays then flatten
+
+- initialize a variable to an empty array
+- loop through the array size times
+  - append the element at index 0 for arr1
+  - append the element at index 0 for arr2
+  - increment index by 1
+- return the initialized array
+=end
+
+# def interleave(arr1, arr2)
+#   arr1.zip(arr2).flatten
+# end
+
+# p interleave([1, 2, 3], ['a', 'b', 'c']) #== [1, 'a', 2, 'b', 3, 'c']
+
+# def interleave(arr1, arr2)
+#   mixed_arr = []
+#   (arr1.size).times do |index|
+#     mixed_arr << arr1[index]
+#     mixed_arr << arr2[index]
+#   end
+#   mixed_arr
+# end
+
+# p interleave([1, 2, 3], ['a', 'b', 'c']) #== [1, 'a', 2, 'b', 3, 'c']
+
+=begin
+P
+input: string
+output: hash (with 3 keys and the count)
+rules
+explicit:
+- count the number of lowercase, uppercase, and neither characters
+- key is the description (symbols)
+- value is the count (integers)
+implicit:
+- empty strings return 0 for all values
+- neither are symbols that don't have a lower or uppercase version
+
+D
+strings, hash
+
+A
+- iterate through each character in the string
+- check if characters is lowercase/uppercase/neither
+  - increment the corresponding key by 1
+
+- initialize a variable to an empty hash with a default value of 0
+- create 2 arrays to see if characters are included in it (all lower, all caps)
+
+=end
+
+# def letter_case_count(str)
+#   cases = { lowercase: 0, uppercase: 0, neither: 0 }
+#   lower = [*'a'..'z']
+#   upper = [*'A'..'Z']
+
+#   str.each_char do |char|
+#     if lower.include?(char)
+#       cases[:lowercase] += 1
+#     elsif upper.include?(char)
+#       cases[:uppercase] += 1
+#     else
+#       cases[:neither] += 1
+#     end
+#   end
+  
+#   cases
+# end
+
+# p letter_case_count('abCdef 123') == { lowercase: 5, uppercase: 1, neither: 4 }
+# p letter_case_count('AbCd +Ef') == { lowercase: 3, uppercase: 3, neither: 2 }
+# p letter_case_count('123') == { lowercase: 0, uppercase: 0, neither: 3 }
+# p letter_case_count('') == { lowercase: 0, uppercase: 0, neither: 0 }
+
+# def letter_case_count(str)
+#   cases = { lowercase: 0, uppercase: 0, neither: 0 }
+
+#   str.each_char do |char|
+#     if char.swapcase == char
+#       cases[:neither] += 1
+#     elsif char.upcase == char
+#       cases[:uppercase] += 1
+#     else
+#       cases[:lowercase] += 1
+#     end
+#   end
+  
+#   cases
+# end
+
+# p letter_case_count('abCdef 123') == { lowercase: 5, uppercase: 1, neither: 4 }
+# p letter_case_count('AbCd +Ef') == { lowercase: 3, uppercase: 3, neither: 2 }
+# p letter_case_count('123') == { lowercase: 0, uppercase: 0, neither: 3 }
+# p letter_case_count('') == { lowercase: 0, uppercase: 0, neither: 0 }
+
+# def letter_case_count(str)
+#   result = {}
+#   chars = str.chars
+#   result[:lowercase] = chars.count { |char| char =~ /[a-z]/ }
+#   result[:uppercase] = chars.count { |char| char =~ /[A-Z]/ }
+#   result[:neither]   = chars.count { |char| char =~ /[^a-zA-z]/ }
+#   result
+# end
+
+# p letter_case_count('abCdef 123') #== { lowercase: 5, uppercase: 1, neither: 4 }
+# p letter_case_count('AbCd +Ef') #== { lowercase: 3, uppercase: 3, neither: 2 }
+# p letter_case_count('123') == { lowercase: 0, uppercase: 0, neither: 3 }
+# p letter_case_count('') == { lowercase: 0, uppercase: 0, neither: 0 }
+
+=begin
+input: string
+output: new string
+rules:
+explicit:
+- return a new string
+- new string will have the first character of every word capitalized
+- words are definied as any sequence of non-blank characters
+implicit:
+- non letters like " are left as is with the other letters lowercase
+questions:
+do we need to create any additional test cases?
+
+D
+arrays, strings
+
+A
+- seperate string into an array of words
+- capitalize each word
+- return a new string
+
+=end
+
+# def word_cap(str)
+#   str.split.map(&:capitalize).join(' ')
+# end
+
+# p word_cap('four score and seven') #== 'Four Score And Seven'
+# p word_cap('the javaScript language') == 'The Javascript Language'
+# p word_cap('this is a "quoted" word') == 'This Is A "quoted" Word'
+
+=begin
+A
+- initialize a variable `capitalized` to an empty string 
+- loop through an array of each character
+  - if capitalized is empty 
+  or the previous character was a space
+    - append capital letter to `capitalized`
+  - else append the lowercase character to `capitalized`
+- return `capitalized` string
+=end
+
+# Further exploration - without using String#capitalize
+# def word_cap(str)
+#   capitalized = ''
+#   str.each_char do |char|
+#     if capitalized.empty? || capitalized[-1] == ' '
+#       capitalized << char.upcase
+#     else
+#       capitalized << char.downcase
+#     end
+#   end
+#   capitalized
+# end
+
+# p word_cap('four score and seven') #== 'Four Score And Seven'
+# p word_cap('the javaScript language') == 'The Javascript Language'
+# p word_cap('this is a "quoted" word') == 'This Is A "quoted" Word'
+
+=begin
+Further exploration - without using String#capitalize
+A
+- create an array of words in str
+- iterate through the array
+  - for each word used upcase on the first character
+  - use downcase on every other letter
+- join array together
+=end
+
+# def word_cap(str)
+#   str.split.map do |word|
+#     word[0] = word[0].upcase
+#     word[1..-1] = word[1..-1].downcase
+#     word
+#   end.join(' ')
+# end
+
+# p word_cap('four score and seven') #== 'Four Score And Seven'
+# p word_cap('the javaScript language') #== 'The Javascript Language'
+# p word_cap('this is a "quoted" word') == 'This Is A "quoted" Word'
+
+=begin
+P
+input: string
+output: string (case swapped)
+rules
+explicit:
+- lowercase replaced with uppercase version
+- uppercase letter replaced with lowercase version
+- do not use the #swapcase method
+implicit:
+- non letter characters are unchanged - stays -
+
+D
+strings, arrays?
+
+A
+- iterate through each character of the string
+- determine if the letter is capital or lowercase
+  - if capital change to lowercase
+  - if lowercase change to capital
+
+- to determine case if downcase character == char - is downcased (or neither)
+- if upcase character == char - is capital or neither
+- using down or upcase on non letter won't change anything
+=end
+
+# def swapcase(str)
+#   str.chars.map do |char|
+#     if char.upcase == char
+#       char.downcase
+#     else 
+#       char.upcase
+#     end
+#   end.join
+# end
+
+# p swapcase('CamelCase') == 'cAMELcASE'
+# p swapcase('Tonight on XYZ-TV') == 'tONIGHT ON xyz-tv'
+
+# # Refactor
+# def swapcase(str)
+#   str.chars.map do |char| 
+#     char.upcase == char ? char.downcase : char.upcase
+#   end.join
+# end
+
+# p swapcase('CamelCase') == 'cAMELcASE'
+# p swapcase('Tonight on XYZ-TV') == 'tONIGHT ON xyz-tv'
+
+=begin
+P
+input: string
+output: string (staggered capitilization)
+rules
+explicit:
+- capitalize every other character - lowercase every other
+- do not change non letter characters
+- every character counts as an alternate even if it isn't changed
+implicit:
+- spaces are counted as characters
+- start by capitalizing the first character then downcase...etc
+- return a new string so may or may not mutate original
+questions:
+return a new string ? yes
+
+D
+strings, arrays?
+
+A
+- split the string into an array of characters
+- iterate over each character in the array with index
+  - if index is even capitalize character
+  - if index is odd downcase character
+- join the array together and return new string
+=end
+
+# def staggered_case(str)
+#   str.chars.map.with_index do |char, index|
+#     index.even? ? char.upcase : char.downcase
+#   end.join
+# end
+
+# p staggered_case('I Love Launch School!') == 'I LoVe lAuNcH ScHoOl!'
+# p staggered_case('ALL_CAPS') == 'AlL_CaPs'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 NuMbErS'
+
+# def staggered_case(str, toggle = false)
+#   str.chars.map do |char|
+#     toggle = !toggle
+#     toggle ? char.upcase : char.downcase
+#   end.join
+# end
+
+# p staggered_case('I Love Launch School!') #== 'I LoVe lAuNcH ScHoOl!'
+# p staggered_case('ALL_CAPS') == 'AlL_CaPs'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 NuMbErS'
+
+# # Student solution
+# def staggered_case(str)
+#   str.scan(/..?/).map(&:capitalize).join
+# end
+
+# # Student solution
+# def staggered_case(str, first = :upcase)
+#   second = first == :upcase ? :downcase : :upcase
+#   str.gsub(/..?/) { |pair| pair[0].send(first) + pair[1].to_s.send(second) }
+# end
+
+# p staggered_case('I Love Launch School!') #== 'I LoVe lAuNcH ScHoOl!'
+# p staggered_case('ALL_CAPS') == 'AlL_CaPs'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 NuMbErS'
+
+=begin
+P
+input: string
+output: new string (every other letter capitalized)
+rules
+explicit:
+- do not count non-letters in the toggle count
+- only toggle letter characters
+- same rules as previous problem
+
+D
+strings, arrays
+
+A
+- add a conditional check if the current character is a letter or not
+  - if letter swap the toggle 
+  - else do not swap the toggle
+
+- initialize a `new_str` variable to an empty string
+- initialize a `upper_char` toggle
+- iterate through an array of each character in str
+  - if upper_char is true 
+    - append a capital character
+  - else
+    - append a lowercase character
+  
+=end
+
+# def staggered_case(str)
+#   new_str = ''
+#   upper_char = true
+#   str.each_char do |char|
+#     new_str << (upper_char ? char.upcase : char.downcase)
+#     upper_char = !upper_char if char =~ /[a-z]/i
+#   end
+#   new_str
+# end
+
+# p staggered_case('I Love Launch School!') == 'I lOvE lAuNcH sChOoL!'
+# p staggered_case('ALL CAPS') == 'AlL cApS'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 nUmBeRs'
+
+# def staggered_case(str, count_non_alpha = false)
+#   new_str = ''
+#   upper_char = true
+#   str.each_char do |char|
+#     new_str << (upper_char ? char.upcase : char.downcase)
+#     upper_char = !upper_char if char =~ /[a-z]/i || count_non_alpha
+#   end
+#   new_str
+# end
+
+# p staggered_case('I Love Launch School!', true) #== 'I lOvE lAuNcH sChOoL!'
+# p staggered_case('ALL CAPS') == 'AlL cApS'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 nUmBeRs'
+
+# def show_multiplicative_average(arr)
+#   result = arr.reduce(:*) / arr.size.to_f
+#   puts "The result is #{format('%.3f', result)}"
+# end
+
+# show_multiplicative_average([3, 5])                # => The result is 7.500
+# show_multiplicative_average([6])                   # => The result is 6.000
+# show_multiplicative_average([2, 5, 7, 11, 13, 17]) # => The result is 28361.667
+
+# def show_multiplicative_average(arr)
+#   result = (arr.reduce(:*) / arr.size.to_f).round(3)
+#   puts "The result is #{'%.3f' % result}"
+# end
+
+# show_multiplicative_average([3, 5])                # => The result is 7.500
+# show_multiplicative_average([6])                   # => The result is 6.000
+# show_multiplicative_average([2, 5, 7, 11, 13, 17]) # => The result is 28361.667
+
+# def multiply_list(arr1, arr2)
+#   arr1.zip(arr2).map { |factors| factors.reduce(:*) }
+# end
+
+# p multiply_list([3, 5, 7], [9, 10, 11]) #== [27, 50, 77]
+
+# def multiply_list(arr1, arr2)
+#   arr1.size.times.map { |index| arr1[index] * arr2[index] }
+# end
+
+# p multiply_list([3, 5, 7], [9, 10, 11]) #== [27, 50, 77]
+
+=begin
+P
+input: 2 arrays as arguments
+output: new array (containing products of pairs)
+rules
+explicit:
+- neither array is empty
+- array will contain every combination of pairs
+implicit:
+- returned array will be the size of the argument arrays multiplied
+e.g. 2 * 4 = 8
+-sort results by increasing value
+
+D
+arrays
+
+A
+- find every combination of numbers
+- add combinations to a new array
+- sort the new array and return
+=end
+
+# def multiply_all_pairs(arr1, arr2)
+#   arr1.map { |num1| arr2.map { |num2| num1 * num2 } }.flatten.sort
+# end
+
+# p multiply_all_pairs([2, 4], [4, 3, 1, 2]) #== [2, 4, 4, 6, 8, 8, 12, 16]
+
+# def multiply_all_pairs(arr1, arr2)
+#   arr1.product(arr2).map { |pair| pair.reduce(:*) }.sort
+# end
+
+# p multiply_all_pairs([2, 4], [4, 3, 1, 2]) #== [2, 4, 4, 6, 8, 8, 12, 16]
+
+# def multiply_all_pairs(arr1, arr2)
+#   arr1.product(arr2).map { |num1, num2| num1 * num2 }.sort
+# end
+
+# p multiply_all_pairs([2, 4], [4, 3, 1, 2]) #== [2, 4, 4, 6, 8, 8, 12, 16]
+
+=begin
+P
+input: string
+output: string (next to the last word)
+
+A
+- split the words in string by spaces into an array
+- index reference refence second to lats element in the array
+=end
+
+# def penultimate(str)
+#   str.split[-2]
+# end
+
+# p penultimate('last word') #== 'last'
+# p penultimate('Launch School is great!') #== 'is'
