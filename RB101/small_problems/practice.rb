@@ -3601,19 +3601,19 @@ double(string)
 
 =end
 
-def double_consonants(str)
-  result = ''
-  str.each_char do |char|
-    result << (double?(char) ? char * 2 : char)
-  end
-  result
-end
+# def double_consonants(str)
+#   result = ''
+#   str.each_char do |char|
+#     result << (double?(char) ? char * 2 : char)
+#   end
+#   result
+# end
 
-def double?(str)
-  !str.delete('^a-zA-Z').delete('aeiou').empty?
-end
+# def double?(str)
+#   !str.delete('^a-zA-Z').delete('aeiou').empty?
+# end
 
-p double_consonants('String') == "SSttrrinngg"
-p double_consonants("Hello-World!") == "HHellllo-WWorrlldd!"
-p double_consonants("July 4th") == "JJullyy 4tthh"
-p double_consonants('') == ""
+# p double_consonants('String') == "SSttrrinngg"
+# p double_consonants("Hello-World!") == "HHellllo-WWorrlldd!"
+# p double_consonants("July 4th") == "JJullyy 4tthh"
+# p double_consonants('') == ""
