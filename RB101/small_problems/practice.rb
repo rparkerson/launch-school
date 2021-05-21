@@ -3147,3 +3147,473 @@ A
 
 # p penultimate('last word') #== 'last'
 # p penultimate('Launch School is great!') #== 'is'
+
+=begin
+P
+input: array
+output: integer (sum of all leading subsequence)
+rules:
+explicit:
+- return the sum of the sums of each leading subsequence
+- assume the array contains at least 1 number - no empty arrays
+
+D
+arrays, integers
+
+A
+- find all the subsequences that start with the leading number
+- sum all those subsequences
+- sum grand total and return
+
+- finding the subsequences 0, 0..1, 0..2, 0..3 or until last number == arr size -1
+- use a loop to save sub sequences
+  - initialize an index variable to 0
+  - initialize the variable `sum` as a running total, starting at 0
+  - add sum of subsequence to sum on each iteration
+- return sum
+=end
+
+# def sum_of_sums(arr)
+#   sum = 0
+#   index = 0
+#   while arr.size > index
+#     sum += arr[0..index].sum
+#     index += 1
+#   end
+#   sum
+# end
+
+# p sum_of_sums([3, 5, 2]) == (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+# p sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+# p sum_of_sums([4]) == 4
+# p sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+# def sum_of_sums(arr)
+#   sum = 0
+#   arr.size.times { |index| sum += arr[0..index].sum }
+#   sum
+# end
+
+# p sum_of_sums([3, 5, 2]) == (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+# p sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+# p sum_of_sums([4]) == 4
+# p sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+# def sum_of_sums(arr)
+#   (0..arr.size - 1).map { |index| arr[0..index].sum }.sum
+# end
+
+# p sum_of_sums([3, 5, 2]) == (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+# p sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+# p sum_of_sums([4]) == 4
+# p sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+=begin
+A
+- intialize a variable `sum` to 0 that tracks the overall total
+- initialize a variable `accumulator` to 0 that tracks the total of each subsequence
+- create a loop over the array
+  - reassign accumulator to += current element
+  - reassign sum variable to += accumulator
+- return the `sum`
+=end
+
+# def sum_of_sums(arr)
+#   sum = 0
+#   accumulator = 0
+#   arr.each do |num|
+#     accumulator += num
+#     sum += accumulator
+#   end
+#   sum
+# end
+
+# p sum_of_sums([3, 5, 2]) == (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+# p sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+# p sum_of_sums([4]) == 4
+# p sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+=begin
+A
+- initialize the variable `sum` to 0
+- iterate through the a range of 1 to array size
+  - find each subsequence each iteration as an array
+    - calculate the sum of the subsequence
+  - increment the sum variable by that sum
+- return `sum`
+=end
+
+# def sum_of_sums(arr)
+#   sum_total = 0
+#   1.upto(arr.size) { |num| sum_total += arr[0, num].sum }
+#   sum_total
+# end
+
+# p sum_of_sums([3, 5, 2]) == (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+# p sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+# p sum_of_sums([4]) == 4
+# p sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+# def sum_of_sums(arr)
+#   (1..arr.size).map { |num| arr[0, num].sum }.sum
+# end
+
+# p sum_of_sums([3, 5, 2]) #== (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+# p sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+# p sum_of_sums([4]) == 4
+# p sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+=begin
+input: 4 strings from user after prompt (noun, verb, adj, adv)
+output: string (that combines the 4 inputs)
+rules
+explicit:
+- prompt for a part of speech 4 times
+- part of speech is on the same line *print
+- save those values
+- output those values into a string
+D
+strings
+A
+- prompt the use 4 times
+- save the response to a variable part of speech
+- output the string using the variables *string interpolation
+=end
+
+# print "Enter a noun: "
+# noun = gets.chomp
+
+# print "Enter a verb: "
+# verb = gets.chomp
+
+# print "Enter a adjective: "
+# adjective = gets.chomp
+
+# print "Enter a adverb: "
+# adverb = gets.chomp
+
+# puts "Do you #{verb} your #{adjective} #{noun} #{adverb}? That's hilarious!"
+
+# Enter a noun: dog
+# Enter a verb: walk
+# Enter an adjective: blue
+# Enter an adverb: quickly
+
+# Do you walk your blue dog quickly? That's hilarious!
+
+=begin
+input: string
+output: array
+rules:
+- return an array of all substrings
+- start at the begining of the string
+- array should be ordered from shortest to longest substring
+
+D
+strings
+
+A
+- initialize a substrings variable to an empty array
+- iterate through the string size (characters = elements)
+- take each substring by index
+  - append substring to `substrings` array
+- return substrings array
+=end
+
+# def leading_substrings(str)
+#   substrings = []
+#   str.size.times do |index|
+#     substrings << str[0..index]
+#   end
+#   substrings
+# end
+
+# p leading_substrings('abc') == ['a', 'ab', 'abc']
+# p leading_substrings('a') == ['a']
+# p leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
+
+# def leading_substrings(str)
+#   (1..str.size).map { |num| str[0, num] }
+# end
+
+# p leading_substrings('abc') == ['a', 'ab', 'abc']
+# p leading_substrings('a') == ['a']
+# p leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
+
+# def leading_substrings(str)
+#   substrings = []
+#   1.upto(str.size) { |num| substrings << str.slice(0, num) }
+#   substrings
+# end
+
+# p leading_substrings('abc') #== ['a', 'ab', 'abc']
+# p leading_substrings('a') == ['a']
+# p leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
+
+=begin
+P
+input: string
+output: array (every substring)
+rules:
+- substrings start at each character in the string
+- substrings should be in order from the shortest to longest of that starting
+character
+- can use the leading_substring method from previous exercise
+
+D
+strings, arrays
+
+A
+- initialize a variable `substrings` to an empty array
+- iterate through each character in the string
+  - starting with that character find the substrings
+  - add substrings to an array
+- return the substrings array
+=end
+
+# def substrings(str)
+#   substrings = []
+#   str.size.times do |index|
+#     substrings += leading_substring(str[index..-1])
+#   end
+#   substrings
+# end
+
+# def leading_substring(str)
+#   (1..str.size).map { |num| str[0, num] }
+# end
+
+# p substrings('abcde') == [
+#   'a', 'ab', 'abc', 'abcd', 'abcde',
+#   'b', 'bc', 'bcd', 'bcde',
+#   'c', 'cd', 'cde',
+#   'd', 'de',
+#   'e'
+# ]
+
+# def substrings(str)
+#   (0..str.size - 1).map do |index|
+#     (0..str.size - 1).map do |num|
+#       str[index..num]
+#     end
+#   end.join(' ').split
+# end
+
+# p substrings('abcde')
+
+=begin
+input: string
+output: array (of palindromes)
+rules:
+explicit:
+- return an array of all substrings if they are palindromes
+- palindromes are at least 2 characters
+- palindromes are the same forward and backwards
+- palindromes are case sensitive and consider all characters
+- order substrings in the order they appear
+- duplicates palindromes should be included multiple times
+implicit:
+- empty string returns an empty array
+D
+strings, arrays
+
+A
+- initialize variable `palindromes` to an array
+- find every substring (at least 2 characters long) as an array
+- if substring is a palindrome
+  - append the substring to palindrome array
+- return an array of palindromes
+
+find_substrings(string)
+- initialize a variable substrings to an empty array
+  - iterate over every index of string
+  - at that index find every string
+- return the substrings array
+=end
+
+# def find_substrings(str) # return an array
+#   substrings = []
+#   (0..str.size - 1).each do |index1|
+#     (index1..str.size - 1).each do |index2|
+#       substrings << str[index1..index2]
+#     end
+#   end
+#   substrings
+# end
+
+# def palindromes(str)
+#   filtered = only_alpha(find_substrings(str))
+#   filtered.select do |sub_str| 
+#     sub_str.downcase == sub_str.reverse.downcase && sub_str.size >= 2
+#   end
+# end
+
+# def only_alpha(arr) # returns an array
+#   arr.each { |sub_str| sub_str.delete!('^a-zA-Z0-9') }
+#   arr
+# end
+
+# p palindromes('Mada-m-') #== ["Mada-m", "Mada-m-", "ada", "ada-"]
+# p palindromes('abcd') #== []
+# p palindromes('madam') #== ['madam', 'ada']
+# p palindromes('hello-madam-did-madam-goodbye') #== [
+# #   'll', '-madam-', '-madam-did-madam-', 'madam', 'madam-did-madam', 'ada',
+# #   'adam-did-mada', 'dam-did-mad', 'am-did-ma', 'm-did-m', '-did-', 'did',
+# #   '-madam-', 'madam', 'ada', 'oo'
+# # ]
+# p palindromes('knitting cassettes') #== [
+# #   'nittin', 'itti', 'tt', 'ss', 'settes', 'ette', 'tt'
+# # ]
+
+=begin
+P
+input: 2 integers (start, end)
+output: print all numbers with substitutions
+rules:
+- takes 2 arguments
+- prints all numbers between the 2 arguments (including arguments)
+- if number is divisible by only 3 substittue 'Fizz'
+- if number is divisible by only 5 replace with 'Buzz'
+- if both replace with 'FizzBuzz'
+questions:
+what does the output look like? all on one line? - any
+D
+integers, strings, arrays
+
+A
+- initializing a variable `numbers` to an empty array
+- iterate through the range 1-15
+  - if divisible by 3 and 5 
+    - append 'FizzBuzz'
+  - if divisible by 3
+    - append 'Fizz'
+  - if divisible by 5
+    - append 'Buzz' to numbers
+  - else
+    - append current number
+output the `numbers` array
+
+=end
+
+# def fizzbuzz(first, last)
+#   numbers = []
+
+#   (first..last).each do |num|
+#     if num % 3 == 0 && num % 5 == 0
+#       numbers << 'FizzBuzz'
+#     elsif num % 3 == 0
+#       numbers << 'Fizz'
+#     elsif num % 5 == 0
+#       numbers << 'Buzz'
+#     else
+#       numbers << num
+#     end
+#   end
+  
+#   puts numbers.join(', ')
+# end
+
+# fizzbuzz(1, 15) # -> 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz
+
+=begin
+A
+- initialize a variable to an empty array
+- iterate over the range first upto last
+  - initialize a variable to empty string
+  - concat corresponding stringn or number value to empty string
+  - append string to array
+- output array joined together as a string
+=end
+
+# def fizzbuzz(first, last)
+#   first.upto(last).with_object('').map do |num, result|
+#     result = 'Fizz' if num % 3 == 0
+#     result += 'Buzz' if num % 5 == 0
+#     result.empty? ? num : result
+#   end.join(', ')
+# end
+
+# p fizzbuzz(1, 15)
+
+=begin
+P
+input: str
+output: new str
+rules:
+- double every characters in the string
+
+D
+strings, arrays
+
+A
+- iterate through every character
+- replace that character with two characters
+=end
+
+# def repeater(str)
+#   str.chars.zip(str.chars).join
+# end
+
+# p repeater('Hello') == "HHeelllloo"
+# p repeater("Good job!") == "GGoooodd  jjoobb!!"
+# p repeater('') == ''
+
+# def repeater(str)
+#   str.chars.map { |char| char + char }.join
+# end
+
+# p repeater('Hello') == "HHeelllloo"
+# p repeater("Good job!") == "GGoooodd  jjoobb!!"
+# p repeater('') == ''
+
+# def repeater(str)
+#   str.each_char.with_object('') { |char, result | result << char << char }
+# end
+
+# p repeater('Hello') == "HHeelllloo"
+# p repeater("Good job!") == "GGoooodd  jjoobb!!"
+# p repeater('') == ''
+
+=begin
+P
+input: string
+output: string
+rules:
+- return a string with letters doubled (capital and lowercase)
+- vowels, digits, punctuation are not doubled
+
+D
+strings, arrays
+
+A
+- initialized a variable `result` to an empty stry
+- check if letter needs to be doubled
+  - add 2 letters to string if double letter
+  - else add 1 letter to `result` string
+return string
+
+double(string)
+- given a string
+  - if string meets the double criteria
+    - return true
+  - else return false
+- return boolean
+
+=end
+
+def double_consonants(str)
+  result = ''
+  str.each_char do |char|
+    result << (double?(char) ? char * 2 : char)
+  end
+  result
+end
+
+def double?(str)
+  !str.delete('^a-zA-Z').delete('aeiou').empty?
+end
+
+p double_consonants('String') == "SSttrrinngg"
+p double_consonants("Hello-World!") == "HHellllo-WWorrlldd!"
+p double_consonants("July 4th") == "JJullyy 4tthh"
+p double_consonants('') == ""
