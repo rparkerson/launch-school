@@ -3617,3 +3617,757 @@ double(string)
 # p double_consonants("Hello-World!") == "HHellllo-WWorrlldd!"
 # p double_consonants("July 4th") == "JJullyy 4tthh"
 # p double_consonants('') == ""
+
+=begin
+P
+input: integer (positive)
+output: integer (in reverse)
+rules
+explicit:
+- return the number with its digits reversed
+implicit:
+- for ending zeros have no returned leading zero's - 12000 -> 21
+question:
+do we need to check input validation - n/a - use given test cases
+
+D
+integers, arrays, strings
+
+A
+- convert integer to a string
+- reverse
+- convert string back to integer
+
+- initialize a variable result to an empty string
+- convert integer to a string
+- iterate through each character of string
+  - add each character to front of result string
+- return result string as an integer
+
+=end
+
+# def reversed_number(num)
+#   num.digits.join.to_i
+# end
+
+# p reversed_number(12345) #== 54321
+# p reversed_number(12213) == 31221
+# p reversed_number(456) == 654
+# p reversed_number(12000) == 21 # No leading zeros in return value!
+# p reversed_number(12003) == 30021
+# p reversed_number(1) == 1
+
+# def reversed_number(num)
+#   num.to_s.reverse.to_i
+# end
+
+# p reversed_number(12345) #== 54321
+# p reversed_number(12213) == 31221
+# p reversed_number(456) == 654
+# p reversed_number(12000) == 21 # No leading zeros in return value!
+# p reversed_number(12003) == 30021
+# p reversed_number(1) == 1
+
+# def reversed_number(num)
+#   result = ''
+#   num.to_s.each_char { |char| result = char + result }
+#   result.to_i
+# end
+
+# p reversed_number(12345) #== 54321
+# p reversed_number(12213) == 31221
+# p reversed_number(456) == 654
+# p reversed_number(12000) #== 21 # No leading zeros in return value!
+# p reversed_number(12003) == 30021
+# p reversed_number(1) == 1
+
+=begin
+P
+input: string
+output: string (middle character(s))
+rules:
+- return the middle character or characters of the argument
+- argument size is odd return 1 charater or even return 2 characters
+- string argument is non-empty
+- single character string return self
+
+D
+strings, arrays
+
+A
+- find string size assign to variable size
+- if string size is odd
+  - return middle character
+- if string size even
+  - return 2 middle characters
+
+5 -> index 2
+4 -> index 1, 2
+5 / 2 -> 2
+4 / 2 -> 2
+=end
+
+# def center_of(str)
+#   half = str.size / 2
+#   if str.size.even?
+#     str[half - 1, 2]
+#   else
+#     str[half]
+#   end
+# end
+
+# p center_of('I love ruby') == 'e'
+# p center_of('Launch School') == ' '
+# p center_of('Launch') == 'un'
+# p center_of('Launchschool') == 'hs'
+# p center_of('x') == 'x'
+
+# def center_of(str)
+#   half = (str.size / 2.0).ceil
+#   str[half - 1..-half]
+# end
+
+# '01234' # 5 => 2
+# '012345' # 6 => 3
+# p center_of('I love ruby') == 'e'
+# p center_of('Launch School') == ' '
+# p center_of('Launch') == 'un'
+# p center_of('Launchschool') == 'hs'
+# p center_of('x') == 'x'
+
+=begin
+Problem
+input: 2 arguments; array and hash
+output: return string incorporating array and hash
+rules:
+- array includes 2 or more string elements producing name
+- hash contains 2 keys, title and occupation
+- return a string greeting using persons full name and title and occupation
+questions:
+will the array always be string elements? -use example -yes
+
+D
+strings, arrays, hashes
+
+A
+- access the information with element reference
+- combine into a string *string interpolation
+=end
+
+# def greetings(arr, hash)
+#   "Hello, #{arr.join(' ')}! Nice to have a #{hash[:title]} " \
+#   "#{hash[:occupation]} around."
+# end
+  
+# p greetings(['John', 'Q', 'Doe'], { title: 'Master', occupation: 'Plumber' })
+# # => Hello, John Q Doe! Nice to have a Master Plumber around.
+
+# def greetings(arr, hash)
+#   "Hello, #{arr.join(' ')}! Nice to have a #{hash[:title]} " \
+#     "#{hash[:occupation]} around."
+# end
+  
+# p greetings(['John', 'Q', 'Doe'], { title: 'Master', occupation: 'Plumber' })
+# # => Hello, John Q Doe! Nice to have a Master Plumber around.
+
+# def greetings(arr, hash)
+#   name = arr.join(' ')
+#   job = "#{hash[:title]} #{hash[:occupation]}"
+#   "Hello, #{name}! Nice to have a #{job} around."
+# end
+  
+# p greetings(['John', 'Q', 'Doe'], { title: 'Master', occupation: 'Plumber' })
+# # => Hello, John Q Doe! Nice to have a Master Plumber around.
+
+=begin
+P
+input: integer
+output: integer (number - if 'double number' else number * 2)
+rules:
+- double number is an even number with left side digits == right side digits
+- if double number return double number
+- else return number * 2
+
+- large test case - may need a memory efficient solution
+
+D
+integers, strings or arrays
+
+A
+- if number is even
+  - if number is first half == second half
+    return number
+  - else return number * 2
+- else return number * 2
+
+halves_equal?(number)
+- convert number to string
+- split number into first and second half
+- if first half == second half
+=end
+
+# def twice(num)
+#   if num.to_s.size.even? && halves_equal?(num)
+#     num
+#   else
+#     num * 2
+#   end
+# end
+
+# def halves_equal?(num)
+#   num = num.to_s
+#   first_half = num[0, num.size / 2]   # alt: num[0..(num.size / 2) - 1]
+#   second_half = num[num.size / 2..-1] # alt: num[num.size / 2, num.size / 2]
+#   first_half == second_half
+# end
+
+# p twice(37) == 74
+# p twice(44) == 44
+# p twice(334433) == 668866
+# p twice(444) == 888
+# p twice(107) == 214
+# p twice(103103) == 103103
+# p twice(3333) == 3333
+# p twice(7676) == 7676
+# p twice(123_456_789_123_456_789) == 123_456_789_123_456_789
+# p twice(5) == 10
+
+# # Refactored
+# def twice(num)
+#   halves_equal?(num) ? num : num * 2
+# end
+
+# def halves_equal?(num)
+#   str = num.to_s
+#   str[0, (str.size / 2)] == str[(str.size / 2)..-1] 
+#   # alt: str[0..(str.size / 2) - 1] == str[str.size / 2, str.size / 2]
+# end
+
+# p twice(37) == 74
+# p twice(44) == 44
+# p twice(334433) == 668866
+# p twice(444) == 888
+# p twice(107) == 214
+# p twice(103103) == 103103
+# p twice(3333) == 3333
+# p twice(7676) == 7676
+# p twice(123_456_789_123_456_789) == 123_456_789_123_456_789
+# p twice(5) == 10
+
+=begin
+input: integer
+output: integer
+rules:
+- if integer is poitive change to a negative
+- else return integer
+=end
+
+# def negative(num)
+#   num.positive? ? -num : num
+# end
+
+# p negative(5) == -5
+# p negative(-3) == -3
+# p negative(0) == 0      # There's no such thing as -0 in ruby
+
+# def negative(num)
+#   num > 0 ? -num : num
+# end
+
+# p negative(5) == -5
+# p negative(-3) == -3
+# p negative(0) == 0  
+
+# def negative(num)
+#   -num.abs
+# end
+
+# p negative(5) == -5
+# p negative(-3) == -3
+# p negative(0) == 0  
+
+# def sequence(num)
+#   1.upto(num).map { |n| n }
+# end
+
+# p sequence(5) #== [1, 2, 3, 4, 5]
+# p sequence(3) == [1, 2, 3]
+# p sequence(1) == [1]
+
+# def sequence(num)
+#  (1..num).to_a
+# end
+
+# p sequence(5) #== [1, 2, 3, 4, 5]
+# p sequence(3) == [1, 2, 3]
+# p sequence(1) == [1]
+
+# def sequence(num)
+#   1.upto(num).to_a
+# end
+
+# p sequence(5) #== [1, 2, 3, 4, 5]
+# p sequence(3) == [1, 2, 3]
+# p sequence(1) == [1]
+
+# def sequence(num)
+#   [*1..num]
+# end
+
+# p sequence(5) #== [1, 2, 3, 4, 5]
+# p sequence(3) == [1, 2, 3]
+# p sequence(1) == [1]
+
+# # Further Exploration : -1 0 1 or 1 0 -1
+# def sequence(num)
+#   num >= 0 ? [*1..num] : [*-1..1]
+# end
+
+# p sequence(5) #== [1, 2, 3, 4, 5]
+# p sequence(3) == [1, 2, 3]
+# p sequence(1) == [1]
+# p sequence(0)
+# p sequence(-1)
+
+# def uppercase?(str)
+#   str.upcase == str
+# end
+
+# p uppercase?('t') == false
+# p uppercase?('T') == true
+# p uppercase?('Four Score') == false
+# p uppercase?('FOUR SCORE') == true
+# p uppercase?('4SCORE!') == true
+# p uppercase?('') == true
+
+# def uppercase?(str)
+#   !str.each_char.any? { |char| char != char.upcase }
+# end
+
+# p uppercase?('t') == false
+# p uppercase?('T') == true
+# p uppercase?('Four Score') == false
+# p uppercase?('FOUR SCORE') == true
+# p uppercase?('4SCORE!') == true
+# p uppercase?('') == true
+
+# def uppercase?(str)
+#   !str.upcase!
+# end
+
+# p uppercase?('t') == false
+# p uppercase?('T') == true
+# p uppercase?('Four Score') == false
+# p uppercase?('FOUR SCORE') == true
+# p uppercase?('4SCORE!') == true
+# p uppercase?('') == true
+
+=begin
+input: string
+output: array
+rules:
+- return an array that contains every word + space + word size
+- assume words are sepearated by 1 space
+- every substring is a word
+implicit:
+- words are in the same order
+- empty string returns an empty array
+
+D
+strings, arrays
+
+A
+- sepearte string into an array of words
+- iterate through each word
+  - append space and word count to the word
+- return array
+=end
+
+# def word_lengths(str)
+#   str.split.map { |word| "#{word} #{word.size}"}
+# end
+
+# p word_lengths("cow sheep chicken") == ["cow 3", "sheep 5", "chicken 7"]
+# p word_lengths("baseball hot dogs and apple pie") ==
+#   ["baseball 8", "hot 3", "dogs 4", "and 3", "apple 5", "pie 3"]
+# p word_lengths("It ain't easy, is it?") == ["It 2", "ain't 5", "easy, 5", "is 2", "it? 3"]
+# p word_lengths("Supercalifragilisticexpialidocious") ==
+#   ["Supercalifragilisticexpialidocious 34"]
+# p word_lengths("") == []
+
+# def swap_name(str)
+#   str.split.reverse.join(', ')
+# end
+
+# p swap_name('Joe Roberts') == 'Roberts, Joe'
+
+# def swap_name(str)
+#   first, last = str.split
+#   "#{last}, #{first}"
+# end
+
+# p swap_name('Joe Roberts') == 'Roberts, Joe'
+
+=begin
+input: 2 integers as arguments
+output: array of integers
+rules:
+- first argument is the count - number of elements in sequence
+- second number is the starting number - multiples of number
+- count will always be 0 or greater
+- if second is negative count down - else count up 
+D
+integers, arrays
+
+A
+- initialize sequence variable to an empty array
+- initialize variable increment to 0
+- count number of times 
+  - increment increment by start number
+  - append increment number to sequence
+- return sequence
+=end
+
+# def sequence(count, start)
+#   sequence = []
+#   increment = 0
+
+#   count.times do
+#     increment += start
+#     sequence << increment
+#   end
+
+#   sequence
+# end
+
+# p sequence(5, 1) == [1, 2, 3, 4, 5]
+# p sequence(4, -7) == [-7, -14, -21, -28]
+# p sequence(3, 0) == [0, 0, 0]
+# p sequence(0, 1000000) == []
+
+# =begin
+# A
+# - iterate over a range 1 to count
+#   - populate a new array with current num * start number
+# =end
+
+# def sequence(count, start)
+#   (1..count).map { |num| num * start }
+# end
+
+# p sequence(5, 1) == [1, 2, 3, 4, 5]
+# p sequence(4, -7) == [-7, -14, -21, -28]
+# p sequence(3, 0) == [0, 0, 0]
+# p sequence(0, 1000000) == []
+
+# def sequence(count, starting_n)
+#   result = Array.new(count)
+#   p result
+#   result.map.with_index(1) { |_, i| starting_n * i}
+# end
+
+# p sequence(5, 1) == [1, 2, 3, 4, 5]
+# p sequence(4, -7) == [-7, -14, -21, -28]
+# p sequence(3, 0) == [0, 0, 0]
+# p sequence(0, 1000000) == []
+
+=begin
+input: 3 integers as arguments
+output: string (letter grade from chart)
+rules:
+- arguments are 0 - 100
+- determine the mean/average scores sum / 3
+- return the letter grade
+question:
+how do we round? not specified
+D
+case statment, integers, strings
+
+A
+- find the mean - rounded (use float for 3.0)
+- use a case statment to determine letter grade
+  - range 
+- return letter grade
+=end
+
+# def get_grade(score1, score2, score3)
+#   mean = ((score1 + score2 + score3)/3.0).round
+#   case mean
+#   when 100..   then 'A+'
+#   when 90..100 then 'A'
+#   when 80..89  then 'B'
+#   when 70..79  then 'C'
+#   when 60..69  then 'D'
+#   else              'F'
+#   end
+# end
+
+# p get_grade(95, 90, 93) #== "A"
+# p get_grade(50, 50, 95) #== "D"
+# p get_grade(100, 105, 115) #== "A+"
+
+=begin
+- iterate through argument array
+  - create an array with quantity fruit elements
+  - append this array to a new array
+  - flatten
+- return new array
+=end
+
+# def buy_fruit(arr)
+#   arr.map { |fruit, quantity| [fruit] * quantity }.flatten
+# end
+
+# p buy_fruit([["apples", 3], ["orange", 1], ["bananas", 2]]) #==
+# # ["apples", "apples", "apples", "orange", "bananas","bananas"]
+
+=begin
+A
+- initialize a variable result to an empty array
+- iterate through argument array
+  - for each sub_arr element append fruit to `result` times the quantity
+- return result array
+=end
+
+# def buy_fruit(arr)
+#   result = []
+#   arr.each do |fruit, quantity|
+#     quantity.times { result << fruit }
+#   end
+#   result
+# end
+
+# p buy_fruit([["apples", 3], ["orange", 1], ["bananas", 2]]) #==
+# # ["apples", "apples", "apples", "orange", "bananas","bananas"]
+
+=begin
+input: array of 4 letter strings
+output: print out groups of words that anagrams (as arrays)
+rules:
+-anagrams are words taht have the same exact letters in them (different order)
+- print out words in an array
+
+D
+hash, array, strings
+
+A
+- initialize variable `anagrams` to an empty hash
+- iterate through words array
+  - convert the word to an array and sort and join back as a string
+  - if sorted value is included in hash add word to array value
+  - else (not included) add sorted word to hash with word in an array
+- output each value(array) of the anagrams hash
+=end
+
+# words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
+#           'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
+#           'flow', 'neon']
+
+# def find_anagrams(arr)
+#   anagrams = {}
+
+#   arr.each do |word|
+#     sorted_word = word.chars.sort.join
+#     if anagrams.include?(sorted_word)
+#       anagrams[sorted_word] << word
+#     else
+#       anagrams[sorted_word] = [word]
+#     end
+#   end
+
+#   anagrams.each { |_, value| p value }
+# end
+
+# find_anagrams(words)
+
+=begin
+A
+- create an array of the sorted words
+- initialize a variable to an empty hash
+- iterate through the sorted words array with index
+  - add each sorted word as a key and the corresponding word as value
+
+=end
+
+# words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
+#           'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
+#           'flow', 'neon']
+# sorted_words = words.map { |word| word.chars.sort.join }
+
+# result = {}
+# sorted_words.each_with_index do |sorted, index|
+#   if result.include?(sorted)
+#     result[sorted] << words[index]
+#   else
+#     result[sorted] = [words[index]]
+#   end
+# end
+
+# result.each { |_, value| p value}
+
+=begin
+input: array
+output: new array
+rules:
+- do not mutate the orginal array
+
+D
+arrays
+
+A
+- create a duplicate array
+- mutate that to append to the end the removed first element
+
+A
+No duplicate / no mutating
+- take array elements of first arr.size elements - 1
+- add the first element to the end
+=end
+
+# def rotate_array(arr)
+#   new_arr = arr.dup
+#   new_arr << new_arr.shift
+# end
+
+# p rotate_array([7, 3, 5, 2, 9, 1]) == [3, 5, 2, 9, 1, 7]
+# p rotate_array(['a', 'b', 'c']) == ['b', 'c', 'a']
+# p rotate_array(['a']) == ['a']
+
+# x = [1, 2, 3, 4]
+# p rotate_array(x) == [2, 3, 4, 1]   # => true
+# p x == [1, 2, 3, 4]                 # => true
+
+# def rotate_array(arr)
+#   arr[1..-1] << arr[0]
+# end
+
+# def rotate(arg)
+#   type = arg.class
+#   arg = arg.to_s if type == Integer
+#   return type == Integer ? arg.to_i : arg if arg.size <= 1
+#   result = arg[1..-1] << arg[0]
+#   type == Integer ? result.to_i : result
+# end
+
+# p rotate([7, 3, 5, 2, 9, 1]) == [3, 5, 2, 9, 1, 7]
+# p rotate(['a', 'b', 'c']) == ['b', 'c', 'a']
+# p rotate(['a']) == ['a']
+# p rotate(23416)
+# p rotate(3)
+# p rotate('string here')
+# p rotate('s')
+
+# x = [1, 2, 3, 4]
+# p rotate(x) == [2, 3, 4, 1]   # => true
+# p x == [1, 2, 3, 4]                 # => true
+
+=begin
+input: 2 integers (number, and the last n digits of number)
+output: integer
+rules:
+- rotate the numbers similar to the last exercise
+- second argument references the last n digits to rotate
+- assume n is always a poitive number
+
+questions:
+will the first argument ever be negative? n/a - solve for test cases
+validate number? n/a
+
+D
+integers, strings
+
+A
+- define a rotate method to use
+
+- use the rotate method on the last n numbers
+
+=end
+
+# def rotate_number(num)
+#   (num[1..-1] << num[0])
+# end
+
+# def rotate_rightmost_digits(num, n)
+#   str = num.to_s
+#   last = rotate_number(str[-n..-1])
+#   first = str[0, str.size - n]
+#   (first + last).to_i
+# end
+
+# p rotate_rightmost_digits(735291, 1) == 735291
+# p rotate_rightmost_digits(735291, 2) == 735219
+# p rotate_rightmost_digits(735291, 3) == 735912
+# p rotate_rightmost_digits(735291, 4) == 732915
+# p rotate_rightmost_digits(735291, 5) == 752913
+# p rotate_rightmost_digits(735291, 6) == 352917
+
+# def rotate_number(num)
+#   (num[1..-1] << num[0])
+# end
+
+# def rotate_rightmost_digits(num, n)
+#   str = num.to_s
+#   str[-n..-1] = rotate_number(str[-n..-1])
+#   str.to_i
+# end
+
+# p rotate_rightmost_digits(735291, 1) == 735291
+# p rotate_rightmost_digits(735291, 2) == 735219
+# p rotate_rightmost_digits(735291, 3) == 735912
+# p rotate_rightmost_digits(735291, 4) == 732915
+# p rotate_rightmost_digits(735291, 5) == 752913
+# p rotate_rightmost_digits(735291, 6) == 352917
+
+=begin
+input: integer
+output: rotated integer
+rules:
+- find the maximum roatation
+- rotate the first second third...ect to all the digits
+
+D
+integers, strings, arrays
+
+A
+- use the rotate_rightmost_digits method
+  - pass in number to string size as n and updated num every time
+
+=end
+
+# def rotate_number(num)
+#   (num[1..-1] << num[0])
+# end
+
+# def rotate_rightmost_digits(num, n)
+#   str = num.to_s
+#   str[-n..-1] = rotate_number(str[-n..-1])
+#   str.to_i
+# end
+
+# def max_rotation(num)
+#   num = num.to_s
+#   num.to_s.size.downto(2) do |n|
+#     num = rotate_rightmost_digits(num, n)
+#   end
+#   num
+# end
+
+# p max_rotation(735291) #== 321579
+# p max_rotation(3) #== 3
+# p max_rotation(35) #== 53
+# p max_rotation(105) #== 15 # the leading zero gets dropped
+# p max_rotation(8_703_529_146) #== 7_321_609_845
+
+# # Further Exploration
+# def max_rotation(num)
+#   str = num.to_s
+#   str.size.times { |index| str << str.slice!(index) }
+#   str #can invoke #to_i here if preserving zeros doesn't matter
+# end
+
+# p max_rotation(735291) #== 321579
+# p max_rotation(3) #== 3
+# p max_rotation(35) #== 53
+# p max_rotation(105) #== 15 # the leading zero gets dropped
+# p max_rotation(8_703_529_146) #== 7_321_609_845
+# p max_rotation(2003)
