@@ -4371,3 +4371,488 @@ A
 # p max_rotation(105) #== 15 # the leading zero gets dropped
 # p max_rotation(8_703_529_146) #== 7_321_609_845
 # p max_rotation(2003)
+
+=begin
+P
+input: integer (total number of switches n)
+output: array (light numbers that are on)
+rules:
+- toggle every switch 1 to n
+- toggle every switch 2 to n etc until finally toggle just n
+- return the on light numbers after n repititions
+
+E
+on_lights(5) # => [1, 4]
+on_lights(10) # => [1, 4, 9]
+
+D
+integers, arrays
+
+A
+- create an array of booleans - true == on false == off
+- default to all true (skip first iteration)
+- loop 1 upto n -1
+- initialize a variable `toggle`
+- 1 to n - 1 toggle every other switch, 2 to n-1, 3 to n-1, ...etc up to n -1
+- if element in array of booleans = true select index + 1
+=end
+
+# def on_lights(n)
+#   lights = [true] * n
+#   result = []
+
+#   1.upto(n - 1) do |light_index|
+#     (light_index..n - 1).each do |index|
+#       lights[index] = !lights[index] if (index + 1) % (light_index + 1) == 0
+#     end
+#   end
+
+#   lights.each.with_index { |bool, index| result << (index + 1) if bool }
+#   result
+# end
+
+# p on_lights(5) # => [1, 4]
+# p on_lights(10) # => [1, 4, 9]
+
+# # Provided Solution:
+# # initialize the lights hash
+# def initialize_lights(number_of_lights)
+#   lights = Hash.new
+#   1.upto(number_of_lights) { |number| lights[number] = "off" }
+#   lights
+# end
+
+# # return list of light numbers that are on
+# def on_lights(lights)
+#   lights.select { |_position, state| state == "on" }.keys
+# end
+
+# # toggle every nth light in lights hash
+# def toggle_every_nth_light(lights, nth)
+#   lights.each do |position, state|
+#     if position % nth == 0
+#       lights[position] = (state == "off") ? "on" : "off"
+#     end
+#   end
+# end
+
+# # Run entire program for number of lights
+# def toggle_lights(number_of_lights)
+#   lights = initialize_lights(number_of_lights)
+#   1.upto(lights.size) do |iteration_number|
+#     toggle_every_nth_light(lights, iteration_number)
+#   end
+
+#   on_lights(lights)
+# end
+
+# p toggle_lights(1000)
+
+=begin
+using an hash
+A
+- create a collection to represent toggleable switches
+- toggle the switches in the prescribed order
+- return the number of switches in the on position of the collection
+
+- initialize a hash with all values to false 1 to n
+- iterate through 1 through n
+  - iterate through each sub_sequence
+    - toggle switch(hash value) if % n == 0
+- return array of keys for which hash values == true
+=end
+
+# def on_lights(n)
+# lights = {}
+# (1..n).each { |num| lights[num] = false }
+
+# (1..n).each do |nth_light|
+#   (nth_light..n).each do |light|
+#     lights[light] = !lights[light] if light % nth_light == 0
+#   end
+# end
+
+# lights.select { |_light, state| state }.keys
+# end
+
+# p on_lights(5) # [1, 4]
+# p on_lights(10) # [1, 4, 9]
+
+=begin
+input: integer (odd)
+output: display n x n grid
+rules:
+- output/print a display of diamonds
+- grid is n x n (n is argument) size
+- use * to print diamond
+- argument is always odd
+questions:
+- will integer always be positive? - yes, based on examples
+
+D
+strings, integer
+
+A
+- output top
+- output middle
+- output bottom
+
+create a top method
+- loops through 1...9
+- top * times (1) centered over 9 characters padded by ' ' spaces
+  - * times next odd number (3) 
+  - break 
+
+ouput middle * times n
+
+create a bottom half method
+- create a loop
+  - counts down to 1 from n - 1
+
+# =end
+# def top_diamond(n)
+#   1.upto(n) { |num| puts "#{'*' * num}".center(n) if num.odd? }
+# end
+
+# def bottom_diamond(n)
+#   (n - 1).downto(1) { |num| puts "#{'*' * num}".center(n) if num.odd? }
+# end
+
+# def diamond(n)
+#   top_diamond(n)
+#   bottom_diamond(n)
+# end
+
+# diamond(1)
+# # *
+# diamond(3)
+# #  *
+# # ***
+# #  *
+# diamond(9)
+# #     *
+# #    ***
+# #   *****
+# #  *******
+# # *********
+# #  *******
+# #   *****
+# #    ***
+# #     *
+
+=begin
+input: string (list of commands or integers separated by spaces)
+output: with print - outputs the register value
+rules:
+- create a mini-language that uses a stack 
+- incorporate the list of commands
+- assume all programs are correct (no input validation needed)
+- initialize the register to 0
+- can use an array for the stack
+
+D
+array, integer, string
+
+A
+- initialize a variable to an array (stack)
+- initialize a variable register to 0
+
+=end
+
+# def minilang(program)
+#   stack = []
+#   register = 0
+#   program.split.each do |command|
+#     if ['ADD', 'SUB', 'MULT', 'DIV', 'MOD', 'POP'].include?(command) && stack.empty?
+#       puts "Error: Empty Stack" 
+#     end
+
+#     case command
+#     when 'PUSH'  then stack << register
+#     when 'ADD'   then register += stack.pop
+#     when 'SUB'   then register -= stack.pop
+#     when 'MULT'  then register *= stack.pop
+#     when 'DIV'   then register /= stack.pop
+#     when 'MOD'   then register %= stack.pop
+#     when 'POP'   then register = stack.pop
+#     when 'PRINT' then puts register
+#     else              register = command.to_i
+#     end
+#   end
+# end
+
+# # minilang('PRINT')
+# # # 0
+# # minilang('5 PUSH 3 MULT PRINT')
+# # # 15
+# # minilang('5 PRINT PUSH 3 PRINT ADD PRINT')
+# # # 5
+# # # 3
+# # # 8
+# # minilang('5 PUSH POP PRINT')
+# # # 5
+# # minilang('3 PUSH 4 PUSH 5 PUSH PRINT ADD PRINT POP PRINT ADD PRINT')
+# # # 5
+# # # 10
+# # # 4
+# # # 7
+# # minilang('3 PUSH PUSH 7 DIV MULT PRINT ')
+# # # 6
+# # minilang('4 PUSH PUSH 7 MOD MULT PRINT ')
+# # # 12
+# # minilang('-3 PUSH 5 SUB PRINT')
+# # # 8
+# # minilang('6 PUSH')
+# # (nothing printed; no PRINT commands)
+# minilang('3 PUSH 5 MOD PUSH 7 PUSH 3 PUSH 5 PUSH 4 MULT ADD SUB DIV PRINT')
+# => 8
+
+=begin
+input: string
+output: returns same string (any sequence of number strings converted to digits)
+rules:
+- convert string to digits
+- if those 10 words appear anywhere ? or seperated by spaces? 
+- any sequence of words - replace with digits
+- return the same string (mutate the argument string)
+
+questions:
+how are words defined? - any sequence - does not need spaces to separate
+D
+- strings, hash or array
+
+A
+- create a hash keys as words and values as digits
+- if a word matches word from collection
+  - mutate word to corresponding value from collection
+=end
+
+# def word_to_digit(str)
+#   words = %w(zero one two three four five six seven eight nine)
+#   words.each_with_index do |word, digit|
+#     str.gsub!(word, digit.to_s)
+#   end
+#   str
+# end
+
+# p word_to_digit('Please call me at five five five one two three four. Thanks.')
+# # 'Please call me at 5 5 5 1 2 3 4. Thanks.'
+
+=begin
+input: integer (nth place in fib sequence)
+output: integer (the number at nth place)
+rules:
+- use recursion
+=end
+
+# def fibonacci(nth)
+#   return 1 if nth <= 2
+#   fibonacci(nth - 1) + fibonacci(nth - 2)
+# end
+
+# p fibonacci(1) == 1
+# p fibonacci(2) == 1
+# p fibonacci(3) == 2
+# p fibonacci(4) == 3
+# p fibonacci(5) == 5
+# p fibonacci(12) == 144
+# p fibonacci(20) == 6765
+
+# # Provided example solution
+# def fibonacci_tail(nth, acc1, acc2)
+#   if nth == 1
+#     acc1
+#   elsif nth == 2
+#     acc2
+#   else
+#     # p "nth: #{nth} 'nth minus 1': #{nth -1}"
+#     fibonacci_tail(nth - 1, acc2, acc2 + acc1)
+#   end
+# end
+
+# def fibonacci(nth)
+#   fibonacci_tail(nth, 1, 1)
+# end
+
+# p fibonacci(9000)
+
+=begin
+input: integer (nth)
+output: integer (number at nth place)
+rules:
+- solve without recursion - procedurally
+=end
+
+# def fibonacci(n)
+#   sequence = [1, 1]
+#   loop do
+#     return sequence[n - 1] if sequence.size >= n
+#     sequence << sequence[-2, 2].sum
+#   end  
+# end
+
+# p fibonacci(20) == 6765
+# p fibonacci(100) == 354224848179261915075
+# p fibonacci(100_001) # => 4202692702.....8285979669707537501
+
+# Provided solution
+# def fibonacci(nth)
+#   first, last = [1, 1]
+#   3.upto(nth) do
+#     first, last = [last, first + last]
+#   end
+
+#   last
+# end
+
+# p fibonacci(20) == 6765
+# p fibonacci(100) == 354224848179261915075
+# p fibonacci(100_001) # => 4202692702.....8285979669707537501
+
+=begin
+input: integer (nth place)
+output: integer - (last digit of the nth place number)
+rules:
+- given the nth place
+- find the last digit of the number of the fibonacci sequence
+implicit:
+- you only need the last digits of a number to calculate the 1's place
+
+D
+integers, arrays?
+
+A
+- calculate the sequence but only save the 1's place value
+- can use % 10
+
+=end
+
+# def fibonacci_last(n)
+#   first, last = 1, 1
+#   3.upto(n) do
+#     first, last = last, (first + last) % 10
+#   end
+#   last
+# end
+
+# p fibonacci_last(15)        # -> 0  (the 15th Fibonacci number is 610)
+# p fibonacci_last(20)        # -> 5 (the 20th Fibonacci number is 6765)
+# p fibonacci_last(100)       # -> 5 (the 100th Fibonacci number is 354224848179261915075)
+# p fibonacci_last(100_001)   # -> 1 (this is a 20899 digit number)
+# p fibonacci_last(1_000_007) # -> 3 (this is a 208989 digit number)
+# p fibonacci_last(123456789) # -> 4
+
+=begin
+input: string (content of a text file)
+output: string (longest sentence in the text file)
+rules:
+- write a program
+- reads the content of a text file (convert to string)
+- find the longest sentence (most number of words)
+- words are any sequence of characters not a space or end character.
+- sentences end with . ! or ?
+
+D
+strings, arrays
+
+A
+- Find how to load a text file into Ruby
+- create an array from text spliting each word on spaces
+- initialize the longest sentence variable to an empty string
+- initialize the `current sentence variable`
+- iterate through each word and append each word with a space to `current_sentence`
+  - Once a break character . ! ? is reached end current sentence
+  - if current sentence is longer than longest sentence (word count) 
+    - set longest sentence to current sentence if true
+- return longest sentence
+=end
+
+# def longest_sentence(text)
+#   longest_sentence = ''
+#   current_sentence = ''
+
+#   text.split.each do |word|
+#     current_sentence << word << ' '
+#     if ['.', '?','!'].include?(word[-1])
+#       current_sentence[-1] = ''
+#       if current_sentence.split.size > longest_sentence.split.size
+#         longest_sentence = current_sentence
+#       end
+#       current_sentence = ''
+#     end
+#   end
+
+#   longest_sentence
+# end
+
+# p longest_sentence('TEst. ? there , 23 !')
+# # Example text:
+# text =
+# "Four score and seven years ago our fathers brought forth
+# on this continent a new nation, conceived in liberty, and
+# dedicated to the proposition that all men are created
+# equal.
+
+# Now we are engaged in a great civil war, testing whether
+# that nation, or any nation so conceived and so dedicated,
+# can long endure. We are met on a great battlefield of that
+# war. We have come to dedicate a portion of that field, as
+# a final resting place for those who here gave their lives
+# that that nation might live. It is altogether fitting and
+# proper that we should do this.
+
+# But, in a larger sense, we can not dedicate, we can not
+# consecrate, we can not hallow this ground. The brave
+# men, living and dead, who struggled here, have
+# consecrated it, far above our poor power to add or
+# detract. The world will little note, nor long remember
+# what we say here, but it can never forget what they
+# did here. It is for us the living, rather, to be dedicated
+# here to the unfinished work which they who fought
+# here have thus far so nobly advanced. It is rather for
+# us to be here dedicated to the great task remaining
+# before us -- that from these honored dead we take
+# increased devotion to that cause for which they gave
+# the last full measure of devotion -- that we here highly
+# resolve that these dead shall not have died in vain
+# -- that this nation, under God, shall have a new birth
+# of freedom -- and that government of the people, by
+# the people, for the people, shall not perish from the
+# earth."
+
+# # text = File.read('sample_text.txt')
+# p longest_sentence(text)
+
+=begin
+input: string
+output: boolean
+rules:
+- return true if string can be spelled with blocks
+- return false otherwise
+- each block can only be used once
+- each block can only be used to spell one side of the block
+- case insensitive
+D
+hash, strings
+
+A
+- set a hash with key value pairs of 'blocks'
+- if either letter of block is used delete block
+- iterate through the words
+  - delete each used block
+  - if letter not available return false
+- else return true
+
+=end
+
+# BLOCKS = [
+#   "BO", "XK", "DQ", "CP", "NA", "GT", "RE", "FS", "JW", "HU", "VI", "LY", "ZM"
+# ]
+# def block_word?(word)
+#   BLOCKS.none? { |block| word.upcase.count(block) > 1}
+# end
+
+# p block_word?('BATCH') == true
+# p block_word?('BUTCH') == false
+# p block_word?('jest') == true
+
