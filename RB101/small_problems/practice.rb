@@ -4856,3 +4856,718 @@ A
 # p block_word?('BUTCH') == false
 # p block_word?('jest') == true
 
+=begin
+input: string
+output: hash (key: case, value: % of occurences)
+rules:
+- string contains at least 1 character
+- 3 hash entries, lower, upper, neither, : percent of corresponding characters
+- round to floats
+
+D
+hash, strings
+
+A
+- initialize an empty array
+- iterate through the string characters
+  - count the characters
+    - total characters
+    - characters of each type
+- convert the count to percentages.
+- return a hash
+=end
+
+# def letter_percentages(str)
+#   cases = {lowercase: 0, uppercase: 0, neither: 0}
+#   total_chars = str.size.to_f
+
+#   str.each_char do |char|
+#     if char =~ /[a-z]/
+#       cases[:lowercase] += 1
+#     elsif char =~ /[A-Z]/
+#       cases[:uppercase] += 1
+#     else
+#       cases[:neither] += 1
+#     end
+#   end
+
+#   cases.each { |state, num| cases[state] = ((num / total_chars) * 100.0).round(2) }
+#   cases
+# end
+
+# p letter_percentages('abCdef 123') #== { lowercase: 50, uppercase: 10, neither: 40 }
+# p letter_percentages('AbCd +Ef') #== { lowercase: 37.5, uppercase: 37.5, neither: 25 }
+# p letter_percentages('123') #== { lowercase: 0, uppercase: 0, neither: 100 }
+# p letter_percentages('abcdefGHI')
+
+=begin
+input: string
+output: boolean
+rules:
+- balance the string
+- string is balanced if there are an even number of parentheses
+- the ( left parentheses must proceed the right )
+
+D
+strings, booleans
+
+A
+- count the total parentheses
+  - if odd then return false
+- the count for ( can never be less than count for )
+- iterate through the string
+  - append ( or ) to a new array
+  - count array values every iteration
+    - if ) is ever more than (  return false
+- return true
+=end
+
+# def balanced?(str)
+#   return false if str.count('(') != str.count(')')
+#   parentheses = ''
+
+#   str.each_char do |char|
+#     parentheses << char if char == ')' || char == '('
+#     return false if parentheses.count(')') > parentheses.count('(')
+#   end
+
+#   true
+# end
+
+# p balanced?('What (is) this?') == true
+# p balanced?('What is) this?') == false
+# p balanced?('What (is this?') == false
+# p balanced?('((What) (is this))?') == true
+# p balanced?('((What)) (is this))?') == false
+# p balanced?('Hey!') == true
+# p balanced?(')Hey!(') == false
+# p balanced?('What ((is))) up(') == false
+
+=begin
+input: 3 integers (length of 3 sides of triangle)
+output: 1 of 4 symbols
+rules:
+- check what type of triangle is given based on side lengths
+- invalid if 2 shorter sides are not greather than longest
+  - if all sides are not greater than 0
+- equilateral - all sides are equal
+- isoceles - 2 sides are the same and 3rd different
+- scalene - all sides are different lengths
+
+D
+integers, symbols, arrays
+
+A
+- check if triangle is invalid
+- check if equilateral
+- check if isoceles
+- check if scalene
+- return symbold
+=end
+
+# def triangle(s1, s2, s3)
+#   sides = [s1, s2, s3]
+#   case
+#   when sides.include?(0) || sides.min(2).sum < sides.max
+#     :invalid
+#   when s1 == s2 && s1 == s3
+#     :equilateral
+#   when sides.uniq.size == 3
+#     :scalene
+#   else
+#     :isosceles
+#   end
+# end
+
+# p triangle(3, 3, 3) #== :equilateral
+# p triangle(3, 3, 1.5) #== :isosceles
+# p triangle(3, 4, 5) #== :scalene
+# p triangle(0, 3, 3) #== :invalid
+# p triangle(3, 1, 1) #== :invalid
+
+# def triangle(a1, a2, a3)
+#   angles = [a1, a2, a3].sort
+#   case
+#   when angles.sum != 180 || angles.min <= 0
+#     :invalid
+#   when angles.include?(90)
+#     :right
+#   when angles.all? { |angle| angle < 90 }
+#     :acute
+#   else
+#     :obtuse
+#   end
+# end
+
+# p triangle(60, 70, 50) == :acute
+# p triangle(30, 90, 60) == :right
+# p triangle(120, 50, 10) == :obtuse
+# p triangle(0, 90, 90) == :invalid
+# p triangle(50, 50, 50) == :invalid
+
+=begin
+input: integer - year
+output: integer - number of Friday the 13ths
+rules:
+- year is greater than 1752
+
+D
+integers
+
+A
+* use date/time
+- initialize count variable to 0
+- check the 13th of every month of the given year
+  - if it on a Friday add + 1
+- return count
+=end
+
+# def friday_13th(year)
+#   count = 0
+#   (1..12).each do |month|
+#     count += 1 if Time.local(year, month, 13).friday?
+#   end
+#   count
+# end
+
+# p friday_13th(2015) == 3
+# p friday_13th(1986) == 1
+# p friday_13th(2019) == 2
+
+=begin
+input: integer
+output: integer - next featured number
+rules:
+- given an integer return the next featured number > than argument
+- return an error message if there is no next featured number
+- featured number has the following criteria:
+  - odd number
+  - mulitple of 7
+  - each digit occurs exactly once each
+-
+
+D
+integers, strings or arrays
+
+A
+- can count by 7's 
+- if number is odd and digits occur exactly once each return
+- if number is greater than 9_999_999_999 or count goes past limit return error
+
+=end
+# LIMIT = 9_999_999_999
+
+# def featured(num)
+#   num.upto(LIMIT) do |n|
+#     if n % 7 == 0 && n.odd? && (n.digits.uniq == n.digits) && n > num
+#       return n 
+#     end
+#   end
+
+#   "There is no possible number that fulfills those requirements"
+# end
+
+# p featured(12) #== 21
+# p featured(20) == 21
+# p featured(21) #== 35
+# p featured(997) #== 1029
+# p featured(1029) == 1043
+# p featured(999_999) == 1_023_547
+# p featured(999_999_987) == 1_023_456_987
+# p featured(1_023_456_987)
+# p featured(9_999_999_999) # -> There is no possible number that fulfills those requirements
+
+=begin
+input: array (at least 2 elements)
+output: sorted array (ascending order)
+rules:
+- use the bubble sort technique
+- compare the first pair, then second etc.
+  - if first element is greater than second swap
+- swap the elements in place (mutate the array)
+- can optimize (but not sorting the last -n number for each iteration)
+- comparison
+questions:
+are all the elements comparable? no validation needed
+
+D
+array
+
+A
+compare each sub-sequence starting at index 0
+  - [0, 2], [1, 2], [2, 2] etc. until arr.size - 2
+
+- can modify for upper limit to decrease by 1 every time
+=end
+
+# def bubble_sort!(arr)
+#   arr.size.times do
+#     0.upto(arr.size - 2) do |index1|
+#       first, second = arr[index1, 2]
+#       arr[index1], arr[index1 + 1] = second, first if first > second
+#     end
+#   end
+#   arr
+# end
+
+# array = [5, 3]
+# p bubble_sort!(array)
+# array == [3, 5]
+# array = [6, 2, 7, 1, 4]
+# p bubble_sort!(array)
+# array == [1, 2, 4, 6, 7]
+# array = %w(Sue Pete Alice Tyler Rachel Kim Bonnie)
+# p bubble_sort!(array)
+# array == %w(Alice Bonnie Kim Pete Rachel Sue Tyler)
+
+=begin
+input: integer
+output: integer (difference)
+rules:
+- find the difference between to values
+- value 1 is the square of the sum of the first n +integers
+- value 2 is the sum of the squares of the first n +integers
+question: integer is always positive? yes
+
+D
+arrays, integers
+
+A
+- create an array/range and populate with first n positive integers
+  - find value 1
+  - findi value 2
+- find the difference
+=end
+
+# def sum_square_difference(n)
+#   (1..n).sum**2 - (1..n).map { |num| num**2 }.sum
+# end
+
+# p sum_square_difference(3) == 22
+#   # -> (1 + 2 + 3)**2 - (1**2 + 2**2 + 3**2)
+# p sum_square_difference(10) == 2640
+# p sum_square_difference(1) == 0
+# p sum_square_difference(100) == 25164150
+
+=begin
+input: string - text from text file
+output: string - text with substituted parts of speech
+rules:
+- read in text from seperate text file
+- place random words in
+- print results
+
+D
+strings
+
+A
+- construct parts of speech into an array
+- replace %{part_of_speech} with random word from corresponding array
+-
+=end
+
+# adjectives = %w(quick lazy sleepy ugly)
+# nouns = %w(fox dog head leg)
+# verbs = %w(jumps lifts bites licks)
+# adverbs = %w(easily lazily noisily excitedly)
+
+# File.open('madlibs.txt') do |file|
+#   file.each do |line|
+#     line.gsub!('%{adjective}', adjectives.sample)
+#     line.gsub!('%{noun}', nouns.sample)
+#     line.gsub!('%{adverb}', adverbs.sample)
+#     line.gsub!('%{verb}', verbs.sample)
+#     puts line
+#   end
+# end
+
+# # Provided Example solution
+# ADJECTIVES = %w(quick lazy sleepy ugly).freeze
+# NOUNS      = %w(fox dog head leg cat tail).freeze
+# VERBS      = %w(spins bites licks hurdles).freeze
+# ADVERBS    = %w(easily lazily noisly excitedly).freeze
+
+# File.open('madlibs.txt') do |file|
+#   file.each do |line|
+#     puts format(line, noun:      NOUNS.sample,
+#                       verb:      VERBS.sample,
+#                       adjective: ADJECTIVES.sample,
+#                       adverb:    ADVERBS.sample)
+#   end
+# end
+
+=begin
+input: integer n - (odd integer 7 or greater)
+output: display/print n x n grid
+rules:
+- given an n
+- print the pattern
+- n lines
+- n characters across
+
+D
+strings,
+
+A
+- print top part
+  - 3 stars with 3 spaces inbetween
+  - 3 stars with 1 space before/after and 2 space inbetween
+  - 3 stars 2 spaces on outside 1 space on inside
+  - set variables inside and outside spaces 
+    - inside starts at n - space (0)  space: 9, 7 , 5, 3
+    - outside starts at space - 3 / 2 space: 9, 7, 5, 3
+
+- middle line
+- print bottom lines
+=end
+
+# def star(n)
+#   top_star(n)
+#   puts "#{'*' * n}"
+#   bottom_star(n)
+# end
+
+# def top_star(n)
+#   n.downto(3) do |num|
+#     next if num.even?
+#     outside = "#{' ' * ((n - num) / 2)}"
+#     inside = "#{' ' * ((num - 3) / 2)}"
+#     puts "#{outside}*#{inside}*#{inside}*#{outside}"
+#   end
+# end
+
+# def bottom_star(n)
+#   3.upto(n) do |num|
+#     next if num.even?
+#     outside = "#{' ' * ((n - num) / 2)}"
+#     inside = "#{' ' * ((num - 3) / 2)}"
+#     puts "#{outside}*#{inside}*#{inside}*#{outside}"
+#   end
+# end
+
+# star(7)
+# # *  *  *
+# #  * * *
+# #   ***
+# # *******
+# #   ***
+# #  * * *
+# # *  *  *
+# star(9)
+# # *   *   *
+# #  *  *  *
+# #   * * *
+# #    ***
+# # *********
+# #    ***
+# #   * * *
+# #  *  *  *
+# # *   *   *
+
+=begin
+input: matrix(3 x 3 array of sub arrays)
+output: matrix (3 x 3 array of sub arrays tranasposed)
+rules:
+- transpose the given matrix
+- column = row and row = column
+
+D
+arrays, integers
+
+A
+create a new array
+- iterate through matrix
+- add the element at the current index in each sub array to a new sub-array
+
+=end
+
+# def transpose(matrix)
+#   new_matrix = [[], [], []]
+#   0.upto(matrix.size - 1) do |index|
+#     0.upto(matrix.size - 1) do |row|
+#       new_matrix[index] << matrix[row][index]
+#     end
+#   end
+#   new_matrix
+# end
+
+# matrix = [
+#   [1, 5, 8],
+#   [4, 7, 2],
+#   [3, 9, 6]
+# ]
+
+# new_matrix = transpose(matrix)
+
+# p new_matrix == [[1, 4, 3], [5, 7, 9], [8, 2, 6]]
+# p matrix == [[1, 5, 8], [4, 7, 2], [3, 9, 6]]
+
+=begin
+input: array (matrix at least 1 x 1)
+output: array (rows and columns swapped)
+rules:
+- can modify transpose method from last problem
+- 
+=end
+
+# def transpose(matrix)
+#   new_matrix = Array.new(matrix.first.size) { Array.new }
+#     0.upto(matrix.first.size - 1) do |index|
+#       0.upto(matrix.size - 1) do |row|
+#         new_matrix[index] << matrix[row][index]
+#       end
+#     end
+#   new_matrix
+# end
+
+# p transpose([[1, 2, 3, 4]]) == [[1], [2], [3], [4]]
+# p transpose([[1], [2], [3], [4]]) == [[1, 2, 3, 4]]
+# p transpose([[1, 2, 3, 4, 5], [4, 3, 2, 1, 0], [3, 7, 8, 6, 2]]) ==
+# [[1, 4, 3], [2, 3, 7], [3, 2, 8], [4, 1, 6], [5, 0, 2]]
+# p transpose([[1]]) == [[1]]
+
+# def transpose(matrix)
+#   transposed = []
+#   (matrix.first.size).times do |index|
+#     transposed << matrix.map { |row| row[index] }
+#   end
+#   transposed
+# end
+
+# p transpose([[1, 2, 3, 4]]) #== [[1], [2], [3], [4]]
+# p transpose([[1], [2], [3], [4]]) #== [[1, 2, 3, 4]]
+# p transpose([[1, 2, 3, 4, 5], [4, 3, 2, 1, 0], [3, 7, 8, 6, 2]]) #==
+# #[[1, 4, 3], [2, 3, 7], [3, 2, 8], [4, 1, 6], [5, 0, 2]]
+# p transpose([[1]]) == [[1]]
+
+=begin
+input: array of sub-arrays (matrix)
+output: array rotated 90 degrees
+rules:
+- rotate the array 90 degrees
+  - column from bottom to top becomes row 1
+  - row 1 becomes last column from top to bottom
+
+=end
+
+# def rotate90(matrix)
+#   matrix.transpose.map(&:reverse)
+# end
+
+# matrix1 = [
+#   [1, 5, 8],
+#   [4, 7, 2],
+#   [3, 9, 6]
+# ]
+# matrix2 = [
+#   [3, 7, 4, 2],
+#   [5, 1, 0, 8]
+# ]
+# new_matrix1 = rotate90(matrix1)
+# new_matrix2 = rotate90(matrix2)
+# new_matrix3 = rotate90(rotate90(rotate90(rotate90(matrix2))))
+# p new_matrix1 == [[3, 4, 1], [9, 7, 5], [6, 2, 8]]
+# p new_matrix2 == [[5, 3], [1, 7], [0, 4], [8, 2]]
+# p new_matrix3 == matrix2
+
+# def rotate_degrees(matrix, degrees)
+#   result = matrix
+#   (degrees / 90).times { result = rotate90(result) }
+#   result
+# end
+
+# matrix1 = [
+#   [1, 5, 8],
+#   [4, 7, 2],
+#   [3, 9, 6]
+# ]
+
+# p rotate_degrees(matrix1, 360)
+
+# def my_method(array)
+#   if array.empty?
+#     []
+#   elsif array.size > 1
+#     array.map do |value|
+#       value * value
+#     end
+#   else 
+#     [7 * array.first]
+#   end
+# end
+
+# p my_method([])
+# p my_method([3])
+# p my_method([3, 4])
+# p my_method([5, 6, 7])
+
+=begin
+input: 2 arrays (sorted, may be empty)
+output: 1 sorted combined array
+rules:
+- do not sort the result array at any stage
+- build the result array one element at a time in proper order
+- do not mutate the input arrays
+
+D
+arrays
+
+A
+initialize a new array result
+combine the 2 arguments into a NEW array
+- loop until new array is empty
+  - delete the lowest minimum element and append to result
+=end
+
+# def merge(arr1, arr2)
+#   combined = arr1 + arr2
+#   combined.min(combined.size)
+# end
+
+# p merge([1, 5, 9], [2, 6, 8]) #== [1, 2, 5, 6, 8, 9]
+# p merge([1, 1, 3], [2, 2]) #== [1, 1, 2, 2, 3]
+# p merge([], [1, 4, 5]) == [1, 4, 5]
+# p merge([1, 4, 5], []) == [1, 4, 5]
+
+=begin
+P
+input: array
+output: sorted array
+rules:
+- use merge sort - a recursive sorting algorithm
+- break elements into nested sub-arrays
+- combine the nested sub-arrays in sorted order
+
+D
+arrays
+
+A
+
+# =end
+
+# def merge(arr1, arr2)
+#   combined = arr1 + arr2
+#   combined.min(combined.size)
+# end
+
+# def merge_sort(arr)
+#   return arr if arr.size <= 1
+
+#   arr1 = arr[0..arr.size / 2 - 1]
+#   arr2 = arr[arr.size / 2..-1]
+
+#   arr1 = merge_sort(arr1)
+#   arr2 = merge_sort(arr2)
+
+#   merge(arr1, arr2)
+# end
+
+# p merge_sort([9, 5, 7, 1]) == [1, 5, 7, 9]
+# p merge_sort([5, 3]) == [3, 5]
+# p merge_sort([6, 2, 7, 1, 4]) == [1, 2, 4, 6, 7]
+# p merge_sort(%w(Sue Pete Alice Tyler Rachel Kim Bonnie)) == %w(Alice Bonnie Kim Pete Rachel Sue Tyler)
+# p merge_sort([7, 3, 9, 15, 23, 1, 6, 51, 22, 37, 54, 43, 5, 25, 35, 18, 46]) == [1, 3, 5, 6, 7, 9, 15, 18, 22, 23, 25, 35, 37, 43, 46, 51, 54]
+
+=begin
+input: rational
+output: array of denominators
+
+input: array of fractions
+output: 
+- return egyptian fraction from a rational
+- return a rational from an egyptian fraction
+- use the Ruby rational class
+
+D
+rationals, arrays
+
+A
+- initialize count variable to 0
+- initialize result array
+- create a loop
+  - if count variable + next highest <= target
+    - count variable add next highest
+    - append denominator to result array
+  - break if count variable == target 
+=end
+
+# def egyptian(rational)
+#   count = Rational(0/1)
+#   result = []
+#   denominator = 1
+#   loop do
+#     if Rational(1, denominator) + count <= rational
+#       result << denominator
+#       count += Rational(1, denominator)
+#     end
+
+#     break if count == rational
+#     denominator += 1
+#   end
+#   result
+# end
+
+# def unegyptian(arr)
+#   arr.reduce(0) { |sum, denominator| sum + Rational(1, denominator) }
+# end
+
+# p egyptian(Rational(2, 1))    # -> [1, 2, 3, 6]
+# p egyptian(Rational(137, 60)) # -> [1, 2, 3, 4, 5]
+# p egyptian(Rational(3, 1))    # -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 230, 57960]
+
+# p unegyptian(egyptian(Rational(1, 2))) == Rational(1, 2)
+# p unegyptian(egyptian(Rational(3, 4))) == Rational(3, 4)
+# p unegyptian(egyptian(Rational(39, 20))) == Rational(39, 20)
+# p unegyptian(egyptian(Rational(127, 130))) == Rational(127, 130)
+# p unegyptian(egyptian(Rational(5, 7))) == Rational(5, 7)
+# p unegyptian(egyptian(Rational(1, 1))) == Rational(1, 1)
+# p unegyptian(egyptian(Rational(2, 1))) == Rational(2, 1)
+# p unegyptian(egyptian(Rational(3, 1))) == Rational(3, 1)
+
+# def decrease(counter)
+#   counter -= 1
+# end
+
+# counter = 10
+
+# counter.times do
+#   puts counter
+#   counter = decrease(counter)
+# end
+
+# puts 'LAUNCH!'
+
+# def shout_out_to(name)
+#   puts 'HEY ' + name.chars.each { |c| c.upcase! }.join
+# end
+
+# shout_out_to('you') # expected: 'HEY YOU'
+
+# def valid_series?(nums)
+#   return false if nums.sum != 47
+
+#   odd_count = nums.count { |n| n.odd? }
+#   odd_count == 3
+# end
+
+# p valid_series?([5, 6, 2, 7, 3, 12, 4, 8])        # should return true
+# p valid_series?([1, 12, 2, 5, 16, 6])             # should return false
+# p valid_series?([28, 3, 4, 7, 9, 14])             # should return false
+# p valid_series?([20, 6, 9, 4, 2, 1, 2, 3])        # should return true
+# p valid_series?([10, 6, 19, 2, 6, 4])             # should return false
+
+def reverse_sentence(sentence)
+  words = sentence.split(' ')
+  reversed_words = []
+
+  i = 0
+  while i < words.length
+    reversed_words.unshift words[i]
+    i += 1
+  end
+
+  reversed_words.join(' ')
+end
+
+p reverse_sentence('how are you doing')
+# expected output: 'doing you are how'
