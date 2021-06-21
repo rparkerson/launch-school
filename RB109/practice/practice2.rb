@@ -1,3 +1,4 @@
+require 'pry'
 =begin
 Problem
 input: string
@@ -1170,3 +1171,615 @@ Algorithm
 # puts common_prefix(["interspecies", "interstellar", "interstate"]) == "inters"
 # puts common_prefix(["throne", "dungeon"]) == ""
 # puts common_prefix(["throne", "throne"]) == "throne"
+
+=begin
+Problem 1: Reverse a string without using the built-in #reverse method
+take a string as an argument, return the string in reverse order without
+using the built-in reverse method.
+
+reverse_string("abcde") == "edcba"
+reverse_string(" ") == " "
+reverse_string("football") == "llabtoof"
+
+Problem
+input: string
+output: reversed string
+
+Data structure
+string, array
+
+Algorithm
+- spilt the string into an array of character
+- remove the last character and append to a new string
+
+=end
+
+# def reverse_string(str)
+#   result = ""
+#   chars = str.chars
+#   result << chars.pop until chars.empty?
+#   result
+# end
+
+# p reverse_string("abcde") #== "edcba"
+# p reverse_string(" ") == " "
+# p reverse_string("football") == "llabtoof"
+
+=begin
+Problem 2: Fizzbuzz
+write a method that takes two arguments: the first is the starting number,
+and the second is the ending number. Print out all numbers between the two 
+numbers except if a number is divisible by 3, print out "Fizz", if a number
+is divisible by 5, print out "Buzz", and if a number is divisible by 3 and 5,
+print out "FizzBuzz".
+
+Problem
+input: 2 integer
+output: print number, or a string - Fizz or BUZZ or Fizzbuzz
+rules:
+- print number
+  - if number is divisible by 3
+    - print Fizz
+  - if divisible by 5
+    - print Buzz
+  - if divisible by both
+    - print Fizz Buzz
+
+Data
+- strings, integers, range
+
+Algorithm
+- iterate through the range num1 upto num2
+- * case statement current number
+- if divisible 3 and 5
+  - print FizzBuzz
+- if % 3
+  ...Fizz
+- if % 5
+  Buzz
+- else print number
+
+=end
+
+# def fizzbuzz(num1, num2)
+#   num1.upto(num2) do |n|
+#     if n % 3 == 0 && n % 5 == 0
+#       puts "FizzBuzz"
+#     elsif n % 3 == 0
+#       puts "Fizz"
+#     elsif n % 5 == 0
+#       puts "Buzz"
+#     else
+#       puts n
+#     end
+#   end
+#   nil
+# end
+
+# fizzbuzz(1, 10)
+# fizzbuzz(1, 15)
+
+# # Problem 3: Product search
+# PRODUCTS = [
+#   { name: "Thinkpad x210", price: 220},
+#   { name: "Thinkpad x220", price: 250},
+#   { name: "Thinkpad x250", price: 979},
+#   { name: "Thinkpad x230", price: 300},
+#   { name: "Thinkpad x230", price: 330},
+#   { name: "Thinkpad x230", price: 350},
+#   { name: "Thinkpad x240", price: 700},
+#   { name: "Macbook Leopard", price: 300},
+#   { name: "Macbook Air", price: 700},
+#   { name: "Macbook Pro", price: 600},
+#   { name: "Macbook", price: 1449},
+#   { name: "Dell Latitude", price: 200},
+#   { name: "Dell Latitude", price: 650},
+#   { name: "Dell Inspiron", price: 300},
+#   { name: "Dell Inspiron", price: 450}
+# ]
+
+# query = {
+#   price_min: 240,
+#   price_max: 280,
+#   q: "thinkpad"
+# }
+
+# query2 = {
+#   price_min: 300,
+#   price_max: 450,
+#   q: 'dell'
+# }
+
+# =begin
+# Problem
+# input: hash ( 3 keys)
+# output: array of matching hashes
+# rules:
+# - return all hashes that match the criteria
+#   - price_min, pricemax, q (string search)
+
+# Data
+# arrays, hashes, strings, integers, symbols
+
+# Algorithm
+# - select the price key with the value of a certain range
+# - select the name key that matches the string (case insensitive)
+# - return an array with the matches
+# =end
+
+# def search(query)
+#   PRODUCTS.select do |product_hash|
+#     (query[:price_min]..query[:price_max]).include?(product_hash[:price]) &&
+#     product_hash[:name].downcase.include?(query[:q].downcase)
+#   end
+# end
+
+# p search(query)
+# # => [ { name: "Thinkpad x220", price: 250} ]
+
+# p search(query2)
+# #  => [ { name: "Dell Inspiron", price: 300}, { name: "Dell Inspiron", price 450} ]
+
+# p [2, 3, 1, 6].sort_by { |a, b| a <=> b }
+
+=begin
+Problem 1: Substring test
+Given 2 strings, your job is to find out if there is a substring that appears
+in both strings. You will return true if you find a substring that appears
+in both strings, and false if not. A substring is longer than 1 character.
+
+Problem
+input: 2 strings
+output: boolean
+rules:
+-return true if strings share a common substring longer than 1 character (2+)
+- case insensitive
+
+Data
+strings, booleans, arrays
+
+Algorithm
+- find every substring at least 2 character (array of substrings)
+- iterate array any? substrings are included in both strings
+
+- find_substrings method
+- iterate through a range 0 upto string size - 2 (start index)
+  - iterate thorugh 2, upto (string.size - start_index)  - slice size
+=end
+
+# def substring_test(str1, str2)
+#   substrings = find_substrings(str1.downcase)
+#   substrings.any? { |sub_str| str2.downcase.include?(sub_str) }
+# end
+
+# def find_substrings(str)
+#   result = []
+#   0.upto(str.size - 2) do |index|
+#     2.upto(str.size - index) do |slice_size|
+#       result << str[index, slice_size]
+#     end
+#   end
+#   result
+# end
+
+# puts substring_test('Something', 'Fun') == false
+# puts substring_test('Something', 'Home') == true
+# puts substring_test('Something', ' ') == false
+# puts substring_test('BANANA', 'banana') #== true
+# puts substring_test('test', 'llt') == false
+# puts substring_test(' ', ' ') == false
+# puts substring_test('1234567', '541265') == true
+
+# def substring_test(str1, str2)
+#   str1_chars = str1.downcase.chars
+#   str2_chars = str2.downcase.chars
+#   str1_chars.each_with_index do |char1, index1|
+#     str2_chars.each_with_index do |char2, index2|
+#       return true if char1 == char2 &&
+#                      str1_chars[index1 + 1] == str2_chars[index2 + 1] &&
+#                      index1 != str1.size - 1
+#     end
+#   end
+#   false
+# end
+
+# puts substring_test('Something', 'Fun') == false
+# puts substring_test('Something', 'Home') == true
+# puts substring_test('Something', ' ') == false
+# puts substring_test('BANANA', 'banana') == true
+# puts substring_test('test', 'llt') == false
+# puts substring_test(' ', ' ') == false
+# puts substring_test('1234567', '541265') == true
+
+=begin
+Problem 2: Scramble
+Write a function scramble(str1, str2) that returns true if a portion of
+str1 characters can be rearranged to match str2, otherwise, return false.
+
+Problem
+input: 2 strings
+output: boolean
+rules:
+- return true if str2 characters are all included 
+
+Data structure
+strings, booleans
+
+Algorithm
+- delete or substute destructively each character of str2 from str1 
+  - return false if character was not present to delete
+  - else return true
+=end
+
+# def scramble(str1, str2)
+#   !str2.chars.any? { |char| !str1.sub!(char, '') }
+# end
+
+# def scramble(str1, str2)
+#   str2.chars.all? { |char| str1.sub!(char, '') }
+# end
+
+# p scramble('javaass', 'jjss') == false
+# p scramble('rkqodlw', 'world') == true
+# p scramble('cedewaraaossoqqyt', 'codewars') == true
+# p scramble('katas', 'steak') == false
+# p scramble('scriptjava', 'javascript') == true
+# p scramble('scriptingjava', 'javascript') == true
+
+# def scramble(str1, str2)
+#   str2.chars.all? { |char| str2.count(char) <= str1.count(char) }
+# end
+
+# def scramble(str1, str2)
+#   str2.chars.each do |char|
+#     return false unless str2.count(char) <= str1.count(char)
+#   end
+#   true
+# end
+
+# p scramble('javaass', 'jjss') == false
+# p scramble('rkqodlw', 'world') == true
+# p scramble('cedewaraaossoqqyt', 'codewars') == true
+# p scramble('katas', 'steak') == false
+# p scramble('scriptjava', 'javascript') == true
+# p scramble('scriptingjava', 'javascript') == true
+
+=begin
+Problem 1: Longest Palindrome
+Find the length of the longest substring in the given string that is the same
+in reverse.
+
+Example:
+longest_palindrome("I like racecars that go fast") == 7
+
+If the length of the input string is 0, return value must be 0
+
+Problem
+input: string
+output: integer (length)
+rules:
+- find the length of the longest substring that is a palindrome
+- case sensitivity?
+
+Data
+strings, integers, arrays
+
+Algorithm
+- find every substring store as an array
+- iterate through substring
+  - if palindrome select into a new array
+- return the longest string from palindrome array
+
+=end
+
+# def longest_palindrome(str)
+#   return 0 if str.empty?
+#   palindrome_substrings = palindrome_substrings(str)
+#   palindrome_substrings.max_by(&:size).size
+# end
+
+# def palindrome_substrings(str)
+#   result = []
+#   0.upto(str.size - 1) do |start_index|
+#     start_index.upto(str.size - 1) do |end_index|
+#       sub_str = str[start_index..end_index]
+#       result << sub_str if sub_str == sub_str.reverse
+#     end
+#   end
+#   result
+# end
+
+# puts longest_palindrome('') == 0
+# puts longest_palindrome('a') == 1
+# puts longest_palindrome('aa') == 2
+# puts longest_palindrome('baa') == 2
+# puts longest_palindrome('aab') == 2
+# puts longest_palindrome('baabcd') == 4
+# puts longest_palindrome('baab1kj12345432133d') == 9
+# puts longest_palindrome("I like racecars that go fast") == 7
+
+=begin
+Algorithm
+- max slice size(string size) downto 1 (iterate through slice size)
+  - take each consecutive slice with slice size
+  - if current slice == current slice backwards
+    - return slice size
+- return 0
+=end
+
+# def longest_palindrome(str)
+#   str.size.downto(1) do |slice_size|
+#     str.chars.each_cons(slice_size) do |sub_arr|
+#       return slice_size if sub_arr.join == sub_arr.join.reverse
+#     end
+#   end
+#   0
+# end
+
+# puts longest_palindrome('abc') #== 0
+# puts longest_palindrome('') == 0
+# puts longest_palindrome('a') == 1
+# puts longest_palindrome('aa') == 2
+# puts longest_palindrome('baa') == 2
+# puts longest_palindrome('aab') == 2
+# puts longest_palindrome('baabcd') == 4
+# puts longest_palindrome('baab1kj12345432133d') == 9
+# puts longest_palindrome("I like racecars that go fast") == 7
+
+=begin
+Problem 1: Find Even Index
+You are given an array of integers. Your job is to take that array and find
+an index N where the sum of the integers to the left of N is equal to the sum
+of the integers to the right of N. If there is no index that would make this
+happen, return -1. Empty arrays are equal to 0 in this problem.
+
+Problem
+input: array of integers
+output: integer (index)
+rules:
+- Find index n where sum of the integer left of n == sum of integers to the
+right of n
+- do no include n in the sums
+- return -1 if no index is found
+- empty arrays are = 0
+
+Data structure
+- arrays integers, 
+
+Algorithm
+- return 0 if argument array is empty
+- iterate through index of argument array
+- slice array to find sub array left of index
+  - initialize left_side variable to this sub-array
+
+- slice array to find sub-array right of index
+  - initialize right_side variable to this sub-array
+- find the sum of each sub-array
+  - compare each sum
+  - return index if sums are ==
+- return -1 if no matches
+
+[1, 2, 3]
+i: 0 [], [2, 3] 
+left_side = arr[0, i]
+right_side = arr[i + 1, arr.size - 1 - index]
+i: 1 [1], [3]
+left_side - arr[0, i]
+i: 2 [1, 2], []
+left_side - arr[0, i]
+=end
+
+# def find_even_index(arr)
+#   return 0 if arr.empty?
+#   (0...arr.size).each do |index|
+#     left_side = arr[0, index]
+#     right_side = arr[(index + 1), (arr.size - 1 - index)]
+#     return index if left_side.sum == right_side.sum 
+#   end
+#   -1
+# end
+
+# p find_even_index([1, 2, 3])
+# p find_even_index([]) == 0
+# p find_even_index([1, 2, 3, 4, 3, 2, 1]) == 3
+# p find_even_index([1, 100, 50, -51, 1, 1]) == 1
+# p find_even_index([1, 2, 3, 4, 5, 6]) == -1
+# p find_even_index([20, 10, 30, 10, 10, 15, 35]) == 3
+# p find_even_index([20, 10, -80, 10, 10, 15, 35]) == 0
+# p find_even_index([10, -80, 10, 10, 15, 35, 20]) == 6
+# p find_even_index([-1, -2, -3, -4, -3, -2, -1]) == 3
+
+=begin
+Problem 1: Substring at index
+Write a method that will return a substring based on specified indices.
+
+Problem
+input: 2 - 3 arguments, string, start index (end_index)
+output: substrings
+rules:
+- based on the indexes return a substring
+- if only 1 index is given return substing at that index
+
+Data structures
+strings, integers
+
+Algorithm
+- take the slice of the string with index provided
+str[index1..index2]
+=end
+
+# def substring(str, start_index, end_index = start_index)
+#   str[start_index..end_index]
+# end
+
+# p substring("honey", 0, 2) == "hon"
+# p substring("honey", 1, 2) == "on"
+# p substring("honey", 3, 9) == "ey"
+# p substring("honey", 2) == "n"
+
+=begin
+Problem 2: All Substrings
+Write a method that finds all substrings in a string, no 1 letter words.
+
+Problem
+input: string
+output: array of substrings
+rules:
+- return an array of all substrings in string with more than 1 letter
+
+Data
+strings, arrays
+
+Algorithm
+- find all substrings
+  - iterate through range for the start index
+    - iteration through range of the end index
+      - create substring from start to end index
+      - if substring > 1 character long
+        - add to result array
+- if substring length is greater than 1
+  - add to result array
+- return results array
+=end
+
+# def substrings(str)
+#   result = []
+#   (0...str.size).each do |start_index|
+#     (start_index...str.size).each do |end_index|
+#       sub_str = str[start_index..end_index]
+#       result << sub_str if sub_str.size > 1
+#     end
+#   end
+#   result
+# end
+
+# p substrings("band") == ['ba', 'ban', 'band', 'an', 'and', 'nd']
+# p substrings("world") == ['wo', 'wor', 'worl', 'world', 'or', 'orl', 'orld', 'rl', 'rld', 'ld']
+# p substrings("ppop") == ['pp', 'ppo', 'ppop', 'po', 'pop', 'op']
+
+=begin
+Problem 3: Palindromes
+# Write a method that will return all palindromes within a string.
+
+
+# Write a method that finds the longest substring that is a palindrome within
+a string.
+=end
+
+# def substrings(str)
+#   result = []
+#   (0...str.size).each do |start_index|
+#     (start_index...str.size).each do |end_index|
+#       sub_str = str[start_index..end_index]
+#       result << sub_str if sub_str.size > 1 && sub_str.reverse == sub_str
+#     end
+#   end
+#   result
+# end
+
+# def palindromes(str)
+#   substrings(str)
+# end
+
+# def longest_palindrome(str)
+#   palindromes = palindromes(str)
+#   palindromes.max_by { |word| word.size }
+# end
+
+# p palindromes('ppop') == ['pp', 'pop']
+# p longest_palindrome("ppop") == 'pop'
+
+=begin
+Problem 4: Capitalize words
+# Write a method that takes a single String argument and returns a new
+string that contains the original value of the argument with the first
+character of every word capitalized and all other letters lowercase. You
+may assume that words are any sequence of non-blank characters.
+
+Problem
+input: string
+output: string
+rules:
+- return a string with words capitalized
+- words are any sequence of non-blank characters
+
+Data
+strings, arrays
+
+Algorithm
+- split the string into an array of words
+- iterate through each word
+  - mutate the word and capitalize
+=end
+
+# def word_cap(str)
+#   str.split.each(&:capitalize!).join(' ')
+# end
+
+# p word_cap('four score and seven') #== 'Four Score And Seven'
+# p word_cap('the javaScript language') == 'The Javascript Language'
+# p word_cap('this is a "quoted" word') == 'This Is A "quoted" Word'
+
+=begin
+Problem 5: Interweaving Arrays
+Write a method that combines two Arrays passed in as arguments and returns
+a new Array that contains all elements from both Array arguments, with the
+elements taken in alternation.
+
+You may assume that both input Arrays are non-empty and that they have the
+same number of elements.
+
+Problem
+input: 2 arrays
+output: 1 array
+rules:
+- interleave the elements starting with the first element of the first array
+- arrays are the same size and not empty
+
+Data structure
+arrays, 
+
+Algorithm
+- interveave arrays
+
+=end
+
+# def interleave(arr1, arr2)
+#   arr1.zip(arr2).flatten
+# end
+
+# p interleave([1, 2, 3], ['a', 'b', 'c']) == [1, "a", 2, "b", 3, "c"]
+
+=begin
+Problem 6: Sum same consecutive integers
+You are given an array that contains only integers (positive and negative).
+Your job is to sum only the numbers that are the same and consecutive.
+The result should be one array.
+
+You can assume there is never an empty array and there will always be an
+integer.
+
+Problem
+input: array of integers
+output: array of sums
+rules:
+- return an array of the sums of numbers that are the same and consecutive
+- array is never empty
+
+Data
+integers, arrays
+
+Algorithm
+- initialize a variable result to an empty array
+- initialize a variable previous to nil
+- iterate through the array argument
+  - if 
+=end
+
+# def sum_consecutives(arr)
+#   arr.group_by { |ele| ele }.values.map(&:sum)
+# end
+
+# p sum_consecutives([1,4,4,4,0,4,3,3,1,1]) #== [1,12,0,4,6,2]
+# p sum_consecutives([1,1,7,7,3]) == [2,14,3]
+# p sum_consecutives([-5,-5,7,7,12,0]) ==  [-10,14,12,0]
