@@ -1,0 +1,72 @@
+=begin
+Start the Engine (Part 1)
+
+Change the following code so that creating a new Truck automatically
+invokes #start_engine.
+
+class Vehicle
+  attr_reader :year
+
+  def initialize(year)
+    @year = year
+  end
+end
+
+class Truck < Vehicle
+  def start_engine
+    puts 'Ready to go!'
+  end
+end
+
+truck1 = Truck.new(1994)
+puts truck1.year
+
+Expected output:
+
+Ready to go!
+1994
+=end
+
+class Vehicle
+  attr_reader :year
+
+  def initialize(year)
+    @year = year
+  end
+end
+
+class Truck < Vehicle
+  def initialize(year)
+    super
+    start_engine
+  end
+
+  def start_engine
+    puts 'Ready to go!'
+  end
+end
+
+truck1 = Truck.new(1994)
+puts truck1.year
+
+# Alternate
+class Vehicle
+  attr_reader :year
+
+  def initialize(year)
+    @year = year
+    start_engine
+  end
+
+  private
+  
+  def start_engine
+    puts 'Ready to go!'
+  end
+end
+
+class Truck < Vehicle
+end
+
+truck1 = Truck.new(1994)
+puts truck1.year
