@@ -219,51 +219,82 @@ Were you able to make all of your changes without modifying the existing
 interface?
 
 There is a need to move the pet from `the_animal_shelter` owner to the new
-owner if the pet is adopted from the shelter.
+owner if the pet is adopted from the shelter. I solved this by creating
+a new instance variable within the shelter object to track unadoped pets as
+an array. 
+Another approach may have been to create the animal shelter as it's own owner
+instance and when adopting from a shelter pass that in as another parameter
+to the shelter instance adopt method. This way could make sense if every 
+adoption comes from a shelter, and takes into account there may be multiple
+shelters.
+
+Problem:
+- add pets to shelter at initialization
+  - add a feature to add pets to shelter
+- when adopt method is called delete pet from shelter unadopted pet list
+- add function to print_adoptions to print unadopted
+
 =end
 
 class Pet
-  attr_reader :name, :type
+  attr_reader :type, :name
 
   def initialize(type, name)
     @type = type
     @name = name
   end
+
+  def to_s
+    "a #{type} named #{name}"
+  end
 end
 
 class Owner
-  attr_reader :name, :number_of_pets
+  attr_reader :name, :pets
 
   def initialize(name)
     @name = name
     @number_of_pets = 0
+    @pets = []
   end
 
-  def increment_number_of_pets
-    @number_of_pets += 1
+  def number_of_pets
+    @pets.size
+  end
+
+  def add_pet(pet)
+    @pets << pet
   end
 end
 
 class Shelter
-  def initialize
+  attr_reader :unadopted_pets
+
+  def initialize(*unadopted_pets)
     @owners = {}
+    @unadopted_pets = unadopted_pets
   end
 
   def adopt(owner, pet)
-    if @owners.include?(owner.name)
-      @owners[owner.name] << pet
-    else
-      @owners[owner.name] = [pet]
-    end
-    owner.increment_number_of_pets
+    owner.add_pet(pet)
+    @owners[owner.name] ||= owner
+    @unadopted_pets.delete(pet)
+  end
+
+  def add_unadopted_pet(pet)
+    @unadopted_pets << pet
   end
 
   def print_adoptions
-    @owners.each do |owner, pets|
-      puts "#{owner} has adopted the folling pets:"
-      pets.each { |pet| puts "a #{pet.type} named #{pet.name}" }
+    @owners.each do |owner_name, owner|
+      puts "#{owner_name} has adopted the folling pets:"
+      puts owner.pets
       puts
     end
+  end
+
+  def print_unadopted
+    puts @unadopted_pets
   end
 end
 
@@ -278,7 +309,7 @@ chester      = Pet.new('fish', 'Chester')
 phanson = Owner.new('P Hanson')
 bholmes = Owner.new('B Holmes')
 
-shelter = Shelter.new
+shelter = Shelter.new(butterscotch, pudding, darwin, kennedy, molly, chester)
 shelter.adopt(phanson, butterscotch)
 shelter.adopt(phanson, pudding)
 shelter.adopt(phanson, darwin)
@@ -286,11 +317,6 @@ shelter.adopt(bholmes, kennedy)
 shelter.adopt(bholmes, sweetie)
 shelter.adopt(bholmes, molly)
 shelter.adopt(bholmes, chester)
-shelter.print_adoptions
-puts "#{phanson.name} has #{phanson.number_of_pets} adopted pets."
-puts "#{bholmes.name} has #{bholmes.number_of_pets} adopted pets."
-
-p phanson
 
 asta = Pet.new('dog', 'Asta')
 laddie = Pet.new('dog', 'Laddie')
@@ -300,15 +326,34 @@ ben = Pet.new('cat', 'Ben')
 chatterbox = Pet.new('parakeet', 'Chatterbox')
 bluebell = Pet.new('parakeet', 'Bluebell')
 
-the_animal_shelter = Owner.new('The Animal Shelter')
+shelter.add_unadopted_pet(asta)
+shelter.add_unadopted_pet(laddie)
+shelter.add_unadopted_pet(fluffy)
+shelter.add_unadopted_pet(kat)
+shelter.add_unadopted_pet(ben)
+shelter.add_unadopted_pet(chatterbox)
+shelter.add_unadopted_pet(bluebell)
 
-shelter.adopt(the_animal_shelter, asta)
-shelter.adopt(the_animal_shelter, laddie)
-shelter.adopt(the_animal_shelter, fluffy)
-shelter.adopt(the_animal_shelter, kat)
-shelter.adopt(the_animal_shelter, ben)
-shelter.adopt(the_animal_shelter, chatterbox)
-shelter.adopt(the_animal_shelter, bluebell)
-
-puts "#{the_animal_shelter.name} has #{the_animal_shelter.number_of_pets} unadopted pets."
 shelter.print_adoptions
+shelter.print_unadopted
+
+puts
+puts "#{phanson.name} has #{phanson.number_of_pets} adopted pets."
+puts "#{bholmes.name} has #{bholmes.number_of_pets} adopted pets."
+puts "The Animal shelter has #{shelter.unadopted_pets.size} unadopted pets."
+
+asta = Pet.new('dog', 'Asta')
+laddie = Pet.new('dog', 'Laddie')
+fluffy = Pet.new('cat', 'Fluffy')
+kat = Pet.new('cat', 'Kat')
+ben = Pet.new('cat', 'Ben')
+chatterbox = Pet.new('parakeet', 'Chatterbox')
+bluebell = Pet.new('parakeet', 'Bluebell')
+
+shelter.add_unadopted_pet(asta)
+shelter.add_unadopted_pet(laddie)
+shelter.add_unadopted_pet(fluffy)
+shelter.add_unadopted_pet(kat)
+shelter.add_unadopted_pet(ben)
+shelter.add_unadopted_pet(chatterbox)
+shelter.add_unadopted_pet(bluebell)
