@@ -1,31 +1,25 @@
+# Walk-through: OO RPS Design Choice 1
 class Player
   attr_accessor :move, :name
 
-  def initialize(player_type = :human)
-    @player_type = player_type
-    @move = nil
+  def initialize
     set_name
   end
+end
 
+class Human < Player
   def set_name
-    self.name =
-      if human?
-        loop do
-          puts "Please choose a player name"
-          n = gets.chomp
-          break n unless n.empty?
-          puts "Sorry, must enter a value."
-        end
-      else
-        ['C-3PO', 'R2-D2', 'Optimus Prime', 'Megatron', 'HAL'].sample
-      end
+    n = nil
+    loop do
+      puts "Please choose your player name."
+      n = gets.chomp
+      break unless n.empty?
+      puts "Sorry, must enter a value."
+    end
+    self.name = n
   end
 
   def choose
-    self.move = (human? ? valid_move : ['rock', 'paper', 'scissors'].sample)
-  end
-
-  def valid_move
     move = nil
     loop do
       puts "Please choose rock, paper, or scissors (r, p, s):"
@@ -33,7 +27,7 @@ class Player
       break if %w(rock paper scissors r p s).include?(move)
       puts "Sorry, invalid choice."
     end
-    convert_abbreviated_move(move)
+    self.move = convert_abbreviated_move(move)
   end
 
   def convert_abbreviated_move(move)
@@ -42,9 +36,15 @@ class Player
     move = 'scissors' if move == 's'
     move
   end
+end
 
-  def human?
-    @player_type == :human
+class Computer < Player
+  def set_name
+    self.name = ['C-3PO', 'R2-D2', 'Optimus Prime', 'Megatron', 'HAL'].sample
+  end
+
+  def choose
+    self.move = ['rock', 'paper', 'scissors'].sample
   end
 end
 
@@ -53,8 +53,8 @@ class RPSGame
   attr_accessor :human, :computer
 
   def initialize
-    @human = Player.new
-    @computer = Player.new(:computer)
+    @human = Human.new
+    @computer = Computer.new
   end
 
   def display_welcome_message
@@ -67,14 +67,19 @@ class RPSGame
   end
 
   def display_winner
-    winner = { 'rock' => 'scissors', 'scissors' => 'paper', 'paper' => 'rock' }
     display_moves
+    winner = choose_winner
+    puts winner ? "#{winner.name} has won!" : "It is a tie!"
+  end
+
+  def choose_winner
+    winner = { 'rock' => 'scissors', 'scissors' => 'paper', 'paper' => 'rock' }
     if winner[human.move] == computer.move
-      puts "#{human.name} has won!"
+      human
     elsif winner[computer.move] == human.move
-      puts "#{computer.name} has won!"
+      computer
     else
-      puts "It is a tie!"
+      nil
     end
   end
 
