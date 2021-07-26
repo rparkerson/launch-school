@@ -10,15 +10,23 @@ class Player
   def set_name
     self.name =
       if human?
-        loop do
-          puts "Please choose a player name"
-          n = gets.chomp
-          break n unless n.empty?
-          puts "Sorry, must enter a value."
-        end
+        set_human_name
       else
-        ['C-3PO', 'R2-D2', 'Optimus Prime', 'Megatron', 'HAL'].sample
+        set_computer_name
       end
+  end
+
+  def set_human_name
+    loop do
+      puts "Please choose a player name"
+      n = gets.chomp
+      break n unless n.empty?
+      puts "Sorry, must enter a value."
+    end
+  end
+
+  def set_computer_name
+    ['C-3PO', 'R2-D2', 'Optimus Prime', 'Megatron', 'HAL'].sample
   end
 
   def choose
@@ -67,20 +75,24 @@ class RPSGame
   end
 
   def display_winner
-    winner = { 'rock' => 'scissors', 'scissors' => 'paper', 'paper' => 'rock' }
     display_moves
-    if winner[human.move] == computer.move
-      puts "#{human.name} has won!"
-    elsif winner[computer.move] == human.move
-      puts "#{computer.name} has won!"
-    else
-      puts "It is a tie!"
-    end
+    puts winner_result
   end
 
   def display_moves
     puts "#{human.name} chose #{human.move}."
     puts "#{computer.name} chose #{computer.move}."
+  end
+
+  def winner_result
+    winner = { 'rock' => 'scissors', 'scissors' => 'paper', 'paper' => 'rock' }
+    if winner[human.move] == computer.move
+      "#{human.name} has won!"
+    elsif winner[computer.move] == human.move
+      "#{computer.name} has won!"
+    else
+      "It is a tie!"
+    end
   end
 
   def play_again?

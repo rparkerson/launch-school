@@ -78,8 +78,6 @@ class RPSGame
       human
     elsif winner[computer.move] == human.move
       computer
-    else
-      nil
     end
   end
 
