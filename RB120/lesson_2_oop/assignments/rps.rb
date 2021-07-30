@@ -15,17 +15,70 @@ class Score
 end
 
 class Move
-  attr_reader :value, :type
+  attr_reader :type
 
   VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
 
-  def initialize(value)
-    @value = pick_type(value)
-    @type = @value.type
+  def >(other_move)
+    @beats.include?(other_move.type)
   end
 
-  def pick_type(value)
-    case value
+  def to_s
+    @type
+  end
+end
+
+class Rock < Move
+  def initialize
+    @type = 'rock'
+    @beats = ['scissors', 'lizard']
+  end
+end
+
+class Paper < Move
+  def initialize
+    @type = 'paper'
+    @beats = ['rock', 'spock']
+  end
+end
+
+class Scissors < Move
+  def initialize
+    @type = 'scissors'
+    @beats = ['paper', 'lizard']
+  end
+end
+
+class Lizard < Move
+  def initialize
+    @type = 'lizard'
+    @beats = ['paper', 'spock']
+  end
+end
+
+class Spock < Move
+  def initialize
+    @type = 'spock'
+    @beats = ['rock', 'scissors']
+  end
+end
+
+class Player
+  attr_reader :name, :move, :score
+
+  def initialize
+    set_name
+    @score = Score.new
+  end
+
+  def update_score
+    score.increment_by_1
+  end
+
+  private
+
+  def pick_type(type)
+    case type
     when 'rock' then Rock.new
     when 'paper' then Paper.new
     when 'scissors' then Scissors.new
@@ -33,138 +86,9 @@ class Move
     when 'spock' then Spock.new
     end
   end
-
-  def self.values(name)
-    case name
-    when 'C-3PO' then ['paper']
-    when 'R2-D2' then ['rock']
-    when 'Optimus Prime' then ['rock', 'paper', 'scissors']
-    when 'Megatron' then ['spock', 'lizard', 'lizard', 'lizard']
-    when 'HAL' then ['scissors', 'scissors', 'scissors', 'scissors', 'rock']
-    else VALUES
-    end
-  end
-
-  def rock?
-    type == 'rock'
-  end
-
-  def paper?
-    type == 'paper'
-  end
-
-  def scissors?
-    type == 'scissors'
-  end
-
-  def lizard?
-    type == 'lizard'
-  end
-
-  def spock?
-    type == 'spock'
-  end
-
-  def to_s
-    @value.type
-  end
-end
-
-class Rock < Move
-  def initialize
-    @type = 'rock'
-  end
-
-  def >(other_move)
-    other_move.scissors? || other_move.lizard?
-  end
-
-  def <(other_move)
-    other_move.paper? || other_move.spock?
-  end
-end
-
-class Paper < Move
-  def initialize
-    @type = 'paper'
-  end
-
-  def >(other_move)
-    other_move.rock? || other_move.spock?
-  end
-
-  def <(other_move)
-    other_move.scissors? || other_move.lizard?
-  end
-end
-
-class Scissors < Move
-  def initialize
-    @type = 'scissors'
-  end
-
-  def >(other_move)
-    other_move.paper? || other_move.lizard?
-  end
-
-  def <(other_move)
-    other_move.rock? || other_move.spock?
-  end
-end
-
-class Lizard < Move
-  def initialize
-    @type = 'lizard'
-  end
-
-  def >(other_move)
-    other_move.paper? || other_move.spock?
-  end
-
-  def <(other_move)
-    other_move.rock? || other_move.scissors?
-  end
-end
-
-class Spock < Move
-  def initialize
-    @type = 'spock'
-  end
-
-  def >(other_move)
-    other_move.rock? || other_move.scissors?
-  end
-
-  def <(other_move)
-    other_move.paper? || other_move.lizard?
-  end
-end
-
-class Player
-  attr_accessor :move, :name, :score
-
-  def initialize
-    set_name
-    self.score = Score.new
-  end
-
-  def update_score
-    score.increment_by_1
-  end
 end
 
 class Human < Player
-  def set_name
-    n = nil
-    loop do
-      puts "Please choose your player name."
-      n = gets.chomp.strip
-      break unless n.empty?
-      puts "Sorry, must enter a value."
-    end
-    self.name = n
-  end
-
   def choose
     choice = nil
     loop do
@@ -175,7 +99,20 @@ class Human < Player
       break if Move::VALUES.include?(choice)
       puts "Sorry, invalid choice."
     end
-    self.move = Move.new(choice)
+    @move = pick_type(choice)
+  end
+
+  private
+
+  def set_name
+    n = nil
+    loop do
+      puts "Please choose your player name."
+      n = gets.chomp.strip
+      break unless n.empty?
+      puts "Sorry, must enter a value."
+    end
+    @name = n
   end
 
   def convert_abbreviated_move(mv)
@@ -191,20 +128,38 @@ class Human < Player
 end
 
 class Computer < Player
+  NAMES = ['C-3PO', 'R2-D2', 'Optimus Prime', 'Megatron', 'HAL']
+
   def set_name
-    self.name = ['C-3PO', 'R2-D2', 'Optimus Prime', 'Megatron', 'HAL'].sample
+    @name = NAMES.sample
   end
 
   def choose
-    self.move = Move.new(Move.values(name).sample)
+    move_type = values(name).sample
+    @move = pick_type(move_type)
+  end
+
+  private
+
+  def values(name)
+    case name
+    when 'C-3PO' then ['paper']
+    when 'R2-D2' then ['rock']
+    when 'Optimus Prime' then ['rock', 'paper', 'scissors']
+    when 'Megatron' then ['spock', 'lizard', 'lizard', 'lizard']
+    when 'HAL' then ['scissors', 'scissors', 'scissors', 'scissors', 'rock']
+    else VALUES
+    end
   end
 end
 
 # Game Orchestration Engine
 class RPSGame
+  private
+
   WINNING_SCORE = 10
 
-  attr_accessor :human, :computer, :history
+  attr_reader :human, :computer, :history
 
   def initialize
     @human = Human.new
@@ -270,6 +225,7 @@ class RPSGame
   end
 
   def display_history
+    puts
     puts "Move History:\n#{human.name}: (#{history[human.name].join(', ')})\n" \
       "#{computer.name}: (#{history[computer.name].join(', ')})"
   end
@@ -287,9 +243,9 @@ class RPSGame
   end
 
   def find_winner
-    if human.move.value > computer.move.value
+    if human.move > computer.move
       human
-    elsif human.move.value < computer.move.value
+    elsif computer.move > human.move
       computer
     end
   end
@@ -305,7 +261,7 @@ class RPSGame
     "#{computer.name}: #{computer.score}"
 
     win_prompt = "is the first to #{WINNING_SCORE} wins and is the champion!"
-    puts "\n#{winner.name} #{win_prompt}" if winner
+    puts "\n*** #{winner.name} #{win_prompt} ***" if winner
   end
 
   def quit?
@@ -328,13 +284,6 @@ class RPSGame
     end
   end
 
-  def play
-    display_welcome_message
-    rules_prompt
-    game_loop
-    display_goodbye_message
-  end
-
   def game_loop
     loop do
       human.choose
@@ -346,6 +295,15 @@ class RPSGame
       display_history
       break if winner || quit?
     end
+  end
+
+  public
+
+  def play
+    display_welcome_message
+    rules_prompt
+    game_loop
+    display_goodbye_message
   end
 end
 
