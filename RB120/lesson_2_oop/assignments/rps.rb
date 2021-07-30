@@ -5,14 +5,6 @@ class Score
     @value = 0
   end
 
-  def >(other)
-    value > other.value
-  end
-
-  def <(other)
-    value < other.value
-  end
-
   def increment_by_1
     @value += 1
   end
@@ -22,22 +14,10 @@ class Score
   end
 end
 
-class History
-  attr_accessor :data
-
-  def initialize(human, computer)
-    @data = { human => [], computer => [] }
-  end
-
-  def to_s
-    human, computer = data.keys
-    "History: #{human}: (#{data[human].join(', ')})\n" \
-    "         #{computer}: (#{data[computer].join(', ')})"
-  end
-end
-
 class Move
   attr_reader :value, :type
+
+  VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
 
   def initialize(value)
     @value = pick_type(value)
@@ -61,7 +41,7 @@ class Move
     when 'Optimus Prime' then ['rock', 'paper', 'scissors']
     when 'Megatron' then ['spock', 'lizard', 'lizard', 'lizard']
     when 'HAL' then ['scissors', 'scissors', 'scissors', 'scissors', 'rock']
-    else ['rock', 'paper', 'scissors', 'lizard', 'spock']
+    else VALUES
     end
   end
 
@@ -178,7 +158,7 @@ class Human < Player
     n = nil
     loop do
       puts "Please choose your player name."
-      n = gets.chomp
+      n = gets.chomp.strip
       break unless n.empty?
       puts "Sorry, must enter a value."
     end
@@ -190,9 +170,9 @@ class Human < Player
     loop do
       puts "Please choose rock, paper, scissors, lizard, or spock " \
         "(r, p, s, l, k):"
-      choice = gets.downcase.chomp
+      choice = gets.downcase.chomp.strip
       choice = convert_abbreviated_move(choice)
-      break if Move.values('standard').include?(choice)
+      break if Move::VALUES.include?(choice)
       puts "Sorry, invalid choice."
     end
     self.move = Move.new(choice)
@@ -205,6 +185,7 @@ class Human < Player
     when 's' then 'scissors'
     when 'l' then 'lizard'
     when 'k' then 'spock'
+    else mv
     end
   end
 end
@@ -221,34 +202,80 @@ end
 
 # Game Orchestration Engine
 class RPSGame
+  WINNING_SCORE = 10
+
   attr_accessor :human, :computer, :history
 
   def initialize
     @human = Human.new
     @computer = Computer.new
-    @history = History.new(human.name, computer.name)
+    @history = { human.name => [], computer.name => [] }
   end
 
   def display_welcome_message
-    puts "Welcome to Rock, Paper, Scissors, Lizard, Spock, #{human.name}!"
-    puts "You will be playing against #{computer.name}."
+    system("clear")
+    puts "Welcome, #{human.name}, to Rock, Paper, Scissors, Lizard, Spock!"
+    puts "\nYou will be playing against #{computer.name}.\n"
   end
 
+  def rules_prompt
+    response = nil
+    loop do
+      puts "\nWould you like to hear the rules? (y/n)"
+      response = gets.chomp.downcase.strip
+      break if %w(yes y no n).include?(response)
+      puts "Please choose y or n."
+    end
+    display_rules if %w(yes y).include?(response)
+  end
+
+  # rubocop: disable Metrics/MethodLength
+  def display_rules
+    system("clear")
+    puts <<~MSG
+    You will face off with a random computer.
+    The first to win #{WINNING_SCORE} rounds is the winner.
+    During a round each will select a move of:
+    rock(r), paper(p), scissors(s), lizard(l), spock(k)
+
+    The following is a list of which move beats the other. It's very simple:
+
+      Scissors cuts paper,
+      paper covers rock,
+      rock crushes lizard,
+      lizard poisons spock,
+      spock smashes scissors,
+      scissors decapitates lizard,
+      lizard eats paper,
+      paper disproves spock,
+      spock vaporizes rock,
+      and as it always has...
+      rock crushes scissors.
+
+    Please press <Enter> to continue.
+    MSG
+    gets
+    system("clear")
+  end
+  # rubocop: enable Metrics/MethodLength
+
   def display_goodbye_message
-    puts "Thanks for playing Rock, Paper, Scissors, Lizard, Spock! Goodbye," \
+    puts "\nThanks for playing Rock, Paper, Scissors, Lizard, Spock! Goodbye," \
       " #{human.name}!"
   end
 
   def update_history
-    history.data[human.name] << human.move.type
-    history.data[computer.name] << computer.move.type
+    history[human.name] << human.move.type
+    history[computer.name] << computer.move.type
   end
 
   def display_history
-    puts history
+    puts "Move History:\n#{human.name}: (#{history[human.name].join(', ')})\n" \
+      "#{computer.name}: (#{history[computer.name].join(', ')})"
   end
 
   def display_winner
+    puts
     result = find_winner
     if result
       result.update_score
@@ -256,6 +283,7 @@ class RPSGame
     else
       puts "It's a tie!"
     end
+    puts
   end
 
   def find_winner
@@ -267,6 +295,7 @@ class RPSGame
   end
 
   def display_moves
+    system("clear")
     puts "#{human.name} chose #{human.move}."
     puts "#{computer.name} chose #{computer.move}."
   end
@@ -274,13 +303,15 @@ class RPSGame
   def display_score
     puts "Score: #{human.name}: #{human.score} " \
     "#{computer.name}: #{computer.score}"
-    puts "#{winner.name} is the first to 10 wins and is the champion!" if winner
+
+    win_prompt = "is the first to #{WINNING_SCORE} wins and is the champion!"
+    puts "\n#{winner.name} #{win_prompt}" if winner
   end
 
   def quit?
     answer = nil
     loop do
-      puts "Press <Enter> to play again! (q to quit)"
+      puts "\nPress <Enter> to play again! (q to quit)"
       answer = gets.downcase.chomp
       break unless ['q', 'quit', 'n', 'no'].include?(answer)
       return true
@@ -290,15 +321,16 @@ class RPSGame
   end
 
   def winner
-    if human.score.value == 10
+    if human.score.value == WINNING_SCORE
       human
-    elsif computer.score.value == 10
+    elsif computer.score.value == WINNING_SCORE
       computer
     end
   end
 
   def play
     display_welcome_message
+    rules_prompt
     game_loop
     display_goodbye_message
   end
