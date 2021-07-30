@@ -128,28 +128,58 @@ class Human < Player
 end
 
 class Computer < Player
-  NAMES = ['C-3PO', 'R2-D2', 'Optimus Prime', 'Megatron', 'HAL']
-
-  def set_name
-    @name = NAMES.sample
-  end
+  attr_reader :robot, :move_set
 
   def choose
-    move_type = values(name).sample
+    move_type = robot.move_set.sample
     @move = pick_type(move_type)
   end
 
   private
 
-  def values(name)
-    case name
-    when 'C-3PO' then ['paper']
-    when 'R2-D2' then ['rock']
-    when 'Optimus Prime' then ['rock', 'paper', 'scissors']
-    when 'Megatron' then ['spock', 'lizard', 'lizard', 'lizard']
-    when 'HAL' then ['scissors', 'scissors', 'scissors', 'scissors', 'rock']
-    else VALUES
-    end
+  def set_name
+    set_robot
+    @name = robot.name
+  end
+
+  def set_robot
+    robots = [C3PO.new, R2D2.new, OptimusPrime.new, Megatron.new, HAL.new]
+    @robot = robots.sample
+  end
+end
+
+class C3PO < Computer
+  def initialize
+    @name = 'C-3PO'
+    @move_set = ['paper']
+  end
+end
+
+class R2D2 < Computer
+  def initialize
+    @name = 'R2-D2'
+    @move_set = ['rock']
+  end
+end
+
+class OptimusPrime < Computer
+  def initialize
+    @name = 'Optimus Prime'
+    @move_set = ['rock', 'paper', 'scissors']
+  end
+end
+
+class Megatron < Computer
+  def initialize
+    @name = 'Megatron'
+    @move_set = ['spock', 'lizard', 'lizard', 'lizard']
+  end
+end
+
+class HAL < Computer
+  def initialize
+    @name = 'HAL'
+    @move_set = ['scissors', 'scissors', 'scissors', 'scissors', 'rock']
   end
 end
 
@@ -213,11 +243,6 @@ class RPSGame
     system("clear")
   end
   # rubocop: enable Metrics/MethodLength
-
-  def display_goodbye_message
-    puts "\nThanks for playing Rock, Paper, Scissors, Lizard, Spock! Goodbye," \
-      " #{human.name}!"
-  end
 
   def update_history
     history[human.name] << human.move.type
@@ -297,12 +322,39 @@ class RPSGame
     end
   end
 
+  def play_again?
+    answer = nil
+    loop do
+      puts "\nWould you like to play another game? (y/n)"
+      answer = gets.chomp.downcase.strip
+      break if %w(y yes n no).include?(answer)
+      puts "Please type 'y' or 'n'."
+    end
+    system("clear")
+    %w(y yes).include?(answer)
+  end
+
+  def reset_game
+    @human = Human.new
+    @computer = Computer.new
+    @history = { human.name => [], computer.name => [] }
+  end
+
+  def display_goodbye_message
+    puts "Thanks for playing Rock, Paper, Scissors, Lizard, Spock! Goodbye," \
+      " #{human.name}!"
+  end
+
   public
 
   def play
-    display_welcome_message
-    rules_prompt
-    game_loop
+    loop do
+      display_welcome_message
+      rules_prompt
+      game_loop
+      break unless play_again?
+      reset_game
+    end
     display_goodbye_message
   end
 end
