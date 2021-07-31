@@ -105,6 +105,7 @@ class Human < Player
   private
 
   def set_name
+    system("clear")
     n = nil
     loop do
       puts "Please choose your player name."
@@ -185,17 +186,28 @@ end
 
 # Game Orchestration Engine
 class RPSGame
-  private
-
-  WINNING_SCORE = 10
-
-  attr_reader :human, :computer, :history
-
   def initialize
     @human = Human.new
     @computer = Computer.new
     @history = { human.name => [], computer.name => [] }
   end
+
+  def play
+    loop do
+      display_welcome_message
+      rules_prompt
+      game_loop
+      break unless play_again?
+      reset_game
+    end
+    display_goodbye_message
+  end
+
+  private
+
+  WINNING_SCORE = 10
+
+  attr_reader :human, :computer, :history
 
   def display_welcome_message
     system("clear")
@@ -343,19 +355,6 @@ class RPSGame
   def display_goodbye_message
     puts "Thanks for playing Rock, Paper, Scissors, Lizard, Spock! Goodbye," \
       " #{human.name}!"
-  end
-
-  public
-
-  def play
-    loop do
-      display_welcome_message
-      rules_prompt
-      game_loop
-      break unless play_again?
-      reset_game
-    end
-    display_goodbye_message
   end
 end
 
