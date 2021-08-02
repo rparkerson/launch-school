@@ -186,6 +186,8 @@ end
 
 # Game Orchestration Engine
 class RPSGame
+  WINNING_SCORE = 10
+
   def initialize
     @human = Human.new
     @computer = Computer.new
@@ -204,8 +206,6 @@ class RPSGame
   end
 
   private
-
-  WINNING_SCORE = 10
 
   attr_reader :human, :computer, :history
 
