@@ -34,4 +34,4 @@ class Television
 end
 
 p Television.manufacturer
-p Television::manufacturer # also works but may be confused with `::` uses
+p Television::manufacturer # also works but may be confused with other `::` uses
